@@ -34,7 +34,14 @@ function reportError() {
 }
 
 function updateIcon(count) {
-  if (count == "0") { count = "" }
+  countInt = parseInt(count)
+  if (countInt == 0) {
+    count = "" 
+  } else if (countInt > 999) {
+    count = "999+"
+  } else {
+    count = countInt.toString()
+  }
   chrome.browserAction.setIcon({path: 'icon-active.png'});
   chrome.browserAction.setBadgeBackgroundColor({color: '#3A87AD'});
   chrome.browserAction.setBadgeText({text: count});
@@ -57,7 +64,7 @@ function parseCounters(feedData) {
       unread_count += folder.unread_count;
     }
   }
-  updateIcon(unread_count.toString());
+  updateIcon(unread_count)
 }
 
 function refreshCounters() {
