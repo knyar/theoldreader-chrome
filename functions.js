@@ -74,7 +74,7 @@ function refreshCounters() {
     if (count) {
       console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
       updateIcon(count);
-      scheduleRefresh();
+      scheduleRefresh(COUNTER_REFRESH_INTERVAL / 10);
     } else {
       getCountersFromHTTP();
     }
@@ -86,20 +86,20 @@ function getCountersFromHTTP() {
   function refreshFailed() {
     window.clearTimeout(requestTimeout);
     reportError();
-    scheduleRefresh();
+    scheduleRefresh(COUNTER_REFRESH_INTERVAL);
   }
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
     parseCounters(feedData);
-    scheduleRefresh();
+    scheduleRefresh(COUNTER_REFRESH_INTERVAL);
   }
 
   var httpRequest = new XMLHttpRequest();
   var requestTimeout = window.setTimeout(function() {
     httpRequest.abort();
     reportError();
-    scheduleRefresh();
+    scheduleRefresh(COUNTER_REFRESH_INTERVAL);
   }, 20000);
 
   httpRequest.onerror = function(err) {
@@ -138,8 +138,8 @@ function getCountersFromHTTP() {
   }
 }
 
-function scheduleRefresh() {
+function scheduleRefresh(interval) {
   if (refreshTimeout) { window.clearInterval(refreshTimeout); }
-  refreshTimeout = window.setTimeout(refreshCounters, COUNTER_REFRESH_INTERVAL);
+  refreshTimeout = window.setTimeout(refreshCounters, interval);
 }
 
