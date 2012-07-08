@@ -1,5 +1,5 @@
-var COUNTER_REFRESH_INTERVAL = 180000;
-
+var COUNTER_REFRESH_INTERVAL = 60 * 60 * 1000;
+var TAB_REFRESH_INTERVAL = 20 * 1000;
 var refreshTimeout;
 
 function findOurTab(callback) {
@@ -81,7 +81,7 @@ function refreshCounters() {
     if (count) {
       console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
       updateIcon(count);
-      scheduleRefresh(COUNTER_REFRESH_INTERVAL / 10);
+      scheduleRefresh(TAB_REFRESH_INTERVAL);
     } else {
       getCountersFromHTTP();
     }
@@ -137,7 +137,7 @@ function getCountersFromHTTP() {
   }
 
   try {
-    httpRequest.open('GET', 'http://theoldreader.com/feeds.json', true);
+    httpRequest.open('GET', 'http://theoldreader.com/feeds/counts.json', true);
     httpRequest.send(null);
   } catch (exception) {
     console.log('Exception while fetching data: ' + exception);
