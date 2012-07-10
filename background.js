@@ -1,5 +1,5 @@
 // run first counter refresh
-refreshCounters();
+getCountersFromHTTP();
 
 // initialize button click event
 chrome.browserAction.onClicked.addListener(function(tab) {

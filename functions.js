@@ -1,11 +1,11 @@
-var COUNTER_REFRESH_INTERVAL = 60 * 60 * 1000;
-var TAB_REFRESH_INTERVAL = 20 * 1000;
+var REFRESH_INTERVAL = 10 * 1000; // 10 seconds
+var HTTP_REFRESH_INTERVAL = 90;   // 10 seconds * 90 = 15 minutes
 var refreshTimeout;
+var refreshCounter = 0;
 
 function findOurTab(callback) {
   chrome.windows.getAll({populate: true}, function(windows) {
-    var foundTab = null;
-    var i, win;
+    var foundTab, i, win;
     for (i = 0; win = windows[i]; i++) {
       var j, tab;
       for (j = 0; tab = win.tabs[j]; j++) {
@@ -67,8 +67,9 @@ function parseCounters(feedData) {
   updateIcon(unread_count)
 }
 
-function refreshCounters() {
+function getCounters() {
   if (refreshTimeout) { window.clearInterval(refreshTimeout) }
+  refreshCounter++;
 
   findOurTab(function(tab) {
     var count;
@@ -81,9 +82,14 @@ function refreshCounters() {
     if (count) {
       console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
       updateIcon(count);
-      scheduleRefresh(TAB_REFRESH_INTERVAL);
+      scheduleRefresh();
     } else {
-      getCountersFromHTTP();
+      if (refreshCounter >= HTTP_REFRESH_INTERVAL) {
+        refreshCounter = 0;
+        getCountersFromHTTP();
+      } else {
+        scheduleRefresh();
+      }
     }
   });
 }
@@ -93,20 +99,20 @@ function getCountersFromHTTP() {
   function refreshFailed() {
     window.clearTimeout(requestTimeout);
     reportError();
-    scheduleRefresh(COUNTER_REFRESH_INTERVAL);
+    scheduleRefresh();
   }
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
     parseCounters(feedData);
-    scheduleRefresh(COUNTER_REFRESH_INTERVAL);
+    scheduleRefresh();
   }
 
   var httpRequest = new XMLHttpRequest();
   var requestTimeout = window.setTimeout(function() {
     httpRequest.abort();
     reportError();
-    scheduleRefresh(COUNTER_REFRESH_INTERVAL);
+    scheduleRefresh();
   }, 20000);
 
   httpRequest.onerror = function(err) {
@@ -146,7 +152,6 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh(interval) {
-  if (refreshTimeout) { window.clearInterval(refreshTimeout); }
-  refreshTimeout = window.setTimeout(refreshCounters, interval);
+  refreshTimeout = window.setTimeout(getCounters, REFRESH_INTERVAL);
 }
 
