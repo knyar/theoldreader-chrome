@@ -81,6 +81,7 @@ function getCounters() {
     }
     if (count) {
       console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
+      refreshCounter = HTTP_REFRESH_INTERVAL; // trigger HTTP-based refresh as soon as theoldreader tab is closed
       updateIcon(count);
       scheduleRefresh();
     } else {
