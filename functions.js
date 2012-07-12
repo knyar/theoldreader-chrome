@@ -1,5 +1,7 @@
 var REFRESH_INTERVAL = 10 * 1000; // 10 seconds
 var HTTP_REFRESH_INTERVAL = 90;   // 10 seconds * 90 = 15 minutes
+var BADGE_BACKGROUND_COLOR = '#d73f31';
+
 var refreshTimeout;
 var refreshCounter = 0;
 
@@ -43,7 +45,7 @@ function updateIcon(count) {
     count = countInt.toString()
   }
   chrome.browserAction.setIcon({path: 'icon-active.png'});
-  chrome.browserAction.setBadgeBackgroundColor({color: '#3A87AD'});
+  chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
 }
 
