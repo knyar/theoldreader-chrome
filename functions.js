@@ -83,9 +83,8 @@ function getCounters() {
     }
     if (count) {
       console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
-      refreshCounter = HTTP_REFRESH_INTERVAL; // trigger HTTP-based refresh as soon as theoldreader tab is closed
       updateIcon(count);
-      scheduleRefresh();
+      scheduleRefreshForce();
     } else {
       if (refreshCounter >= HTTP_REFRESH_INTERVAL) {
         refreshCounter = 0;
@@ -102,7 +101,7 @@ function getCountersFromHTTP() {
   function refreshFailed() {
     window.clearTimeout(requestTimeout);
     reportError();
-    scheduleRefresh();
+    scheduleRefreshForce();
   }
 
   // If request succeeds, update counters and reschedule
@@ -115,7 +114,7 @@ function getCountersFromHTTP() {
   var requestTimeout = window.setTimeout(function() {
     httpRequest.abort();
     reportError();
-    scheduleRefresh();
+    scheduleRefreshForce();
   }, 20000);
 
   httpRequest.onerror = function(err) {
@@ -152,6 +151,12 @@ function getCountersFromHTTP() {
     console.log('Exception while fetching data: ' + exception);
     refreshFailed();
   }
+}
+
+function scheduleRefreshForce() {
+  // Force HTTP-based refresh if no tab is found
+  refreshCounter = HTTP_REFRESH_INTERVAL;
+  scheduleRefresh();
 }
 
 function scheduleRefresh(interval) {

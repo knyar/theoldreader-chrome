@@ -1,0 +1,6 @@
+version 0.3
+
+ * Failed HTTP counter update now forces next update to be over HTTP
+   as well. This should make the icon active again much faster after
+   any service or network failures.
+ 
