@@ -70,7 +70,7 @@ function parseCounters(feedData) {
 }
 
 function getCounters() {
-  if (refreshTimeout) { window.clearInterval(refreshTimeout) }
+  if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
   refreshCounter++;
 
   findOurTab(function(tab) {
@@ -160,6 +160,7 @@ function scheduleRefreshForce() {
 }
 
 function scheduleRefresh(interval) {
+  if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
   refreshTimeout = window.setTimeout(getCounters, REFRESH_INTERVAL);
 }
 
