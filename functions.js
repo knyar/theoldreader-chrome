@@ -1,9 +1,9 @@
 var REFRESH_INTERVAL = 10 * 1000; // 10 seconds
-var HTTP_REFRESH_INTERVAL = 90;   // 10 seconds * 90 = 15 minutes
+var HTTP_REFRESH_INTERVAL = 900;  // 900 seconds = 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 
 var refreshTimeout;
-var refreshCounter = 0;
+var lastHttpRefresh = 0;
 
 function findOurTab(callback) {
   chrome.windows.getAll({populate: true}, function(windows) {
@@ -71,7 +71,6 @@ function parseCounters(feedData) {
 
 function getCounters() {
   if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
-  refreshCounter++;
 
   findOurTab(function(tab) {
     var count;
@@ -84,10 +83,10 @@ function getCounters() {
     if (count) {
       console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
       updateIcon(count);
+      // First refresh after the tab is closed should go via HTTP, so we call RefreshForce here.
       scheduleRefreshForce();
     } else {
-      if (refreshCounter >= HTTP_REFRESH_INTERVAL) {
-        refreshCounter = 0;
+      if ((Date.now() - lastHttpRefresh) >= (HTTP_REFRESH_INTERVAL*1000)) {
         getCountersFromHTTP();
       } else {
         scheduleRefresh();
@@ -106,6 +105,7 @@ function getCountersFromHTTP() {
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
+    lastHttpRefresh = Date.now()
     parseCounters(feedData);
     scheduleRefresh();
   }
@@ -154,8 +154,8 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefreshForce() {
-  // Force HTTP-based refresh if no tab is found
-  refreshCounter = HTTP_REFRESH_INTERVAL;
+  // Force HTTP-based refresh
+  lastHttpRefresh = 0;
   scheduleRefresh();
 }
 
