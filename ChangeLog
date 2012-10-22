@@ -1,3 +1,12 @@
+version 0.5
+
+ * Refactored timers to fetch data from HTTP more effectively.
+ * Added 'subscribe' web intent handling.
+
+version 0.4
+
+ * Fixed some bugs in timeout handling.
+
 version 0.3
 
  * Failed HTTP counter update now forces next update to be over HTTP
