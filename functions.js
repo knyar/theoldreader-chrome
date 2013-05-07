@@ -115,7 +115,7 @@ function getCountersFromHTTP() {
     httpRequest.abort();
     reportError();
     scheduleRefreshForce();
-  }, 20000);
+  }, 20000 + Math.round(Math.random() * 10000) - 5000);
 
   httpRequest.onerror = function(err) {
     console.log(err);
