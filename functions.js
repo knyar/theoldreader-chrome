@@ -25,7 +25,7 @@ function openOurTab() {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
-      chrome.tabs.create({url: 'http://theoldreader.com/'});
+      chrome.tabs.create({url: 'http://theoldreader.com/posts/all'});
     }
   });
 }
