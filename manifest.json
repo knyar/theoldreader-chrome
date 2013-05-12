@@ -18,6 +18,7 @@
     "tabs",
     "http://theoldreader.com/"
   ],
+  "options_page": "options.html",
   "intents": {
     "http://webintents.org/subscribe": [
       {

@@ -25,7 +25,12 @@ function openOurTab() {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
-      chrome.tabs.create({url: 'http://theoldreader.com/posts/all'});
+      var url_suffix = '';
+      if (localStorage['click_page'] == 'all_items') {
+          url_suffix = 'posts/all'
+      }
+      console.log('url_suffix = ' + url_suffix);
+      chrome.tabs.create({url: 'http://theoldreader.com/' + url_suffix});
     }
   });
 }
