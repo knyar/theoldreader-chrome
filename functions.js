@@ -38,7 +38,7 @@ function reportError() {
 function updateIcon(count) {
   countInt = parseInt(count)
   if (countInt == 0) {
-    count = "" 
+    count = ""
   } else if (countInt > 999) {
     count = "999+"
   } else {
