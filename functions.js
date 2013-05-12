@@ -38,20 +38,24 @@ function openOurTab() {
 function reportError() {
   chrome.browserAction.setIcon({path: 'icon-inactive.png'});
   chrome.browserAction.setBadgeText({text: ''});
+  chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
 }
 
 function updateIcon(count) {
-  countInt = parseInt(count)
+  countInt = parseInt(count);
+  title_suffix = ': ' + countInt + ' unread';
   if (countInt == 0) {
-    count = ""
+    count = "";
+    title_suffix = '';
   } else if (countInt > 999) {
-    count = "999+"
+    count = "999+";
   } else {
-    count = countInt.toString()
+    count = countInt.toString();
   }
   chrome.browserAction.setIcon({path: 'icon-active.png'});
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
+  chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
 }
 
 function parseCounters(feedData) {
