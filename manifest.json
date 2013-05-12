@@ -17,7 +17,11 @@
   },
   "permissions": [
     "tabs",
+    "notifications",
     "http://theoldreader.com/"
+  ],
+  "web_accessible_resources": [
+    "icon-48.png"
   ],
   "options_page": "options.html",
   "intents": {
