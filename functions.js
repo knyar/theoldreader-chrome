@@ -78,6 +78,10 @@ function updateIcon(count) {
 function parseCounters(feedData) {
   var unread_count = 0;
 
+  if(!feedData.feeds) {
+    return updateIcon(unread_count);
+  }
+
   var i, folder;
   for (i=0; folder=feedData.feeds[i]; i++) {
     var k, feed;
@@ -101,7 +105,7 @@ function getCounters() {
   findOurTab(function(tab) {
     var count;
     if (tab && tab.title) {
-      var match = /^\((\d+)\) The Old Reader$/.exec(tab.title);
+      var match = /\((\d+)\)/.exec(tab.title);
       if (match && match[1]) {
         count = match[1];
       }
