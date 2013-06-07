@@ -1,3 +1,9 @@
+version 0.8
+
+ * Added new item notifications (contributed by nelchael)
+ * User can now choose whether Home page or All Items should be opened
+   upon clicking the icon (contributed by nelchael)
+
 version 0.7
 
  * Adjusted regular expression to prevent matching error page title
