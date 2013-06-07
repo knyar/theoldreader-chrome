@@ -79,7 +79,7 @@ function getCounters() {
   findOurTab(function(tab) {
     var count;
     if (tab && tab.title) {
-      var match = /\((\d+)\)/.exec(tab.title);
+      var match = /^\((\d+)\)/.exec(tab.title);
       if (match && match[1]) {
         count = match[1];
       }
