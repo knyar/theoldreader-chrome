@@ -194,3 +194,14 @@ function scheduleRefresh(interval) {
   refreshTimeout = window.setTimeout(getCounters, REFRESH_INTERVAL);
 }
 
+function onMessage(request, sender, callback) {
+  if(typeof request.count !== 'undefined'){
+    setCountFromObserver(request.count);
+  }
+}
+
+function setCountFromObserver(count) {
+  console.log("Observer reported (" + count + "), no need to update for now");
+  updateIcon(count);
+  scheduleRefreshForce();
+}
