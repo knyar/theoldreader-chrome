@@ -4,6 +4,15 @@ var BADGE_BACKGROUND_COLOR = '#d73f31';
 
 var refreshTimeout;
 var lastHttpRefresh = 0;
+var last_unread_count = -1;
+
+function showNotification(title, body) {
+  if (!localStorage['show_notifications']) {
+    return;
+  }
+  var notification = webkitNotifications.createNotification('icon-48.png', title, body);
+  notification.show();
+}
 
 function findOurTab(callback) {
   chrome.windows.getAll({populate: true}, function(windows) {
@@ -25,7 +34,12 @@ function openOurTab() {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
-      chrome.tabs.create({url: 'http://theoldreader.com/'});
+      var url_suffix = '';
+      if (localStorage['click_page'] == 'all_items') {
+          url_suffix = 'posts/all'
+      }
+      console.log('url_suffix = ' + url_suffix);
+      chrome.tabs.create({url: 'http://theoldreader.com/' + url_suffix});
     }
   });
 }
@@ -33,20 +47,32 @@ function openOurTab() {
 function reportError() {
   chrome.browserAction.setIcon({path: 'icon-inactive.png'});
   chrome.browserAction.setBadgeText({text: ''});
+  chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
+
+  showNotification('Error', 'Failed to fetch feed counts');
 }
 
 function updateIcon(count) {
-  countInt = parseInt(count)
+  countInt = parseInt(count);
+  title_suffix = ': ' + countInt + ' unread';
   if (countInt == 0) {
-    count = "" 
+    count = "";
+    title_suffix = '';
   } else if (countInt > 999) {
-    count = "999+"
+    count = "999+";
   } else {
-    count = countInt.toString()
+    count = countInt.toString();
   }
   chrome.browserAction.setIcon({path: 'icon-active.png'});
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
+  chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
+
+  if (countInt > last_unread_count) {
+    var text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
+    showNotification('New posts', text);
+  }
+  last_unread_count = countInt;
 }
 
 function parseCounters(feedData) {

@@ -12,12 +12,18 @@
     "scripts": [ "functions.js", "background.js" ]
   },
   "browser_action": {
-    "default_icon": "icon-inactive.png"
+    "default_icon": "icon-inactive.png",
+    "default_title": "The Old Reader"
   },
   "permissions": [
     "tabs",
+    "notifications",
     "http://theoldreader.com/"
   ],
+  "web_accessible_resources": [
+    "icon-48.png"
+  ],
+  "options_page": "options.html",
   "intents": {
     "http://webintents.org/subscribe": [
       {
