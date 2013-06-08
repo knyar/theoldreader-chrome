@@ -4,14 +4,19 @@ var target = document.querySelector('head > title');
 
 var observer = new window.WebKitMutationObserver(
   function(mutations) {
-    mutations.forEach(notify);
+    mutations.forEach(
+      function(mutation){
+        notify(mutation.target.textContent, true);
+      }
+    );
   }
 );
 
 observer.observe(target, { subtree: true, characterData: true, childList: true });
 
-function notify(mutation) {
-  var title = mutation.target.textContent;
+notify(target.textContent, false);
+
+function notify(title, changed) {
   var count;
   
   var match = /^\((\d+)\)/.exec(title);
@@ -20,7 +25,7 @@ function notify(mutation) {
   if (match && match[1]) {
     count = match[1];
   }
-  else if (match_zero) {
+  else if (match_zero && changed) {
     count = 0;
   }
   
