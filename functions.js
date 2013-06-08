@@ -1,3 +1,4 @@
+// vim: set ts=2 sw=2 et
 var HTTP_REFRESH_INTERVAL = 15*60*1000;  // 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 

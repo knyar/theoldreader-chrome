@@ -1,3 +1,4 @@
+// vim: set ts=2 sw=2 et
 // Credit for the solution goes to http://stackoverflow.com/a/11694229
 
 var target = document.querySelector('head > title');
