@@ -33,17 +33,16 @@ function openOurTab() {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
       var url_base = 'http://theoldreader.com/';
-      
+      if (localStorage['prefer_https'] == 'yes') {
+        url_base = 'https://theoldreader.com/'
+      }
+
       var url_suffix = '';
       if (localStorage['click_page'] == 'all_items') {
           url_suffix = 'posts/all'
       }
       console.log('url_suffix = ' + url_suffix);
-      
-      if(localStorage['prefer_https'] && localStorage['prefer_https'] == 'yes'){
-        url_base = 'https://theoldreader.com/'
-      }
-      
+
       chrome.tabs.create({url: url_base + url_suffix});
     }
   });
@@ -153,7 +152,7 @@ function getCountersFromHTTP() {
   }
 
   try {
-    if(localStorage['prefer_https'] && localStorage['prefer_https'] == 'yes'){
+    if (localStorage['prefer_https'] == 'yes') {
       httpRequest.open('GET', 'https://theoldreader.com/feeds/counts.json', true);
     } else {
       httpRequest.open('GET', 'http://theoldreader.com/feeds/counts.json', true);
