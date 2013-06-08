@@ -1,3 +1,8 @@
+version 0.10
+
+ * New tab-based counter refresh mechanism (contributed by Alexander Kashev)
+ * HTTPS support (contributed by Alexander Kashev)
+
 version 0.9
 
  * Fix notification settings
