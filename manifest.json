@@ -24,13 +24,13 @@
     "icon-48.png"
   ],
   "options_page": "options.html",
-  "content_scripts": [ 
+  "content_scripts": [
     {
       "matches": [
         "*://theoldreader.com/*"
       ],
       "js": ["observer.js"],
-      "run_at": "document_idle" 
+      "run_at": "document_idle"
     }
   ]
 }
