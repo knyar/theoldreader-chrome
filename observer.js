@@ -18,7 +18,7 @@ observer.observe(target, { subtree: true, characterData: true, childList: true }
 notify(target.textContent, false);
 
 function notify(title, changed) {
-  var count;
+  var count = -1;
 
   var match = /^\((\d+)\)/.exec(title);
   var match_zero = /^The Old Reader$/.exec(title); // Does not fire on navigation
@@ -29,7 +29,7 @@ function notify(title, changed) {
     count = 0;
   }
 
-  if (typeof count !== 'undefined') {
+  if (count >= 0) {
     console.log("Observer reported "+count+" to extension");
     chrome.extension.sendMessage({'count' : count});
   }
