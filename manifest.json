@@ -24,6 +24,15 @@
     "icon-48.png"
   ],
   "options_page": "options.html",
+  "content_scripts": [ 
+    {
+      "matches": [
+        "http://theoldreader.com/*"
+      ],
+      "js": ["observer.js"],
+      "run_at": "document_idle" 
+    }
+  ],
   "intents": {
     "http://webintents.org/subscribe": [
       {

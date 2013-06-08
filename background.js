@@ -6,3 +6,5 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   openOurTab();
 });
 
+// listen to injected scripts
+chrome.extension.onMessage.addListener(onMessage);

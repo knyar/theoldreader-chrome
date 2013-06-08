@@ -1,9 +1,7 @@
-var REFRESH_INTERVAL = 10 * 1000; // 10 seconds
 var HTTP_REFRESH_INTERVAL = 900;  // 900 seconds = 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 
 var refreshTimeout;
-var lastHttpRefresh = 0;
 var last_unread_count = -1;
 
 function showNotification(title, body) {
@@ -99,46 +97,16 @@ function parseCounters(feedData) {
   updateIcon(unread_count)
 }
 
-function getCounters() {
-  if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
-
-  findOurTab(function(tab) {
-    var count = -1;
-    if (tab && tab.title) {
-      var match = /^\((\d+)\)/.exec(tab.title);
-      var match_zero = /^The Old Reader$/.exec(title);
-      if (match && match[1]) {
-        count = match[1];
-      } else if (match_zero) {
-        count = 0;
-      }
-    }
-    if (count >= 0) {
-      console.log("Found counter in our tab (" + count + "), no need to fetch counters via http");
-      updateIcon(count);
-      // First refresh after the tab is closed should go via HTTP, so we call RefreshForce here.
-      scheduleRefreshForce();
-    } else {
-      if ((Date.now() - lastHttpRefresh) >= (HTTP_REFRESH_INTERVAL*1000)) {
-        getCountersFromHTTP();
-      } else {
-        scheduleRefresh();
-      }
-    }
-  });
-}
-
 function getCountersFromHTTP() {
   // If request times out or if we get unexpected output, report error and reschedule
   function refreshFailed() {
     window.clearTimeout(requestTimeout);
     reportError();
-    scheduleRefreshForce();
+    scheduleRefresh();
   }
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
-    lastHttpRefresh = Date.now()
     parseCounters(feedData);
     scheduleRefresh();
   }
@@ -147,7 +115,7 @@ function getCountersFromHTTP() {
   var requestTimeout = window.setTimeout(function() {
     httpRequest.abort();
     reportError();
-    scheduleRefreshForce();
+    scheduleRefresh();
   }, 20000);
 
   httpRequest.onerror = function(err) {
@@ -186,14 +154,19 @@ function getCountersFromHTTP() {
   }
 }
 
-function scheduleRefreshForce() {
-  // Force HTTP-based refresh
-  lastHttpRefresh = 0;
-  scheduleRefresh();
-}
-
 function scheduleRefresh(interval) {
   if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
-  refreshTimeout = window.setTimeout(getCounters, REFRESH_INTERVAL);
+  refreshTimeout = window.setTimeout(getCountersFromHTTP, HTTP_REFRESH_INTERVAL);
 }
 
+function onMessage(request, sender, callback) {
+  if(typeof request.count !== 'undefined'){
+    setCountFromObserver(request.count);
+  }
+}
+
+function setCountFromObserver(count) {
+  console.log("Observer reported (" + count + "), no need to update for now");
+  updateIcon(count);
+  scheduleRefresh();
+}
