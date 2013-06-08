@@ -1,3 +1,4 @@
+// vim: set ts=2 sw=2 et
 // run first counter refresh
 getCountersFromHTTP();
 
