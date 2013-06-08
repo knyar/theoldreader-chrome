@@ -1,4 +1,4 @@
-var HTTP_REFRESH_INTERVAL = 900;  // 900 seconds = 15 minutes
+var HTTP_REFRESH_INTERVAL = 15*60*1000;  // 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 
 var refreshTimeout;
@@ -77,7 +77,7 @@ function parseCounters(feedData) {
   var unread_count = 0;
 
   if(!feedData.feeds) {
-    return updateIcon(unread_count);
+    return reportError()
   }
 
   var i, folder;
@@ -154,7 +154,7 @@ function getCountersFromHTTP() {
   }
 }
 
-function scheduleRefresh(interval) {
+function scheduleRefresh() {
   if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
   refreshTimeout = window.setTimeout(getCountersFromHTTP, HTTP_REFRESH_INTERVAL);
 }
