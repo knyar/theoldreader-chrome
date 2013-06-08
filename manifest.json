@@ -32,15 +32,5 @@
       "js": ["observer.js"],
       "run_at": "document_idle" 
     }
-  ],
-  "intents": {
-    "http://webintents.org/subscribe": [
-      {
-        "type": ["application/rss+xml", "application/atom+xml"],
-        "href": "/intent-subscribe.html",
-        "title": "Subscribe in The Old Reader",
-        "disposition": "window"
-      }
-    ]
-  }
+  ]
 }
