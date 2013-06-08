@@ -18,7 +18,7 @@ function findOurTab(callback) {
     for (i = 0; win = windows[i]; i++) {
       var j, tab;
       for (j = 0; tab = win.tabs[j]; j++) {
-        if (tab.url && /^http:\/\/(?:www\.)?theoldreader\.com/.test(tab.url)) {
+        if (tab.url && /^https?:\/\/(?:www\.)?theoldreader\.com/.test(tab.url)) {
           foundTab = tab;
         }
       }
@@ -32,12 +32,19 @@ function openOurTab() {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
+      var url_base = 'http://theoldreader.com/';
+      
       var url_suffix = '';
       if (localStorage['click_page'] == 'all_items') {
           url_suffix = 'posts/all'
       }
       console.log('url_suffix = ' + url_suffix);
-      chrome.tabs.create({url: 'http://theoldreader.com/' + url_suffix});
+      
+      if(localStorage['prefer_https'] && localStorage['prefer_https'] == 'yes'){
+        url_base = 'https://theoldreader.com/'
+      }
+      
+      chrome.tabs.create({url: url_base + url_suffix});
     }
   });
 }
@@ -146,7 +153,11 @@ function getCountersFromHTTP() {
   }
 
   try {
-    httpRequest.open('GET', 'http://theoldreader.com/feeds/counts.json', true);
+    if(localStorage['prefer_https'] && localStorage['prefer_https'] == 'yes'){
+      httpRequest.open('GET', 'https://theoldreader.com/feeds/counts.json', true);
+    } else {
+      httpRequest.open('GET', 'http://theoldreader.com/feeds/counts.json', true);
+    }
     httpRequest.send(null);
   } catch (exception) {
     console.log('Exception while fetching data: ' + exception);
