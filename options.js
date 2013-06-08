@@ -1,3 +1,4 @@
+// vim: set ts=2 sw=2 et
 function save_options() {
   localStorage['click_page'] = $('#click_page').val();
   localStorage['show_notifications'] = $('#show_notifications').prop('checked') ? 'yes' : 'no';
