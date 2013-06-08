@@ -7,7 +7,7 @@ var lastHttpRefresh = 0;
 var last_unread_count = -1;
 
 function showNotification(title, body) {
-  if (!localStorage['show_notifications']) {
+  if (localStorage['show_notifications'] != 'yes') {
     return;
   }
   var notification = webkitNotifications.createNotification('icon-48.png', title, body);
