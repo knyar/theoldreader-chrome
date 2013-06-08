@@ -29,4 +29,3 @@ function notify(mutation) {
     chrome.extension.sendMessage({'count' : count});
   }
 }
-
