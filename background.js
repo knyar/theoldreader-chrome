@@ -9,3 +9,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 // listen to injected scripts
 chrome.extension.onMessage.addListener(onMessage);
+
+// alert about new features, if any
+chrome.runtime.onInstalled.addListener(onExtensionUpdate);
