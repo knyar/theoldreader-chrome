@@ -3,13 +3,26 @@ var HTTP_REFRESH_INTERVAL = 15*60*1000;  // 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 
 var refreshTimeout;
-var last_unread_count = -1;
+var last_unread_count = 0;
+var notificationTimeout;
 
 function showNotification(title, body) {
   if (localStorage['show_notifications'] != 'yes') {
     return;
   }
+  
   var notification = webkitNotifications.createNotification('icon-48.png', title, body);
+  notification.tag = "theoldreader-chrome"; // Will update the notification instead of creating a new one
+  notification.onclick = function() { openOurTab(); this.close(); } // Opens the Old Reader page and self-destructs
+  
+  if (notificationTimeout) { window.clearTimeout(notificationTimeout); } // If updating a notification, reset timeout
+  if (localStorage['notification_timeout'] > 0) {
+    notificationTimeout = window.setTimeout( 
+      function() { notification.cancel(); }, 
+      localStorage['notification_timeout'] * 1000
+    );
+  }
+  
   notification.show();
 }
 
