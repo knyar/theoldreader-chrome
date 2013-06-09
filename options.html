@@ -1,26 +1,33 @@
 <html>
-	<head>
-		<title>The Old Reader - Options</title>
-		<style type="text/css">
-		* { font-family: sans-serif; font-size: small; }
-		</style>
-	</head>
-	<body>
-		<p><img src="logo.png" alt=""/></p>
-		<p>Page to open when icon is clicked:
-			<select id="click_page">
-				<option value="home">Home</option>
-				<option value="all_items">All items</option>
-			</select>
-		</p>
-		<p><label for="show_notifications">Show popup notifications: <input type="checkbox" id="show_notifications"></p>
-		<p><label for="notification_timeout">Auto-close notification after <input type="number" min="0" max="999" id="notification_timeout"> seconds (0 to keep open)</p>
-		<p><label for="prefer_https">Prefer connecting over https: <input type="checkbox" id="prefer_https"></p>
-		<p>
-			<button id="save_button">Save</button>
-			<span id="save_notification" style="display: none; padding-left: 2em; font-weight: bold;">Options saved!</span>
-		</p>
-		<script src="jquery-2.0.2.min.js"></script>
-		<script src="options.js"></script>
-	</body>
+  <head>
+    <title>The Old Reader - Options</title>
+    <style type="text/css">
+    * { font-family: sans-serif; font-size: small; }
+    </style>
+  </head>
+  <body>
+    <p><img src="logo.png" alt=""/></p>
+    <p>Page to open when icon is clicked:
+      <select id="click_page">
+        <option value="home">Home</option>
+        <option value="all_items">All items</option>
+      </select>
+    </p>
+    <p><label for="show_notifications">Show popup notifications: <input type="checkbox" id="show_notifications"></label></p>
+    <p>Auto-close notification after <input type="number" min="0" max="999" id="notification_timeout"> seconds (0 to keep open)</p>
+    <p><label for="prefer_https">Prefer connecting over https: <input type="checkbox" id="prefer_https"></label></p>
+    <p>
+      Update from server every <input type="number" min="1" max="99" id="refresh_interval"> minutes (minimum 1).
+      <span style="color: gray">Note: if you have an open tab with The Old Reader, updates from that tab will be used automatically.</span>
+    </p>
+    <p>
+      <button id="save_button">Save</button>
+      <span class="message" id="save_notification" style="display: none; padding-left: 2em; font-weight: bold; color: green">Options saved!</span>
+      <span class="message" id="save_required" style="display: none; padding-left: 2em; font-weight: bold; color: firebrick">&lt; Click button to save your changes</span>
+      <span class="message" id="save_failed" style="display: none; padding-left: 2em; font-weight: bold; color: firebrick">Please correct these values!</span>
+    </p>
+    <script src="jquery-2.0.2.min.js"></script>
+    <script src="jquery.color.js"></script>
+    <script src="options.js"></script>
+  </body>
 </html>

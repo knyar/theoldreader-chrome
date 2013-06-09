@@ -1,5 +1,4 @@
 // vim: set ts=2 sw=2 et
-var HTTP_REFRESH_INTERVAL = 15*60*1000;  // 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 
 var refreshTimeout;
@@ -180,7 +179,7 @@ function getCountersFromHTTP() {
 
 function scheduleRefresh() {
   if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
-  refreshTimeout = window.setTimeout(getCountersFromHTTP, HTTP_REFRESH_INTERVAL);
+  refreshTimeout = window.setTimeout(getCountersFromHTTP, (localStorage['refresh_interval'] || 15)*60*1000);
 }
 
 function onMessage(request, sender, callback) {
