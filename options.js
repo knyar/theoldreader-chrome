@@ -19,7 +19,7 @@ function validate_options() {
   if ($('#notification_timeout').val() === "" || parseInt($('#notification_timeout').val()) < 0) {
     errors = errors.add($('#notification_timeout').closest('p'));
   }
-  if ($('#refresh_interval').val() === "" || parseInt($('#refresh_interval').val()) <= 0) {
+  if ($('#refresh_interval').val() === "" || parseInt($('#refresh_interval').val()) < 5) {
     errors = errors.add($('#refresh_interval').closest('p'));
   }
   
