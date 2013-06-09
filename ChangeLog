@@ -2,6 +2,9 @@ version 0.10
 
  * New tab-based counter refresh mechanism (contributed by Alexander Kashev)
  * HTTPS support (contributed by Alexander Kashev)
+ * Configurable refresh interval (contributed by Alexander Kashev)
+ * Added notification timeout (contributed by Alexander Kashev)
+ * Improved preferences page (contributed by Alexander Kashev)
 
 version 0.9
 
