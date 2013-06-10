@@ -1,5 +1,6 @@
 // vim: set ts=2 sw=2 et
 var BADGE_BACKGROUND_COLOR = '#d73f31';
+var OPTIONS_VERSION = 1; // Increment when there are new options
 
 var refreshTimeout;
 var last_unread_count = 0;
@@ -192,4 +193,13 @@ function setCountFromObserver(count) {
   console.log("Observer reported (" + count + "), no need to update for now");
   updateIcon(count);
   scheduleRefresh();
+}
+
+function onExtensionUpdate(details) {
+  if (details.reason == "update" && !(localStorage["options_version"] >= OPTIONS_VERSION)) { // Negation required to capture undefined
+    var notification = webkitNotifications.createNotification('icon-48.png', "New options available", "Click to configure new options");
+    notification.onclick = function() { chrome.tabs.create({url: chrome.extension.getURL("options.html")}); this.close(); }
+    notification.show();
+  }
+  localStorage["options_version"] = OPTIONS_VERSION;
 }
