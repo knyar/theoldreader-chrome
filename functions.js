@@ -1,15 +1,28 @@
 // vim: set ts=2 sw=2 et
-var HTTP_REFRESH_INTERVAL = 15*60*1000;  // 15 minutes
 var BADGE_BACKGROUND_COLOR = '#d73f31';
+var OPTIONS_VERSION = 1; // Increment when there are new options
 
 var refreshTimeout;
-var last_unread_count = -1;
+var last_unread_count = 0;
+var notificationTimeout;
 
 function showNotification(title, body) {
   if (localStorage['show_notifications'] != 'yes') {
     return;
   }
+  
   var notification = webkitNotifications.createNotification('icon-48.png', title, body);
+  notification.tag = "theoldreader-chrome"; // Will update the notification instead of creating a new one
+  notification.onclick = function() { openOurTab(); this.close(); } // Opens the Old Reader page and self-destructs
+  
+  if (notificationTimeout) { window.clearTimeout(notificationTimeout); } // If updating a notification, reset timeout
+  if (localStorage['notification_timeout'] > 0) {
+    notificationTimeout = window.setTimeout( 
+      function() { notification.cancel(); }, 
+      localStorage['notification_timeout'] * 1000
+    );
+  }
+  
   notification.show();
 }
 
@@ -167,7 +180,7 @@ function getCountersFromHTTP() {
 
 function scheduleRefresh() {
   if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
-  refreshTimeout = window.setTimeout(getCountersFromHTTP, HTTP_REFRESH_INTERVAL);
+  refreshTimeout = window.setTimeout(getCountersFromHTTP, (localStorage['refresh_interval'] || 15)*60*1000);
 }
 
 function onMessage(request, sender, callback) {
@@ -180,4 +193,13 @@ function setCountFromObserver(count) {
   console.log("Observer reported (" + count + "), no need to update for now");
   updateIcon(count);
   scheduleRefresh();
+}
+
+function onExtensionUpdate(details) {
+  if (details.reason == "update" && !(localStorage["options_version"] >= OPTIONS_VERSION)) { // Negation required to capture undefined
+    var notification = webkitNotifications.createNotification('icon-48.png', "New options available", "Click to configure new options");
+    notification.onclick = function() { chrome.tabs.create({url: chrome.extension.getURL("options.html")}); this.close(); }
+    notification.show();
+  }
+  localStorage["options_version"] = OPTIONS_VERSION;
 }
