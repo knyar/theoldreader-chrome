@@ -15,7 +15,7 @@ function showNotification(title, body) {
   notification.tag = "theoldreader-chrome"; // Will update the notification instead of creating a new one
   notification.onclick = function() { openOurTab(); this.close(); } // Opens the Old Reader page and self-destructs
   
-  if (notificationTimeout) { window.clearTimeout(notificationTimeout); } // If updating a notification, reset timeout
+  window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
   if (localStorage['notification_timeout'] > 0) {
     notificationTimeout = window.setTimeout( 
       function() { notification.cancel(); }, 
@@ -40,18 +40,9 @@ function openOurTab() {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
-      var url_base = 'http://theoldreader.com/';
-      if (localStorage['prefer_https'] == 'yes') {
-        url_base = 'https://theoldreader.com/'
-      }
-
-      var url_suffix = '';
-      if (localStorage['click_page'] == 'all_items') {
-          url_suffix = 'posts/all'
-      }
-      console.log('url_suffix = ' + url_suffix);
-
-      chrome.tabs.create({url: url_base + url_suffix});
+      var url = (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
+      if (localStorage['click_page'] == 'all_items') { url += 'posts/all'; }
+      chrome.tabs.create({url: url});
     }
   });
 }
@@ -173,7 +164,7 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
-  if (refreshTimeout) { window.clearTimeout(refreshTimeout) }
+  window.clearTimeout(refreshTimeout);
   refreshTimeout = window.setTimeout(getCountersFromHTTP, (localStorage['refresh_interval'] || 15)*60*1000);
 }
 
