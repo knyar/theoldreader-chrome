@@ -30,7 +30,12 @@ function notify(title, changed) {
   }
 
   if (count >= 0) {
-    console.log("Observer reported "+count+" to extension");
-    chrome.extension.sendMessage({'count' : count});
+    try {
+      chrome.extension.sendMessage({'count' : count});
+      console.log("Observer reported "+count+" to extension");
+    } catch(e) { // Happens when parent extension is no longer available or was reloaded
+      console.warn("Could not communicate with parent extension, deregistering observer");
+      observer.disconnect();
+    }
   }
 }

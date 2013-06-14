@@ -188,3 +188,17 @@ function onExtensionUpdate(details) {
   }
   localStorage["options_version"] = OPTIONS_VERSION;
 }
+
+function startupInject() {
+  // At this point, all old content scripts, if any, cannot communicate with the extension anymore
+  // Old instances of content scripts have a "kill-switch" to terminate their event listeners
+  // Here we inject new instances in existing tabs
+  chrome.tabs.query(
+    {url: "*://theoldreader.com/*"},
+    function (tabs) {
+      for (var i in tabs) {
+        chrome.tabs.executeScript(tabs[i].id, {file: "observer.js"});
+      }
+    }
+  );
+}
