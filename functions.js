@@ -27,18 +27,12 @@ function showNotification(title, body) {
 }
 
 function findOurTab(callback) {
-  chrome.windows.getAll({populate: true}, function(windows) {
-    var foundTab, i, win;
-    for (i = 0; win = windows[i]; i++) {
-      var j, tab;
-      for (j = 0; tab = win.tabs[j]; j++) {
-        if (tab.url && /^https?:\/\/(?:www\.)?theoldreader\.com/.test(tab.url)) {
-          foundTab = tab;
-        }
-      }
+  chrome.tabs.query(
+    {url: "*://theoldreader.com/*"},
+    function (tabs) {
+      callback(tabs[0]);
     }
-    callback(foundTab);
-  });
+  );
 }
 
 function openOurTab() {
