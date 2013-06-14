@@ -1,3 +1,9 @@
+version 0.12
+
+ * Information is correctly updated from already open tabs
+   when extension is installed or updated (contributed by Alexander Kashev)
+ * Added links to preferences page (contributed by Alexander Kashev)
+
 version 0.11
 
  * Optimized image size (contributed by nelchael)
