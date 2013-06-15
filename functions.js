@@ -169,8 +169,12 @@ function scheduleRefresh() {
 }
 
 function onMessage(request, sender, callback) {
-  if(typeof request.count !== 'undefined'){
+  if (typeof request.count !== 'undefined') {
     setCountFromObserver(request.count);
+  }
+  if (request.sync) {
+    saveToStorage(callback);
+    return true; // Allow asynchronous callback
   }
 }
 

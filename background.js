@@ -1,4 +1,8 @@
 // vim: set ts=2 sw=2 et
+// synchronize settings
+chrome.storage.onChanged.addListener(onStorageChange);
+loadFromStorage();
+
 // run first counter refresh
 getCountersFromHTTP();
 
