@@ -1,6 +1,7 @@
 version 0.13
 
  * Added an option to open tab as pinned (contributed by Vasilij Melnychuk)
+ * Implemented options sync through Chrome Sync (contributed by Alexander Kashev)
 
 version 0.12
 

@@ -1,16 +1,32 @@
 // vim: set ts=2 sw=2 et
-var BADGE_BACKGROUND_COLOR = '#ffbbbb';
+var ERROR_BACKGROUND_COLOR = '#ffbbbb';
 
 function save_options() {
   if(!validate_options()) return;
+  
   localStorage['click_page'] = $('#click_page').val();
   localStorage['show_notifications'] = $('#show_notifications').prop('checked') ? 'yes' : 'no';
   localStorage['notification_timeout'] = parseInt($('#notification_timeout').val());
   localStorage['prefer_https'] = $('#prefer_https').prop('checked') ? 'yes' : 'no';
   localStorage['prefer_pinned_tab'] = $('#prefer_pinned_tab').prop('checked') ? 'yes' : 'no';
   localStorage['refresh_interval'] = parseInt($('#refresh_interval').val());
-  $('.message').finish().hide();
-  $('#save_notification').fadeIn('fast').delay(2000).fadeOut('fast');
+  localStorage['use_sync'] = $('#use_sync').prop('checked') ? 'yes' : 'no';
+  
+  show_message({text : "Options saved!", fade_in : true, fade_out : true});
+  
+  if (localStorage["use_sync"] != "no") {
+    chrome.extension.sendMessage({'sync' : true}, syncCallback);
+  }
+}
+
+function syncCallback(result) {
+  if (result === true) {
+    show_message({text : "Options saved and will be synced!", fade_in : true, fade_out : true});
+  } else if (result === false) {
+    show_message({text : "Options saved, but sync failed. Will retry in a minute.", fade_in : true, red : true});
+  } else if (chrome.runtime.lastError) {
+    console.error("Could not communicate with the extension! ", chrome.runtime.lastError.message);
+  }
 }
 
 function validate_options() {
@@ -25,9 +41,8 @@ function validate_options() {
   }
   
   if (errors.length) {
-    $('.message').finish().hide();
-    $('#save_failed').fadeIn('fast').delay(2000).fadeOut('fast');
-    errors.animate({ backgroundColor : BADGE_BACKGROUND_COLOR}, 'fast').delay(2000).animate({ backgroundColor : 'none'}, 'fast');
+    show_message({text : "Please correct these values!", red : true, fade_in : true, fade_out : true});
+    errors.animate({ backgroundColor : ERROR_BACKGROUND_COLOR}, 'fast').delay(FADE_DELAY).animate({ backgroundColor : 'none'}, 'fast');
     return false;
   } else {
     return true;
@@ -49,6 +64,29 @@ function load_options() {
     $('#prefer_https').prop('checked', true);
   }
   $('#refresh_interval').val(localStorage['refresh_interval'] || 15);
+  if (localStorage['use_sync'] != 'no') {
+    $('#use_sync').prop('checked', true);
+  }
+}
+
+// message is an object:
+//   text ( string )
+//   red ( optional boolean )
+//   fade_in ( optional boolean ) 
+//   fade_out ( optional boolean )
+function show_message(message) {
+  $('#message').finish().hide();
+  $('#message').text(message.text).toggleClass("red", message.red || false);
+  
+  if (message.fade_in) {
+    $('#message').fadeIn('fast');
+  } else {
+    $('#message').show();
+  }
+  
+  if (message.fade_out) {
+    $('#message').delay(2000).fadeOut('fast');
+  }
 }
 
 $(document).ready(function() {
@@ -57,8 +95,7 @@ $(document).ready(function() {
     return false;
   });
   $('input,select').change(function() {
-    $('.message').finish().hide();
-    $('#save_required').show();
+    show_message({text : "< Click button to save your changes", red : true});
   });
   $('#notification_timeout').closest('p').toggle(localStorage['show_notifications'] == 'yes');
   $('#show_notifications').click(function() {
