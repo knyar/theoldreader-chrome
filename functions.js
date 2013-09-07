@@ -41,8 +41,9 @@ function openOurTab() {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
       var url = (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
+      var pinned = (localStorage['prefer_pinned_tab'] == 'yes' ? true : false);
       if (localStorage['click_page'] == 'all_items') { url += 'posts/all'; }
-      chrome.tabs.create({url: url});
+      chrome.tabs.create({url: url, pinned: pinned});
     }
   });
 }
