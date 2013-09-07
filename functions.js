@@ -5,6 +5,7 @@ var OPTIONS_VERSION = 2; // Increment when there are new options
 var refreshTimeout;
 var last_unread_count = 0;
 var notificationTimeout;
+var retryCount = 0;
 
 function showNotification(title, body) {
   if (localStorage['show_notifications'] != 'yes') {
@@ -54,6 +55,8 @@ function reportError() {
   chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
 
   showNotification('Error', 'Failed to fetch feed counts');
+
+  console.warn("Error fetching feed counts, " + retryCount + " time(s) in a row");
 }
 
 function updateIcon(count) {
@@ -107,6 +110,7 @@ function getCountersFromHTTP() {
   // If request times out or if we get unexpected output, report error and reschedule
   function refreshFailed() {
     window.clearTimeout(requestTimeout);
+    retryCount++;
     reportError();
     scheduleRefresh();
   }
@@ -114,6 +118,7 @@ function getCountersFromHTTP() {
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
     parseCounters(feedData);
+    retryCount = 0;
     scheduleRefresh();
   }
 
@@ -130,7 +135,7 @@ function getCountersFromHTTP() {
   }
 
   httpRequest.onreadystatechange = function() {
-    if (httpRequest.readyState == 4) {
+    if (httpRequest.readyState == 4 && httpRequest.status != 0) { // (4,0) means onerror will be fired next
       if (httpRequest.status >= 400) {
         console.log('Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')');
         refreshFailed();
@@ -165,8 +170,13 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
+  var interval = (localStorage['refresh_interval'] || 15) * 60 * 1000;
   window.clearTimeout(refreshTimeout);
-  refreshTimeout = window.setTimeout(getCountersFromHTTP, (localStorage['refresh_interval'] || 15)*60*1000);
+  if(retryCount){ // There was an error
+    interval = Math.min( interval, 5 * 1000 * Math.pow(2, retryCount-1));
+    // 0:05 -> 0:10 -> 0:20 -> 0:40 -> 1:20 -> 2:40 -> 5:20 -> ...
+  }
+  refreshTimeout = window.setTimeout(getCountersFromHTTP, interval);
 }
 
 function onMessage(request, sender, callback) {
