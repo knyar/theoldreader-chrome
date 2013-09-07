@@ -8,6 +8,7 @@ function save_options() {
   localStorage['show_notifications'] = $('#show_notifications').prop('checked') ? 'yes' : 'no';
   localStorage['notification_timeout'] = parseInt($('#notification_timeout').val());
   localStorage['prefer_https'] = $('#prefer_https').prop('checked') ? 'yes' : 'no';
+  localStorage['prefer_pinned_tab'] = $('#prefer_pinned_tab').prop('checked') ? 'yes' : 'no';
   localStorage['refresh_interval'] = parseInt($('#refresh_interval').val());
   localStorage['use_sync'] = $('#use_sync').prop('checked') ? 'yes' : 'no';
   
@@ -54,6 +55,9 @@ function load_options() {
   }
   if (localStorage['show_notifications'] == 'yes') {
     $('#show_notifications').prop('checked', true);
+  }
+  if (localStorage['prefer_pinned_tab'] == 'yes') {
+    $('#prefer_pinned_tab').prop('checked', true);
   }
   $('#notification_timeout').val(localStorage['notification_timeout'] || 0);
   if (localStorage['prefer_https'] == 'yes') {

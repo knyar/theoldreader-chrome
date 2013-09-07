@@ -1,6 +1,6 @@
 // vim: set ts=2 sw=2 et
 var BADGE_BACKGROUND_COLOR = '#d73f31';
-var OPTIONS_VERSION = 1; // Increment when there are new options
+var OPTIONS_VERSION = 2; // Increment when there are new options
 
 var refreshTimeout;
 var last_unread_count = 0;
@@ -41,8 +41,9 @@ function openOurTab() {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
       var url = (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
+      var pinned = (localStorage['prefer_pinned_tab'] == 'yes' ? true : false);
       if (localStorage['click_page'] == 'all_items') { url += 'posts/all'; }
-      chrome.tabs.create({url: url});
+      chrome.tabs.create({url: url, pinned: pinned});
     }
   });
 }
