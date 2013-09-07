@@ -192,6 +192,7 @@ function onExtensionUpdate(details) {
     notification.show();
   }
   localStorage["options_version"] = OPTIONS_VERSION;
+  saveToStorage();
 }
 
 function startupInject() {
