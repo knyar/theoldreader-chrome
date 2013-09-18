@@ -6,6 +6,7 @@ var refreshTimeout;
 var last_unread_count = 0;
 var notificationTimeout;
 var retryCount = 0;
+var lastError = "";
 
 function showNotification(title, body) {
   if (localStorage['show_notifications'] != 'yes') {
@@ -57,12 +58,18 @@ function reportError(details) {
   if (details.loggedOut) { 
     chrome.browserAction.setBadgeText({text: '!'});
     chrome.browserAction.setTitle({title: 'Logged out, click to log in'});
-    showNotification('Logged out', "Click here to log in");
+    if (lastError != details.errorText) { // Suppress repeat notifications about the same error
+      showNotification('Logged out', "Click here to log in"); 
+    }
   } else {
     chrome.browserAction.setBadgeText({text: ''});
     chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
-    showNotification('Error', "Failed to fetch feed counts: "+details.errorText);
+    if (lastError != details.errorText) { // Suppress repeat notifications about the same error
+      showNotification('Error', "Failed to fetch feed counts: "+details.errorText);
+    }
   }
+
+  lastError = details.errorText; // Remember last error
 
   console.warn("Error fetching feed counts, " + retryCount + " time(s) in a row");
 }
@@ -82,6 +89,8 @@ function updateIcon(count) {
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
   chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
+
+  lastError = ""; // Clear last remembered error
 
   if (countInt > last_unread_count) {
     var text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
