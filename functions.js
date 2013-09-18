@@ -49,12 +49,20 @@ function openOurTab() {
   });
 }
 
-function reportError() {
-  chrome.browserAction.setIcon({path: 'icon-inactive.png'});
-  chrome.browserAction.setBadgeText({text: ''});
-  chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
+function reportError(details) {
+  console.warn(details.errorText);
 
-  showNotification('Error', 'Failed to fetch feed counts');
+  chrome.browserAction.setIcon({path: 'icon-inactive.png'});
+
+  if (details.loggedOut) { 
+    chrome.browserAction.setBadgeText({text: '!'});
+    chrome.browserAction.setTitle({title: 'Logged out, click to log in'});
+    showNotification('Logged out', "Click here to log in");
+  } else {
+    chrome.browserAction.setBadgeText({text: ''});
+    chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
+    showNotification('Error', "Failed to fetch feed counts: "+details.errorText);
+  }
 
   console.warn("Error fetching feed counts, " + retryCount + " time(s) in a row");
 }
@@ -108,10 +116,10 @@ function parseCounters(feedData) {
 
 function getCountersFromHTTP() {
   // If request times out or if we get unexpected output, report error and reschedule
-  function refreshFailed() {
+  function refreshFailed(details) {
     window.clearTimeout(requestTimeout);
     retryCount++;
-    reportError();
+    reportError(details);
     scheduleRefresh();
   }
 
@@ -125,20 +133,20 @@ function getCountersFromHTTP() {
   var httpRequest = new XMLHttpRequest();
   var requestTimeout = window.setTimeout(function() {
     httpRequest.abort();
-    reportError();
-    scheduleRefresh();
+    refreshFailed({errorText: 'HTTP request timed out'});
   }, 20000);
 
   httpRequest.onerror = function(err) {
-    console.log(err);
-    refreshFailed();
+    refreshFailed({errorText: 'HTTP request error'}); // No usable error data in err
   }
 
   httpRequest.onreadystatechange = function() {
     if (httpRequest.readyState == 4 && httpRequest.status != 0) { // (4,0) means onerror will be fired next
       if (httpRequest.status >= 400) {
-        console.log('Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')');
-        refreshFailed();
+        refreshFailed({
+          errorText : 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
+          loggedOut : (httpRequest.status == 403)
+        });
       } else if (httpRequest.responseText) {
         window.clearTimeout(requestTimeout);
         var feedData;
@@ -146,12 +154,10 @@ function getCountersFromHTTP() {
           feedData = JSON.parse(httpRequest.responseText);
           refreshSucceeded(feedData);
         } catch (exception) {
-          console.log('Exception while parsing json: ' + exception);
-          refreshFailed();
+          refreshFailed({errorText: 'Exception while parsing json: ' + exception.toString()});
         }
       } else {
-        console.log('Got nothing!');
-        refreshFailed();
+        refreshFailed({errorText: 'Empty response'});
       }
     }
   }
@@ -164,8 +170,7 @@ function getCountersFromHTTP() {
     }
     httpRequest.send(null);
   } catch (exception) {
-    console.log('Exception while fetching data: ' + exception);
-    refreshFailed();
+    refreshFailed({errorText: 'Exception while fetching data: ' + exception.toString()});
   }
 }
 

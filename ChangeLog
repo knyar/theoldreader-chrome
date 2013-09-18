@@ -3,6 +3,7 @@ version 0.13
  * Added an option to open tab as pinned (contributed by Vasilij Melnychuk)
  * Implemented options sync through Chrome Sync (contributed by Alexander Kashev)
  * Notifier will retry contacting servers faster after a fresh error (contributed by Alexander Kashev)
+ * Logged out state now shows a "!" badge, requesting user attention (contributed by Alexander Kashev)
 
 version 0.12
 
