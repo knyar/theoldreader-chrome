@@ -28,16 +28,19 @@ function showNotification(title, body) {
   notification.show();
 }
 
-function findOurTab(callback) {
+function findOurTab(callback, windowId) {
   chrome.tabs.query(
-    {url: "*://theoldreader.com/*"},
+    {
+      url: "*://theoldreader.com/*",
+      windowId: windowId
+    },
     function (tabs) {
       callback(tabs[0]);
     }
   );
 }
 
-function openOurTab() {
+function openOurTab(windowId) {
   findOurTab(function(tab) {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
@@ -45,9 +48,9 @@ function openOurTab() {
       var url = (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
       var pinned = (localStorage['prefer_pinned_tab'] == 'yes' ? true : false);
       if (localStorage['click_page'] == 'all_items') { url += 'posts/all'; }
-      chrome.tabs.create({url: url, pinned: pinned});
+      chrome.tabs.create({url: url, pinned: pinned, windowId: windowId});
     }
-  });
+  }, windowId);
 }
 
 function reportError(details) {

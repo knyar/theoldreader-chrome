@@ -1,3 +1,8 @@
+version 0.14
+
+ * In case of multiple windows, a new tab will be opened on click 
+	 if there is no TOR tab in the current window (contributed by Alexander Kashev)
+
 version 0.13
 
  * Added an option to open tab as pinned (contributed by Vasilij Melnychuk)
