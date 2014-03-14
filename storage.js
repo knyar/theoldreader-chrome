@@ -23,7 +23,13 @@ function saveToStorage(callback) {
   }
   
   console.debug("Saving to sync storage...");
-  chrome.storage.sync.set(localStorage, retryOnError(saveToStorage, callback));
+  
+  var data = {};
+  for (var key in localStorage) { 
+    data[key] = localStorage[key];
+  }
+
+  chrome.storage.sync.set(data, retryOnError(saveToStorage, callback));
 }
 
 // callback (optional function) will be called with true/false depending on success of the attempt (once)
