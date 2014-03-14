@@ -1,3 +1,8 @@
+version 0.15
+
+ * Options sync crash workaround (contributed by Alexander Kashev)
+ * Updated some deprecated API calls (contributed by Alexander Kashev)
+
 version 0.14
 
  * In case of multiple windows, a new tab will be opened on click 
