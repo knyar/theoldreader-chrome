@@ -15,7 +15,7 @@ function save_options() {
   show_message({text : "Options saved!", fade_in : true, fade_out : true});
   
   if (localStorage["use_sync"] != "no") {
-    chrome.extension.sendMessage({'sync' : true}, syncCallback);
+    chrome.runtime.sendMessage({'sync' : true}, syncCallback);
   }
 }
 
