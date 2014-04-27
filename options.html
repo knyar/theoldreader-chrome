@@ -5,6 +5,7 @@
     * { font-family: sans-serif; font-size: small; }
     .message { display: none; padding-left: 2em; font-weight: bold; color: green; }
     .red { color: firebrick !important; }
+    .subitem { text-indent: 1em; }
     </style>
   </head>
   <body>
@@ -21,7 +22,7 @@
       </select>
     </p>
     <p><label for="show_notifications">Show popup notifications: <input type="checkbox" id="show_notifications"></label></p>
-    <p>Auto-close notification after <input type="number" min="0" max="999" id="notification_timeout"> seconds (0 to keep open)</p>
+    <p class="subitem">Auto-close notification after <input type="number" min="0" max="999" id="notification_timeout"> seconds (0 to keep open)</p>
     <p><label for="prefer_https">Prefer connecting over https: <input type="checkbox" id="prefer_https"></label></p>
     <p><label for="prefer_pinned_tab">Open tab as pinned: <input type="checkbox" id="prefer_pinned_tab"></label></p>
     <p>

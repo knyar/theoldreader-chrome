@@ -1,5 +1,6 @@
 // vim: set ts=2 sw=2 et
 var ERROR_BACKGROUND_COLOR = '#ffbbbb';
+var FADE_DELAY = 2000;
 
 function save_options() {
   if(!validate_options()) return;
@@ -85,7 +86,7 @@ function show_message(message) {
   }
   
   if (message.fade_out) {
-    $('#message').delay(2000).fadeOut('fast');
+    $('#message').delay(FADE_DELAY).fadeOut('fast');
   }
 }
 
@@ -97,12 +98,12 @@ $(document).ready(function() {
   $('input,select').change(function() {
     show_message({text : "< Click button to save your changes", red : true});
   });
-  $('#notification_timeout').closest('p').toggle(localStorage['show_notifications'] == 'yes');
+  $('#notification_timeout').closest('.subitem').toggle(localStorage['show_notifications'] == 'yes');
   $('#show_notifications').click(function() {
     if ($('#show_notifications').prop('checked')) {
-      $('#notification_timeout').closest('p').slideDown('fast');
+      $('#notification_timeout').closest('.subitem').slideDown('fast');
     } else {
-      $('#notification_timeout').closest('p').slideUp('fast');
+      $('#notification_timeout').closest('.subitem').slideUp('fast');
     }
   });
 });
