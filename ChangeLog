@@ -1,3 +1,8 @@
+version 0.16
+
+ * Migrated away from deprecated webkitNotifications (contributed by Alexander Kashev)
+ * Small fixes to options page (contributed by Alexander Kashev)
+
 version 0.15
 
  * Options sync crash workaround (contributed by Alexander Kashev)
