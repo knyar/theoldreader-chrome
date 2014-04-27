@@ -13,8 +13,15 @@ function showNotification(title, body) {
     return;
   }
   
-  var notification = webkitNotifications.createNotification('icon-48.png', title, body);
-  notification.tag = "theoldreader-chrome"; // Will update the notification instead of creating a new one
+  var notification = new Notification(
+    title,
+    {
+      icon: 'icon-48.png',
+      body: body,
+      tag: 'theoldreader-chrome'
+    }
+  );
+  
   notification.onclick = function() { openOurTab(); this.close(); } // Opens the Old Reader page and self-destructs
   
   window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
@@ -24,8 +31,6 @@ function showNotification(title, body) {
       localStorage['notification_timeout'] * 1000
     );
   }
-  
-  notification.show();
 }
 
 function findOurTab(callback, windowId) {
