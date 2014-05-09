@@ -17,6 +17,7 @@
   },
   "permissions": [
     "tabs",
+    "alarms",
     "notifications",
     "storage",
     "*://theoldreader.com/"
