@@ -2,7 +2,6 @@
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 var OPTIONS_VERSION = 2; // Increment when there are new options
 
-var refreshTimeout;
 var last_unread_count = 0;
 var notificationTimeout;
 var retryCount = 0;
@@ -192,13 +191,14 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
-  var interval = (localStorage['refresh_interval'] || 15) * 60 * 1000;
-  window.clearTimeout(refreshTimeout);
+  var interval = (localStorage['refresh_interval'] || 15);
   if(retryCount){ // There was an error
-    interval = Math.min( interval, 5 * 1000 * Math.pow(2, retryCount-1));
-    // 0:05 -> 0:10 -> 0:20 -> 0:40 -> 1:20 -> 2:40 -> 5:20 -> ...
+    interval = Math.min( interval, Math.max(1, retryCount-2));
+    // 1:00 -> 1:00 -> 1:00 -> 2:00 -> 3:00 -> 4:00 -> 5:00 -> ...
+    // chrome alarms cannot go off more frequently than every 1 minute
   }
-  refreshTimeout = window.setTimeout(getCountersFromHTTP, interval);
+  chrome.alarms.onAlarm.addListener(getCountersFromHTTP);
+  chrome.alarms.create('refreshAlarm', {periodInMinutes:interval});
 }
 
 function onMessage(request, sender, callback) {
