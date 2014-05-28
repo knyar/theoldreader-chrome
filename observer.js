@@ -3,7 +3,7 @@
 
 var target = document.querySelector('head > title');
 
-var observer = new window.WebKitMutationObserver(
+var observer = new window.MutationObserver(
   function(mutations) {
     mutations.forEach(
       function(mutation){
