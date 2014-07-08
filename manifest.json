@@ -9,7 +9,7 @@
     "128": "icon-128.png"
   },
   "background": {
-    "scripts": [ "functions.js", "storage.js", "background.js" ]
+    "scripts": [ "functions.js", "storage.js", "background.js", "menu.js" ]
   },
   "browser_action": {
     "default_icon": "icon-inactive.png",
@@ -19,7 +19,8 @@
     "tabs",
     "notifications",
     "storage",
-    "*://theoldreader.com/"
+    "contextMenus",
+    "*://*/"
   ],
   "web_accessible_resources": [
     "icon-48.png"
