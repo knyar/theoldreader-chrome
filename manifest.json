@@ -20,7 +20,7 @@
     "notifications",
     "storage",
     "contextMenus",
-    "*://*/"
+    "*://theoldreader.com/"
   ],
   "web_accessible_resources": [
     "icon-48.png"
