@@ -12,7 +12,7 @@ function showNotification(title, body) {
   if (localStorage['show_notifications'] != 'yes') {
     return;
   }
-  
+
   var notification = new Notification(
     title,
     {
@@ -21,16 +21,20 @@ function showNotification(title, body) {
       tag: 'theoldreader-chrome'
     }
   );
-  
+
   notification.onclick = function() { openOurTab(); this.close(); } // Opens the Old Reader page and self-destructs
-  
+
   window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
   if (localStorage['notification_timeout'] > 0) {
-    notificationTimeout = window.setTimeout( 
-      function() { notification.cancel(); }, 
+    notificationTimeout = window.setTimeout(
+      function() { notification.cancel(); },
       localStorage['notification_timeout'] * 1000
     );
   }
+}
+
+function baseUrl() {
+  return (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
 }
 
 function findOurTab(callback, windowId) {
@@ -50,7 +54,7 @@ function openOurTab(windowId) {
     if (tab) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
-      var url = (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
+      var url = baseUrl();
       var pinned = (localStorage['prefer_pinned_tab'] == 'yes' ? true : false);
       if (localStorage['click_page'] == 'all_items') { url += 'posts/all'; }
       chrome.tabs.create({url: url, pinned: pinned, windowId: windowId});
@@ -63,11 +67,11 @@ function reportError(details) {
 
   chrome.browserAction.setIcon({path: 'icon-inactive.png'});
 
-  if (details.loggedOut) { 
+  if (details.loggedOut) {
     chrome.browserAction.setBadgeText({text: '!'});
     chrome.browserAction.setTitle({title: 'Logged out, click to log in'});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification('Logged out', "Click here to log in"); 
+      showNotification('Logged out', "Click here to log in");
     }
   } else {
     chrome.browserAction.setBadgeText({text: ''});
@@ -180,11 +184,7 @@ function getCountersFromHTTP() {
   }
 
   try {
-    if (localStorage['prefer_https'] == 'yes') {
-      httpRequest.open('GET', 'https://theoldreader.com/feeds/counts.json', true);
-    } else {
-      httpRequest.open('GET', 'http://theoldreader.com/feeds/counts.json', true);
-    }
+    httpRequest.open('GET', baseUrl() + 'feeds/counts.json', true);
     httpRequest.send(null);
   } catch (exception) {
     refreshFailed({errorText: 'Exception while fetching data: ' + exception.toString()});
