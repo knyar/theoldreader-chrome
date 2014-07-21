@@ -219,9 +219,15 @@ function setCountFromObserver(count) {
 
 function onExtensionUpdate(details) {
   if (details.reason == "update" && !(localStorage["options_version"] >= OPTIONS_VERSION)) { // Negation required to capture undefined
-    var notification = webkitNotifications.createNotification('img/icon-48.png', "New options available", "Click to configure new options");
-    notification.onclick = function() { chrome.tabs.create({url: chrome.runtime.getURL("options.html")}); this.close(); }
-    notification.show();
+    var notification = new Notification(
+        "New options available",
+        { body: "Click to configure new options",
+          icon: 'img/icon-48.png' }
+    );
+    notification.onclick = function() {
+      chrome.tabs.create({url: chrome.runtime.getURL("options.html")});
+      this.close();
+    }
   }
   localStorage["options_version"] = OPTIONS_VERSION;
   saveToStorage();
