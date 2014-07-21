@@ -4,15 +4,15 @@
   "description": "Notifies you about unread items in your The Old Reader account",
   "version": "0.17",
   "icons": {
-    "16": "icon-16.png",
-    "48": "icon-48.png",
-    "128": "icon-128.png"
+    "16": "img/icon-16.png",
+    "48": "img/icon-48.png",
+    "128": "img/icon-128.png"
   },
   "background": {
-    "scripts": [ "functions.js", "storage.js", "background.js", "menu.js" ]
+    "scripts": [ "js/functions.js", "js/storage.js", "js/background.js", "js/menu.js" ]
   },
   "browser_action": {
-    "default_icon": "icon-inactive.png",
+    "default_icon": "img/icon-inactive.png",
     "default_title": "The Old Reader"
   },
   "permissions": [
@@ -23,7 +23,7 @@
     "*://theoldreader.com/"
   ],
   "web_accessible_resources": [
-    "icon-48.png"
+    "img/icon-48.png"
   ],
   "options_page": "options.html",
   "content_scripts": [
@@ -31,7 +31,7 @@
       "matches": [
         "*://theoldreader.com/*"
       ],
-      "js": ["observer.js"],
+      "js": ["js/observer.js"],
       "run_at": "document_idle"
     }
   ]

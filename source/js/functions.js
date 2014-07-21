@@ -16,7 +16,7 @@ function showNotification(title, body) {
   var notification = new Notification(
     title,
     {
-      icon: 'icon-48.png',
+      icon: 'img/icon-48.png',
       body: body,
       tag: 'theoldreader-chrome'
     }
@@ -65,7 +65,7 @@ function openOurTab(windowId) {
 function reportError(details) {
   console.warn(details.errorText);
 
-  chrome.browserAction.setIcon({path: 'icon-inactive.png'});
+  chrome.browserAction.setIcon({path: 'img/icon-inactive.png'});
 
   if (details.loggedOut) {
     chrome.browserAction.setBadgeText({text: '!'});
@@ -97,7 +97,7 @@ function updateIcon(count) {
   } else {
     count = countInt.toString();
   }
-  chrome.browserAction.setIcon({path: 'icon-active.png'});
+  chrome.browserAction.setIcon({path: 'img/icon-active.png'});
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
   chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
@@ -219,7 +219,7 @@ function setCountFromObserver(count) {
 
 function onExtensionUpdate(details) {
   if (details.reason == "update" && !(localStorage["options_version"] >= OPTIONS_VERSION)) { // Negation required to capture undefined
-    var notification = webkitNotifications.createNotification('icon-48.png', "New options available", "Click to configure new options");
+    var notification = webkitNotifications.createNotification('img/icon-48.png', "New options available", "Click to configure new options");
     notification.onclick = function() { chrome.tabs.create({url: chrome.runtime.getURL("options.html")}); this.close(); }
     notification.show();
   }
@@ -235,7 +235,7 @@ function startupInject() {
     {url: "*://theoldreader.com/*"},
     function (tabs) {
       for (var i in tabs) {
-        chrome.tabs.executeScript(tabs[i].id, {file: "observer.js"});
+        chrome.tabs.executeScript(tabs[i].id, {file: "js/observer.js"});
       }
     }
   );
