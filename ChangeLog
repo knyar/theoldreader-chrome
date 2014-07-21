@@ -1,3 +1,8 @@
+version 0.17
+
+ * Added context menu allowing to bookmark content or add a subscription
+   (contributed by Dmitry Krasnoukhov)
+
 version 0.16
 
  * Migrated away from deprecated webkitNotifications (contributed by Alexander Kashev)
@@ -10,8 +15,8 @@ version 0.15
 
 version 0.14
 
- * In case of multiple windows, a new tab will be opened on click 
-	 if there is no TOR tab in the current window (contributed by Alexander Kashev)
+ * In case of multiple windows, a new tab will be opened on click
+   if there is no TOR tab in the current window (contributed by Alexander Kashev)
 
 version 0.13
 
