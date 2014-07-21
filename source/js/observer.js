@@ -32,7 +32,6 @@ function notify(title, changed) {
   if (count >= 0) {
     try {
       chrome.runtime.sendMessage({'count' : count});
-      console.log("Observer reported "+count+" to extension");
     } catch(e) { // Happens when parent extension is no longer available or was reloaded
       console.warn("Could not communicate with parent extension, deregistering observer");
       observer.disconnect();

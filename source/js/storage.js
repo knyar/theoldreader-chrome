@@ -2,12 +2,9 @@ function loadFromStorage() {
   if (localStorage["use_sync"] == "no") { return; }
 
   chrome.storage.sync.get(null, function(items) {
-    console.group("Populating from sync storage...");
     for (var key in items) {
-      console.debug("* Setting key '" + key + "', values:", {local : localStorage[key], sync : items[key]});
       localStorage[key] = items[key]; 
     }
-    console.groupEnd();
   });
 }
 
@@ -21,8 +18,6 @@ function saveToStorage(callback) {
     if (callback) { callback(false); }
     return;
   }
-  
-  console.debug("Saving to sync storage...");
   
   var data = {};
   for (var key in localStorage) { 
@@ -45,7 +40,6 @@ function retryOnError(retryFunction, callback) {
       }, 60*1000);
       
     } else {
-      console.debug("# Synced successfully");
       if (callback) { callback(true); }
     }
   }
@@ -56,17 +50,11 @@ function onStorageChange(changes, area) {
   
   if (localStorage["use_sync"] == "no") { return; }
   
-  console.group("Processing sync changes...");
-  
   for (var key in changes) {
     if (typeof changes[key].newValue === "undefined") { // Key deleted
       //delete localStorage[key];
-      //console.debug("* Removed key '" + key +"', change object:", changes[key]);
     } else {
       localStorage[key] = changes[key].newValue;
-      console.debug("* Updated key '" + key + "', change object:", changes[key]);
     }
   }
-  
-  console.groupEnd();
 }

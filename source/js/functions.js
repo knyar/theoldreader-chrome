@@ -212,7 +212,6 @@ function onMessage(request, sender, callback) {
 }
 
 function setCountFromObserver(count) {
-  console.log("Observer reported (" + count + "), no need to update for now");
   updateIcon(count);
   scheduleRefresh();
 }
