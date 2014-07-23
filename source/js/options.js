@@ -20,7 +20,7 @@ function save_options() {
     chrome.runtime.sendMessage({'sync' : true}, syncCallback);
   }
 
-  if (localStorage['context_menu'] != 'yes') {
+  if (localStorage['context_menu'] == 'no') {
     chrome.contextMenus.removeAll();
   } else {
     // TODO: Create the contextMenus without the need for a browser restart
@@ -75,7 +75,7 @@ function load_options() {
   if (localStorage['use_sync'] != 'no') {
     $('#use_sync').prop('checked', true);
   }
-  if (localStorage['context_menu'] == 'yes') {
+  if (localStorage['context_menu'] != 'no') {
     $('#context_menu').prop('checked', true);
   }
 }

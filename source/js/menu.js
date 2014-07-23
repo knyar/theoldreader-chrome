@@ -1,5 +1,5 @@
 // Display context menu only if it's explicitly enabled in the options
-if (localStorage['context_menu'] == 'yes') {
+if (localStorage['context_menu'] != 'no') {
   var parent = chrome.contextMenus.create({"title": "The Old Reader"});
   var bookmark = function bookmark(base_url, url, selection) {
     var f = document.createElement('form');
