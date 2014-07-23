@@ -21,9 +21,7 @@ function save_options() {
   }
 
   // According to the current state, enable or disable the context menus
-  chrome.runtime.getBackgroundPage(function(backgroundPage) {
-      backgroundPage.toggleContentMenus(localStorage['context_menu']);
-  });
+  chrome.runtime.sendMessage({'toggleContextMenus' : true});
 }
 
 function syncCallback(result) {

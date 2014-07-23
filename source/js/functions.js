@@ -1,6 +1,6 @@
 // vim: set ts=2 sw=2 et
 var BADGE_BACKGROUND_COLOR = '#d73f31';
-var OPTIONS_VERSION = 2; // Increment when there are new options
+var OPTIONS_VERSION = 3; // Increment when there are new options
 
 var refreshTimeout;
 var last_unread_count = 0;
@@ -208,6 +208,9 @@ function onMessage(request, sender, callback) {
   if (request.sync) {
     saveToStorage(callback);
     return true; // Allow asynchronous callback
+  }
+  if (request.toggleContextMenus) {
+    toggleContentMenus(localStorage['context_menu']);
   }
 }
 
