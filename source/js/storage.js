@@ -55,6 +55,11 @@ function onStorageChange(changes, area) {
       //delete localStorage[key];
     } else {
       localStorage[key] = changes[key].newValue;
+
+      // Quick & Dirty listener for context menu option changes for toggling state
+      if(key == 'context_menu') {
+        toggleContentMenus(localStorage[key]);
+      }
     }
   }
 }
