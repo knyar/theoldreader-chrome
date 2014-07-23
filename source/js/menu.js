@@ -1,5 +1,8 @@
 function addContentMenus() {
-  var parent = chrome.contextMenus.create({"title": "The Old Reader"});
+  chrome.contextMenus.create(
+    {"title": "The Old Reader", id: "root"}
+  );
+  
   var bookmark = function bookmark(base_url, url, selection) {
     var f = document.createElement('form');
     f.setAttribute('method','post');
@@ -25,7 +28,8 @@ function addContentMenus() {
 
   chrome.contextMenus.create({
     "title": "Subscribe to page",
-    "parentId": parent,
+    "id": "subscribe",
+    "parentId": "root",
     contexts: ["page"],
     "onclick": function(info, tab) {
       chrome.tabs.create({
@@ -36,7 +40,8 @@ function addContentMenus() {
 
   chrome.contextMenus.create({
     "title": "Bookmark page",
-    "parentId": parent,
+    "id": "bookmarkPage",
+    "parentId": "root",
     contexts: ["page"],
     "onclick": function(info, tab) {
       var args = "\""+baseUrl()+"bookmarks/bookmark\",\""+info.pageUrl+"\"";
@@ -48,6 +53,7 @@ function addContentMenus() {
 
   chrome.contextMenus.create({
     "title": "Bookmark selection",
+    "id": "bookmarkSelection",
     contexts: ["selection"],
     "onclick": function(info, tab) {
       var selection = info.selectionText.replace(/\"/gm, '\\"');
@@ -60,11 +66,15 @@ function addContentMenus() {
   });
 }
 
+var contextMenusEnabled = false;
+
 function toggleContentMenus(state) {
   if(state == 'no') {
     chrome.contextMenus.removeAll();
+    contextMenusEnabled = false;
   } else {
     addContentMenus();
+    contextMenusEnabled = true;
   }
 }
 
