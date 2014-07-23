@@ -12,11 +12,18 @@ function save_options() {
   localStorage['prefer_pinned_tab'] = $('#prefer_pinned_tab').prop('checked') ? 'yes' : 'no';
   localStorage['refresh_interval'] = parseInt($('#refresh_interval').val());
   localStorage['use_sync'] = $('#use_sync').prop('checked') ? 'yes' : 'no';
+  localStorage['context_menu'] = $('#context_menu').prop('checked') ? 'yes' : 'no';
   
   show_message({text : "Options saved!", fade_in : true, fade_out : true});
   
   if (localStorage["use_sync"] != "no") {
     chrome.runtime.sendMessage({'sync' : true}, syncCallback);
+  }
+
+  if (localStorage['context_menu'] != 'yes') {
+    chrome.contextMenus.removeAll();
+  } else {
+    // TODO: Create the contextMenus without the need for a browser restart
   }
 }
 
@@ -67,6 +74,9 @@ function load_options() {
   $('#refresh_interval').val(localStorage['refresh_interval'] || 15);
   if (localStorage['use_sync'] != 'no') {
     $('#use_sync').prop('checked', true);
+  }
+  if (localStorage['context_menu'] == 'yes') {
+    $('#context_menu').prop('checked', true);
   }
 }
 
