@@ -60,7 +60,13 @@ function addContentMenus() {
   });
 }
 
-// Display context menu only if it's explicitly enabled in the options
-if (localStorage['context_menu'] != 'no') {
-  addContentMenus();
+function toggleContentMenus(state) {
+  if(state == 'no') {
+    chrome.contextMenus.removeAll();
+  } else {
+    addContentMenus();
+  }
 }
+
+// Initialize on extension load up
+toggleContentMenus(localStorage['context_menu']);

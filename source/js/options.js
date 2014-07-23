@@ -20,13 +20,10 @@ function save_options() {
     chrome.runtime.sendMessage({'sync' : true}, syncCallback);
   }
 
-  if (localStorage['context_menu'] == 'no') {
-    chrome.contextMenus.removeAll();
-  } else {
-    chrome.runtime.getBackgroundPage(function(backgroundPage) {
-      backgroundPage.addContentMenus();
-    });
-  }
+  // According to the current state, enable or disable the context menus
+  chrome.runtime.getBackgroundPage(function(backgroundPage) {
+      backgroundPage.toggleContentMenus(localStorage['context_menu']);
+  });
 }
 
 function syncCallback(result) {
