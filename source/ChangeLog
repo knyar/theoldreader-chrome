@@ -1,3 +1,10 @@
+version 0.18
+
+ * Added an option to disable context menu items
+   (contributed by ConcurrentHashMap)
+ * Options page shows updates from Chrome Sync in real time
+   (contributed by Alexander Kashev)
+
 version 0.17
 
  * Added context menu allowing to bookmark content or add a subscription
