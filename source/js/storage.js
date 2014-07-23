@@ -62,4 +62,6 @@ function onStorageChange(changes, area) {
       }
     }
   }
+
+  chrome.runtime.sendMessage({'update': true});
 }

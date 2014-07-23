@@ -30,7 +30,7 @@ function syncCallback(result) {
   } else if (result === false) {
     show_message({text : "Options saved, but sync failed. Will retry in a minute.", fade_in : true, red : true});
   } else if (chrome.runtime.lastError) {
-    console.error("Could not communicate with the extension! ", chrome.runtime.lastError.message);
+    console.error("Could not communicate with the extension!", chrome.runtime.lastError.message);
   }
 }
 
@@ -77,6 +77,13 @@ function load_options() {
   }
 }
 
+function onMessageOptions(request, sender, callback) {
+  if (request.update) {
+    load_options();
+    show_message({text : "Options updated from Chrome Sync.", fade_in : true, fade_out : true});
+  }
+}
+
 // message is an object:
 //   text ( string )
 //   red ( optional boolean )
@@ -113,6 +120,8 @@ $(document).ready(function() {
       $('#notification_timeout').closest('.subitem').slideUp('fast');
     }
   });
+
+  chrome.runtime.onMessage.addListener(onMessageOptions);
 });
 
 document.addEventListener('DOMContentLoaded', load_options);
