@@ -58,23 +58,13 @@ function load_options() {
   if (localStorage['click_page']) {
     $('#click_page').val(localStorage['click_page']);
   }
-  if (localStorage['show_notifications'] == 'yes') {
-    $('#show_notifications').prop('checked', true);
-  }
-  if (localStorage['prefer_pinned_tab'] == 'yes') {
-    $('#prefer_pinned_tab').prop('checked', true);
-  }
+  $('#show_notifications').prop('checked', (localStorage['show_notifications'] == 'yes'));
+  $('#prefer_pinned_tab').prop('checked', (localStorage['prefer_pinned_tab'] == 'yes'));
   $('#notification_timeout').val(localStorage['notification_timeout'] || 0);
-  if (localStorage['prefer_https'] == 'yes') {
-    $('#prefer_https').prop('checked', true);
-  }
+  $('#prefer_https').prop('checked', (localStorage['prefer_https'] == 'yes'));
   $('#refresh_interval').val(localStorage['refresh_interval'] || 15);
-  if (localStorage['use_sync'] != 'no') {
-    $('#use_sync').prop('checked', true);
-  }
-  if (localStorage['context_menu'] != 'no') {
-    $('#context_menu').prop('checked', true);
-  }
+  $('#use_sync').prop('checked', (localStorage['use_sync'] != 'no'));
+  $('#context_menu').prop('checked', (localStorage['context_menu'] != 'no'));
 }
 
 function onMessageOptions(request, sender, callback) {
