@@ -23,7 +23,9 @@ function save_options() {
   if (localStorage['context_menu'] == 'no') {
     chrome.contextMenus.removeAll();
   } else {
-    // TODO: Create the contextMenus without the need for a browser restart
+    chrome.runtime.getBackgroundPage(function(backgroundPage) {
+      backgroundPage.addContentMenus();
+    });
   }
 }
 
