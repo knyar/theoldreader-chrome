@@ -122,10 +122,10 @@ function getCountersFromHTTP() {
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
-    if (feedData.max) {
+    if (feedData.max && feedData.max >= 0) {
       updateIcon(feedData.max);
     } else {
-      reportError()
+      reportError({})
     }
     retryCount = 0;
     scheduleRefresh();
