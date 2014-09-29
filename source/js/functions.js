@@ -125,7 +125,7 @@ function getCountersFromHTTP() {
     if (feedData && !isNaN(feedData.max)) {
       updateIcon(feedData.max);
     } else {
-      reportError({})
+      reportError({errorText: 'Unexpected data from server'})
     }
     retryCount = 0;
     scheduleRefresh();
@@ -146,7 +146,7 @@ function getCountersFromHTTP() {
       if (httpRequest.status >= 400) {
         refreshFailed({
           errorText : 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
-          loggedOut : (httpRequest.status == 403)
+          loggedOut : (httpRequest.status == 403 || httpRequest.status == 401)
         });
       } else if (httpRequest.responseText) {
         window.clearTimeout(requestTimeout);
