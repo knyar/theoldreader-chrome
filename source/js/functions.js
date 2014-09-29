@@ -122,7 +122,7 @@ function getCountersFromHTTP() {
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
-    if (feedData.max && feedData.max >= 0) {
+    if (feedData && !isNaN(feedData.max)) {
       updateIcon(feedData.max);
     } else {
       reportError({})
