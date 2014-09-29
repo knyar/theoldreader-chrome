@@ -1,3 +1,8 @@
+version 0.19
+
+ * Switched to polling The Old Reader public API
+   (contributed by Dmitry Krasnoukhov)
+
 version 0.18
 
  * Added an option to disable context menu items
