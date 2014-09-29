@@ -111,30 +111,6 @@ function updateIcon(count) {
   last_unread_count = countInt;
 }
 
-function parseCounters(feedData) {
-  var unread_count = 0;
-
-  if(!feedData.feeds) {
-    return reportError()
-  }
-
-  var i, folder;
-  for (i=0; folder=feedData.feeds[i]; i++) {
-    var k, feed;
-    for (k=0; feed=folder.feeds[k]; k++) {
-      if (feed.unread_count) {
-        unread_count += feed.unread_count;
-      }
-    }
-  }
-  for (i=0; folder=feedData.following[i]; i++) {
-    if (folder.unread_count) {
-      unread_count += folder.unread_count;
-    }
-  }
-  updateIcon(unread_count)
-}
-
 function getCountersFromHTTP() {
   // If request times out or if we get unexpected output, report error and reschedule
   function refreshFailed(details) {
@@ -146,7 +122,11 @@ function getCountersFromHTTP() {
 
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
-    parseCounters(feedData);
+    if (feedData && !isNaN(feedData.max)) {
+      updateIcon(feedData.max);
+    } else {
+      reportError({errorText: 'Unexpected data from server'})
+    }
     retryCount = 0;
     scheduleRefresh();
   }
@@ -166,7 +146,7 @@ function getCountersFromHTTP() {
       if (httpRequest.status >= 400) {
         refreshFailed({
           errorText : 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
-          loggedOut : (httpRequest.status == 403)
+          loggedOut : (httpRequest.status == 403 || httpRequest.status == 401)
         });
       } else if (httpRequest.responseText) {
         window.clearTimeout(requestTimeout);
@@ -184,7 +164,7 @@ function getCountersFromHTTP() {
   }
 
   try {
-    httpRequest.open('GET', baseUrl() + 'feeds/counts.json', true);
+    httpRequest.open('GET', baseUrl() + 'reader/api/0/unread-count?output=json', true);
     httpRequest.send(null);
   } catch (exception) {
     refreshFailed({errorText: 'Exception while fetching data: ' + exception.toString()});
