@@ -68,7 +68,7 @@ function reportError(details) {
   chrome.browserAction.setIcon({
     path: {
       '19': 'img/icon-inactive.png',
-      '38': 'img/icon-inactive-scale2.png',
+      '38': 'img/icon-inactive-scale2.png'
     }
   });
 
@@ -105,7 +105,7 @@ function updateIcon(count) {
   chrome.browserAction.setIcon({
     path: {
       '19': 'img/icon-active.png',
-      '38': 'img/icon-active-scale2.png',
+      '38': 'img/icon-active-scale2.png'
     }
   });
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
