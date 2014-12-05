@@ -65,7 +65,12 @@ function openOurTab(windowId) {
 function reportError(details) {
   console.warn(details.errorText);
 
-  chrome.browserAction.setIcon({path: 'img/icon-inactive.png'});
+  chrome.browserAction.setIcon({
+    path: {
+      '19': 'img/icon-inactive.png',
+      '38': 'img/icon-inactive-scale2.png',
+    }
+  });
 
   if (details.loggedOut) {
     chrome.browserAction.setBadgeText({text: '!'});
@@ -97,7 +102,12 @@ function updateIcon(count) {
   } else {
     count = countInt.toString();
   }
-  chrome.browserAction.setIcon({path: 'img/icon-active.png'});
+  chrome.browserAction.setIcon({
+    path: {
+      '19': 'img/icon-active.png',
+      '38': 'img/icon-active-scale2.png',
+    }
+  });
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
   chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});

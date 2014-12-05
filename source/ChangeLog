@@ -2,6 +2,8 @@ version 0.19
 
  * Switched to polling The Old Reader public API
    (contributed by Dmitry Krasnoukhov)
+ * Added high-DPI button icons
+   (contributed by Alexander Kashev)
 
 version 0.18
 
