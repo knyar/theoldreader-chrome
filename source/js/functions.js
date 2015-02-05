@@ -34,7 +34,8 @@ function showNotification(title, body) {
 }
 
 function baseUrl() {
-  return (localStorage['prefer_https'] == 'yes' ? 'https://theoldreader.com/' : 'http://theoldreader.com/');
+  return (localStorage['force_http'] == 'yes' ?
+    'http://theoldreader.com/' : 'https://theoldreader.com/');
 }
 
 function findOurTab(callback, windowId) {

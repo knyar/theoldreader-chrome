@@ -8,7 +8,7 @@ function save_options() {
   localStorage['click_page'] = $('#click_page').val();
   localStorage['show_notifications'] = $('#show_notifications').prop('checked') ? 'yes' : 'no';
   localStorage['notification_timeout'] = parseInt($('#notification_timeout').val());
-  localStorage['prefer_https'] = $('#prefer_https').prop('checked') ? 'yes' : 'no';
+  localStorage['force_http'] = $('#force_http').prop('checked') ? 'yes' : 'no';
   localStorage['prefer_pinned_tab'] = $('#prefer_pinned_tab').prop('checked') ? 'yes' : 'no';
   localStorage['refresh_interval'] = parseInt($('#refresh_interval').val());
   localStorage['use_sync'] = $('#use_sync').prop('checked') ? 'yes' : 'no';
@@ -61,7 +61,7 @@ function load_options() {
   $('#show_notifications').prop('checked', (localStorage['show_notifications'] == 'yes'));
   $('#prefer_pinned_tab').prop('checked', (localStorage['prefer_pinned_tab'] == 'yes'));
   $('#notification_timeout').val(localStorage['notification_timeout'] || 0);
-  $('#prefer_https').prop('checked', (localStorage['prefer_https'] == 'yes'));
+  $('#force_http').prop('checked', (localStorage['force_http'] == 'yes'));
   $('#refresh_interval').val(localStorage['refresh_interval'] || 15);
   $('#use_sync').prop('checked', (localStorage['use_sync'] != 'no'));
   $('#context_menu').prop('checked', (localStorage['context_menu'] != 'no'));
@@ -94,14 +94,24 @@ function show_message(message) {
   }
 }
 
+function openSyncSettings() {
+  // A simple link would not work, but chrome.tabs sidesteps restrictions
+  chrome.tabs.create({url: "chrome://settings/syncSetup"});
+}
+
 $(document).ready(function() {
-  $('#save_button').click(function() {
-    save_options();
-    return false;
-  });
+  load_options();
+
+  // Bind click handlers
+  $('#save_button').click(save_options);
+  $('#open_sync_settings').click(openSyncSettings);
+
+  // Reminder to save from dirty state
   $('input,select').change(function() {
     show_message({text : "< Click button to save your changes", red : true});
   });
+
+  // Show/animate subitem
   $('#notification_timeout').closest('.subitem').toggle(localStorage['show_notifications'] == 'yes');
   $('#show_notifications').click(function() {
     if ($('#show_notifications').prop('checked')) {
@@ -113,5 +123,3 @@ $(document).ready(function() {
 
   chrome.runtime.onMessage.addListener(onMessageOptions);
 });
-
-document.addEventListener('DOMContentLoaded', load_options);
