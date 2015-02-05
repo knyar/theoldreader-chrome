@@ -1,3 +1,14 @@
+version 1.0
+
+ All by Alexander Kashev:
+
+ * Enforce HTTPS by default; add option to disable
+     with a link to TOR settings (that otherwise override extension setting)
+ * Options page formatting: line up and re-arrange checkboxes
+ * Working link to Chrome Sync settings
+ * Small refactoring in options.js
+ * Graduate from 0.x versions
+
 version 0.19
 
  * Switched to polling The Old Reader public API
