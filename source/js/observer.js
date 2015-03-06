@@ -58,5 +58,5 @@ script.parentNode.removeChild(script);
 
 // Add an event listener for openPostInBackground
 window.addEventListener("tor:openPostInBackground", function(evt) {
-  chrome.runtime.sendMessage({openInBackground: true, url: evt.url});
+  chrome.runtime.sendMessage({openInBackground: true, url: evt.detail});
 }, false);
