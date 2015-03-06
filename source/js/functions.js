@@ -203,6 +203,12 @@ function onMessage(request, sender, callback) {
   if (request.toggleContextMenus) {
     toggleContentMenus(localStorage['context_menu']);
   }
+  if (request.openInBackground) {
+    chrome.tabs.create({
+      url: request.url,
+      active: false
+    });
+  }
 }
 
 function setCountFromObserver(count) {

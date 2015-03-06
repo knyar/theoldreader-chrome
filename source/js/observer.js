@@ -38,3 +38,25 @@ function notify(title, changed) {
     }
   }
 }
+
+// Declare extension capabilities to the page
+var capabilities = {
+  openInBrowser : true
+};
+
+// Extend capabilities without overriding, in case there is another extension
+var code = "window.ExtensionCapabilities = window.ExtensionCapabilities || {};";
+for (var key in capabilities) {
+  code += "window.ExtensionCapabilities[" + JSON.stringify(key) +
+          "] = " + JSON.stringify(capabilities[key]) + ";"
+}
+
+var script = document.createElement('script');
+script.textContent = code;
+(document.head||document.documentElement).appendChild(script);
+script.parentNode.removeChild(script);
+
+// Add an event listener for openPostInBackground
+window.addEventListener("reader:openPostInBackground", function(evt) {
+  chrome.runtime.sendMessage({openInBackground: true, url: evt.url});
+}, false);
