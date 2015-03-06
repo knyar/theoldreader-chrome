@@ -41,7 +41,7 @@ function notify(title, changed) {
 
 // Declare extension capabilities to the page
 var capabilities = {
-  openInBrowser : true
+  openInBackground : true
 };
 
 // Extend capabilities without overriding, in case there is another extension
