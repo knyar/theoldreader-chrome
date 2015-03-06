@@ -1,3 +1,8 @@
+version 1.1
+
+ * Provide support for "Open in background" keyboard shortcut from TOR code
+   (contributed by Alexander Kashev & Jim Fiorato)
+
 version 1.0
 
  All by Alexander Kashev:
