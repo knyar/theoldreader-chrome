@@ -1,3 +1,8 @@
+version 1.2
+
+ * Update options page to Options V2 UI
+   (contributed by Alexander Kashev)
+
 version 1.1.1
 
  * Provide support for "Open in background" keyboard shortcut from TOR code
