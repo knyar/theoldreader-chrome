@@ -106,9 +106,9 @@ $(document).ready(function() {
     $("#changelogText").text(text);
   });
 
-  $("#changelogLink").click(function() {
-    $("#optionsContainer").toggle();
-    $("#changelogContainer").toggle();
+  $("#changelogLink, #changelogHideLink").click(function() {
+    $("#optionsContainer, #changelogContainer").toggle();
+    $("#changelogLink, #changelogHideLink").toggle();
   });
 
   // Bind click handlers

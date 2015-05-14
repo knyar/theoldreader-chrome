@@ -1,0 +1,41 @@
+p { 
+  font-family: sans-serif;
+  font-size: small;
+  white-space: nowrap;
+}
+
+.message { 
+  display: none;
+  padding-left: 2em;
+  font-weight: bold;
+  color: green;
+}
+
+.red { 
+  color: firebrick !important;
+}
+
+.subitem { 
+  text-indent: 1em;
+}
+
+.gray { 
+  color: gray;
+}
+
+#changelogHideLink {
+  display: none;
+}
+
+#changelogContainer { 
+  display: none; 
+  width: 600px;
+}
+
+#changelogText { 
+  white-space: pre-wrap; 
+  border: solid 1px black; 
+  padding: 10px; 
+  height: 400px;
+  overflow-y: auto; 
+}

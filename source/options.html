@@ -2,25 +2,7 @@
 <html>
   <head>
     <title>The Old Reader Notifier - Options</title>
-    <style type="text/css">
-    p { font-family: sans-serif; font-size: small; white-space: nowrap; }
-    .message { display: none; padding-left: 2em; font-weight: bold; color: green; }
-    .red { color: firebrick !important; }
-    .subitem { text-indent: 1em; }
-    .gray { color: gray; }
-    #changelogContainer { 
-      display: none; 
-      width: 600px; 
-      height: 400px;
-    }
-    #changelogText { 
-      white-space: pre-wrap; 
-      border: solid 1px black; 
-      padding: 10px; 
-      height: 100%; 
-      overflow-y: auto; 
-    }
-    </style>
+    <link rel="stylesheet" href="css/options.css">
     <script src="js/lib/jquery-2.1.0.min.js"></script>
     <script src="js/lib/jquery.color.js"></script>
     <script src="js/lib/jquery.simplemodal.js"></script>
@@ -29,7 +11,8 @@
   <body>
     <p><img src="img/logo.png" alt=""/></p>
     <p>
-      <a href="#" id="changelogLink">Changelog</a> |
+      <a href="#" id="changelogLink">Show changelog</a>
+      <a href="#" id="changelogHideLink">Hide changelog</a> |
       <a href="https://github.com/knyar/theoldreader-chrome">Source code &amp; bug tracker</a> |
       <a href="https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews">Rate in Chrome Web Store</a>
     </p>
