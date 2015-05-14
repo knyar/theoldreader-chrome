@@ -102,6 +102,15 @@ function openSyncSettings() {
 $(document).ready(function() {
   load_options();
 
+  $.ajax("ChangeLog").done(function(text) {
+    $("#changelogText").text(text);
+  });
+
+  $("#changelogLink").click(function() {
+    $("#optionsContainer").toggle();
+    $("#changelogContainer").toggle();
+  });
+
   // Bind click handlers
   $('#save_button').click(save_options);
   $('#open_sync_settings').click(openSyncSettings);
