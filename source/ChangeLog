@@ -1,3 +1,8 @@
+version 1.2.1
+
+ * Embedded viewer for changelog in options
+   (contributed by Alexander Kashev)
+
 version 1.2
 
  * Update options page to Options V2 UI
