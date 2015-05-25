@@ -1,21 +1,65 @@
 // vim: set ts=2 sw=2 et
 // Credit for the solution goes to http://stackoverflow.com/a/11694229
 
-var target = document.querySelector('head > title');
+if(typeof(window.injected) == "undefined") { // Inject guard for #40
+  window.injected = true;
 
-var observer = new window.MutationObserver(
-  function(mutations) {
-    mutations.forEach(
-      function(mutation){
-        notify(mutation.target.textContent, true);
-      }
-    );
+  var target = document.querySelector('head > title');
+
+  var observer = new window.MutationObserver(
+    function(mutations) {
+      mutations.forEach(
+        function(mutation){
+          notify(mutation.target.textContent, true);
+        }
+      );
+    }
+  );
+
+  observer.observe(
+    target, 
+    { 
+      subtree: true, 
+      characterData: true, 
+      childList: true
+    }
+  );
+
+  notify(target.textContent, false);
+
+  // Declare extension capabilities to the page
+  var capabilities = {
+    openInBackground : true
+  };
+
+  exposeCapabilities(capabilities);
+
+  // Add an event listener for openPostInBackground
+  window.addEventListener(
+    "tor:openPostInBackground", 
+    openInBackgroundHandler, 
+    false
+  );
+
+}
+
+function openInBackgroundHandler(evt) {
+  chrome.runtime.sendMessage({openInBackground: true, url: evt.detail});
+}
+
+function exposeCapabilities(capabilities) {
+  // Extend capabilities without overriding, in case there is another extension
+  var code = "window.ExtensionCapabilities = window.ExtensionCapabilities || {};";
+  for (var key in capabilities) {
+    code += "window.ExtensionCapabilities[" + JSON.stringify(key) +
+            "] = " + JSON.stringify(capabilities[key]) + ";"
   }
-);
 
-observer.observe(target, { subtree: true, characterData: true, childList: true });
-
-notify(target.textContent, false);
+  var script = document.createElement('script');
+  script.textContent = code;
+  (document.head||document.documentElement).appendChild(script);
+  script.parentNode.removeChild(script);
+}
 
 function notify(title, changed) {
   var count = -1;
@@ -38,25 +82,3 @@ function notify(title, changed) {
     }
   }
 }
-
-// Declare extension capabilities to the page
-var capabilities = {
-  openInBackground : true
-};
-
-// Extend capabilities without overriding, in case there is another extension
-var code = "window.ExtensionCapabilities = window.ExtensionCapabilities || {};";
-for (var key in capabilities) {
-  code += "window.ExtensionCapabilities[" + JSON.stringify(key) +
-          "] = " + JSON.stringify(capabilities[key]) + ";"
-}
-
-var script = document.createElement('script');
-script.textContent = code;
-(document.head||document.documentElement).appendChild(script);
-script.parentNode.removeChild(script);
-
-// Add an event listener for openPostInBackground
-window.addEventListener("tor:openPostInBackground", function(evt) {
-  chrome.runtime.sendMessage({openInBackground: true, url: evt.detail});
-}, false);
