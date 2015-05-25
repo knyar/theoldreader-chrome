@@ -1,3 +1,7 @@
+version 1.2.3
+ * Add sanity check against double content script injection
+   (contributed by Alexander Kashev)
+
 version 1.2.2
 
  * Embedded viewer for changelog in options
