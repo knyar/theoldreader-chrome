@@ -52,7 +52,7 @@ function exposeCapabilities(capabilities) {
   var code = "window.ExtensionCapabilities = window.ExtensionCapabilities || {};";
   for (var key in capabilities) {
     code += "window.ExtensionCapabilities[" + JSON.stringify(key) +
-            "] = " + JSON.stringify(capabilities[key]) + ";"
+            "] = " + JSON.stringify(capabilities[key]) + ";";
   }
 
   var script = document.createElement('script');

@@ -9,7 +9,7 @@ var retryCount = 0;
 var lastError = "";
 
 function showNotification(title, body) {
-  if (localStorage['show_notifications'] != 'yes') {
+  if (localStorage.show_notifications != 'yes') {
     return;
   }
 
@@ -22,19 +22,19 @@ function showNotification(title, body) {
     }
   );
 
-  notification.onclick = function() { openOurTab(); this.close(); } // Opens the Old Reader page and self-destructs
+  notification.onclick = function() { openOurTab(); this.close(); }; // Opens the Old Reader page and self-destructs
 
   window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
-  if (localStorage['notification_timeout'] > 0) {
+  if (localStorage.notification_timeout > 0) {
     notificationTimeout = window.setTimeout(
       function() { notification.cancel(); },
-      localStorage['notification_timeout'] * 1000
+      localStorage.notification_timeout * 1000
     );
   }
 }
 
 function baseUrl() {
-  return (localStorage['force_http'] == 'yes' ?
+  return (localStorage.force_http == 'yes' ?
     'http://theoldreader.com/' : 'https://theoldreader.com/');
 }
 
@@ -56,8 +56,8 @@ function openOurTab(windowId) {
       chrome.tabs.update(tab.id, {selected: true});
     } else {
       var url = baseUrl();
-      var pinned = (localStorage['prefer_pinned_tab'] == 'yes' ? true : false);
-      if (localStorage['click_page'] == 'all_items') { url += 'posts/all'; }
+      var pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
+      if (localStorage.click_page == 'all_items') { url += 'posts/all'; }
       chrome.tabs.create({url: url, pinned: pinned, windowId: windowId});
     }
   }, windowId);
@@ -95,7 +95,7 @@ function reportError(details) {
 function updateIcon(count) {
   countInt = parseInt(count);
   title_suffix = ': ' + countInt + ' unread';
-  if (countInt == 0) {
+  if (countInt === 0) {
     count = "";
     title_suffix = '';
   } else if (countInt > 999) {
@@ -136,7 +136,7 @@ function getCountersFromHTTP() {
     if (feedData && !isNaN(feedData.max)) {
       updateIcon(feedData.max);
     } else {
-      reportError({errorText: 'Unexpected data from server'})
+      reportError({errorText: 'Unexpected data from server'});
     }
     retryCount = 0;
     scheduleRefresh();
@@ -150,10 +150,10 @@ function getCountersFromHTTP() {
 
   httpRequest.onerror = function(err) {
     refreshFailed({errorText: 'HTTP request error'}); // No usable error data in err
-  }
+  };
 
   httpRequest.onreadystatechange = function() {
-    if (httpRequest.readyState == 4 && httpRequest.status != 0) { // (4,0) means onerror will be fired next
+    if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
       if (httpRequest.status >= 400) {
         refreshFailed({
           errorText : 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
@@ -172,7 +172,7 @@ function getCountersFromHTTP() {
         refreshFailed({errorText: 'Empty response'});
       }
     }
-  }
+  };
 
   try {
     httpRequest.open('GET', baseUrl() + 'reader/api/0/unread-count?output=json', true);
@@ -183,7 +183,7 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
-  var interval = (localStorage['refresh_interval'] || 15) * 60 * 1000;
+  var interval = (localStorage.refresh_interval || 15) * 60 * 1000;
   window.clearTimeout(refreshTimeout);
   if(retryCount){ // There was an error
     interval = Math.min( interval, 5 * 1000 * Math.pow(2, retryCount-1));
@@ -201,7 +201,7 @@ function onMessage(request, sender, callback) {
     return true; // Allow asynchronous callback
   }
   if (request.toggleContextMenus) {
-    toggleContentMenus(localStorage['context_menu']);
+    toggleContentMenus(localStorage.context_menu);
   }
   if (request.openInBackground) {
     chrome.tabs.create({
@@ -217,7 +217,7 @@ function setCountFromObserver(count) {
 }
 
 function onExtensionUpdate(details) {
-  if (details.reason == "update" && !(localStorage["options_version"] >= OPTIONS_VERSION)) { // Negation required to capture undefined
+  if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) { // Negation required to capture undefined
     var notification = new Notification(
         "New options available",
         { body: "Click to configure new options",
@@ -226,9 +226,9 @@ function onExtensionUpdate(details) {
     notification.onclick = function() {
       chrome.tabs.create({url: chrome.runtime.getURL("options.html")});
       this.close();
-    }
+    };
   }
-  localStorage["options_version"] = OPTIONS_VERSION;
+  localStorage.options_version = OPTIONS_VERSION;
   saveToStorage();
 }
 

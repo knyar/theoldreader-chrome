@@ -8,11 +8,14 @@ p {
   display: none;
   padding-left: 2em;
   font-weight: bold;
+}
+
+.green {
   color: green;
 }
 
 .red { 
-  color: firebrick !important;
+  color: firebrick;
 }
 
 .subitem { 
@@ -23,16 +26,16 @@ p {
   color: gray;
 }
 
-#changelogHideLink {
+.changelogHideLink {
   display: none;
 }
 
-#changelogContainer { 
+.changelogContainer { 
   display: none; 
   width: 600px;
 }
 
-#changelogText { 
+.changelogContainer pre { 
   white-space: pre-wrap; 
   border: solid 1px black; 
   padding: 10px; 

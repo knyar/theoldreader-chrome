@@ -34,7 +34,7 @@ function addContentMenus() {
     "onclick": function(info, tab) {
       chrome.tabs.create({
         url: baseUrl() + "feeds/subscribe?url=" + encodeURIComponent(tab.url)
-      })
+      });
     }
   });
 
@@ -47,7 +47,7 @@ function addContentMenus() {
       var args = "\""+baseUrl()+"bookmarks/bookmark\",\""+info.pageUrl+"\"";
       chrome.tabs.create({
         url: "javascript:"+bookmark+";bookmark("+args+")"
-      })
+      });
     }
   });
 
@@ -61,7 +61,7 @@ function addContentMenus() {
       console.log(args);
       chrome.tabs.create({
         url: "javascript:"+bookmark+";bookmark("+args+")"
-      })
+      });
     }
   });
 }
@@ -79,4 +79,4 @@ function toggleContentMenus(state) {
 }
 
 // Initialize on extension load up
-toggleContentMenus(localStorage['context_menu']);
+toggleContentMenus(localStorage.context_menu);

@@ -5,18 +5,18 @@ var FADE_DELAY = 2000;
 function save_options() {
   if(!validate_options()) return;
   
-  localStorage['click_page'] = $('#click_page').val();
-  localStorage['show_notifications'] = $('#show_notifications').prop('checked') ? 'yes' : 'no';
-  localStorage['notification_timeout'] = parseInt($('#notification_timeout').val());
-  localStorage['force_http'] = $('#force_http').prop('checked') ? 'yes' : 'no';
-  localStorage['prefer_pinned_tab'] = $('#prefer_pinned_tab').prop('checked') ? 'yes' : 'no';
-  localStorage['refresh_interval'] = parseInt($('#refresh_interval').val());
-  localStorage['use_sync'] = $('#use_sync').prop('checked') ? 'yes' : 'no';
-  localStorage['context_menu'] = $('#context_menu').prop('checked') ? 'yes' : 'no';
+  localStorage.click_page = $('#click_page').val();
+  localStorage.show_notifications = $('#show_notifications').prop('checked') ? 'yes' : 'no';
+  localStorage.notification_timeout = parseInt($('#notification_timeout').val());
+  localStorage.force_http = $('#force_http').prop('checked') ? 'yes' : 'no';
+  localStorage.prefer_pinned_tab = $('#prefer_pinned_tab').prop('checked') ? 'yes' : 'no';
+  localStorage.refresh_interval = parseInt($('#refresh_interval').val());
+  localStorage.use_sync = $('#use_sync').prop('checked') ? 'yes' : 'no';
+  localStorage.context_menu = $('#context_menu').prop('checked') ? 'yes' : 'no';
   
   show_message({text : "Options saved!", fade_in : true, fade_out : true});
   
-  if (localStorage["use_sync"] != "no") {
+  if (localStorage.use_sync != "no") {
     chrome.runtime.sendMessage({'sync' : true}, syncCallback);
   }
 
@@ -55,16 +55,16 @@ function validate_options() {
 }
 
 function load_options() {
-  if (localStorage['click_page']) {
-    $('#click_page').val(localStorage['click_page']);
+  if (localStorage.click_page) {
+    $('#click_page').val(localStorage.click_page);
   }
-  $('#show_notifications').prop('checked', (localStorage['show_notifications'] == 'yes'));
-  $('#prefer_pinned_tab').prop('checked', (localStorage['prefer_pinned_tab'] == 'yes'));
-  $('#notification_timeout').val(localStorage['notification_timeout'] || 0);
-  $('#force_http').prop('checked', (localStorage['force_http'] == 'yes'));
-  $('#refresh_interval').val(localStorage['refresh_interval'] || 15);
-  $('#use_sync').prop('checked', (localStorage['use_sync'] != 'no'));
-  $('#context_menu').prop('checked', (localStorage['context_menu'] != 'no'));
+  $('#show_notifications').prop('checked', (localStorage.show_notifications == 'yes'));
+  $('#prefer_pinned_tab').prop('checked', (localStorage.prefer_pinned_tab == 'yes'));
+  $('#notification_timeout').val(localStorage.notification_timeout || 0);
+  $('#force_http').prop('checked', (localStorage.force_http == 'yes'));
+  $('#refresh_interval').val(localStorage.refresh_interval || 15);
+  $('#use_sync').prop('checked', (localStorage.use_sync != 'no'));
+  $('#context_menu').prop('checked', (localStorage.context_menu != 'no'));
 }
 
 function onMessageOptions(request, sender, callback) {
@@ -81,7 +81,9 @@ function onMessageOptions(request, sender, callback) {
 //   fade_out ( optional boolean )
 function show_message(message) {
   $('#message').finish().hide();
-  $('#message').text(message.text).toggleClass("red", message.red || false);
+  $('#message').text(message.text);
+  $('#message').toggleClass("red", message.red);
+  $('#message').toggleClass("green", !message.red);
   
   if (message.fade_in) {
     $('#message').fadeIn('fast');
@@ -121,7 +123,7 @@ $(document).ready(function() {
   });
 
   // Show/animate subitem
-  $('#notification_timeout').closest('.subitem').toggle(localStorage['show_notifications'] == 'yes');
+  $('#notification_timeout').closest('.subitem').toggle(localStorage.show_notifications == 'yes');
   $('#show_notifications').click(function() {
     if ($('#show_notifications').prop('checked')) {
       $('#notification_timeout').closest('.subitem').slideDown('fast');

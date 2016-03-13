@@ -1,5 +1,5 @@
 function loadFromStorage() {
-  if (localStorage["use_sync"] == "no") { return; }
+  if (localStorage.use_sync == "no") { return; }
 
   chrome.storage.sync.get(null, function(items) {
     for (var key in items) {
@@ -11,7 +11,7 @@ function loadFromStorage() {
 var syncRetryTimeout;
 
 function saveToStorage(callback) {
-  if (localStorage["use_sync"] == "no") { return; }
+  if (localStorage.use_sync == "no") { return; }
 
   if (syncRetryTimeout) {
     console.log("Already waiting for a sync attempt, throttling request");
@@ -42,13 +42,13 @@ function retryOnError(retryFunction, callback) {
     } else {
       if (callback) { callback(true); }
     }
-  }
+  };
 }
 
 function onStorageChange(changes, area) {
   if (area != "sync") { return; }
   
-  if (localStorage["use_sync"] == "no") { return; }
+  if (localStorage.use_sync == "no") { return; }
   
   for (var key in changes) {
     if (typeof changes[key].newValue === "undefined") { // Key deleted
