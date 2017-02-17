@@ -108,9 +108,20 @@ $(document).ready(function() {
     $("#changelogText").text(text);
   });
 
-  $("#changelogLink, #changelogHideLink").click(function() {
-    $("#optionsContainer, #changelogContainer").toggle();
-    $("#changelogLink, #changelogHideLink").toggle();
+  $("#optionsContainer").show();
+
+  $("#changelogLink").click(function() {
+    $(".container").not("#changelogContainer").hide();
+    $("#changelogContainer").show();
+    $("#changelogLink").hide();
+    $("#changelogHideLink").show();
+  });  
+
+  $("#changelogHideLink").click(function() {
+    $(".container").not("#optionsContainer").hide();
+    $("#optionsContainer").show();
+    $("#changelogLink").show();
+    $("#changelogHideLink").hide();
   });
 
   // Bind click handlers

@@ -1,10 +1,10 @@
-p { 
+p {
   font-family: sans-serif;
   font-size: small;
   white-space: nowrap;
 }
 
-.message { 
+.message {
   display: none;
   padding-left: 2em;
   font-weight: bold;
@@ -14,15 +14,15 @@ p {
   color: green;
 }
 
-.red { 
+.red {
   color: firebrick;
 }
 
-.subitem { 
+.subitem {
   text-indent: 1em;
 }
 
-.gray { 
+.gray {
   color: gray;
 }
 
@@ -30,15 +30,20 @@ p {
   display: none;
 }
 
-.changelogContainer { 
-  display: none; 
+.container {
+  display: none;
   width: 600px;
 }
 
-.changelogContainer pre { 
-  white-space: pre-wrap; 
-  border: solid 1px black; 
-  padding: 10px; 
-  height: 400px;
-  overflow-y: auto; 
+.container .changelog {
+  white-space: pre-wrap;
+  border: solid 1px black;
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.extlink:after {
+  content: url(/img/Icon_External_Link.svg);
+  margin-left: 0.2em;
 }
