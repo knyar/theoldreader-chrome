@@ -1,4 +1,12 @@
+version 1.3
+
+ * New design for The Old Reader logo
+   (contributed by Alexander Kashev & TOR team)
+ * Small tweaks to Options page
+   (contributed by Alexander Kashev)
+
 version 1.2.3
+
  * Add sanity check against double content script injection
    (contributed by Alexander Kashev)
 
