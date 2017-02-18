@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "The Old Reader Notifier",
   "description": "Notifies you about unread items in your The Old Reader account",
-  "version": "1.3",
+  "version": "1.3.1",
   "icons": {
     "16": "img/icon-16.png",
     "48": "img/icon-48.png",
