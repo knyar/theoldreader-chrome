@@ -101,7 +101,20 @@ function openSyncSettings() {
   chrome.tabs.create({url: "chrome://settings/syncSetup"});
 }
 
+function showReviewsLink() {
+  if (typeof browser !== 'undefined' || browser !== null) {
+    // We are on Firefox
+    $('#reviewsLink').text('Write a review on Addons.Mozilla.org');
+    $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/this-add-on-id/reviews');
+  } else {
+    // We are in Chrome
+    $('#reviewsLink').text('Rate in Chrome Web Store');
+    $('#reviewsLink').attr('href', 'https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews');
+  }
+}
+
 $(document).ready(function() {
+  showReviewsLink();
   load_options();
 
   $.ajax("ChangeLog").done(function(text) {
