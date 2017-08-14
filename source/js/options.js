@@ -101,6 +101,18 @@ function openSyncSettings() {
   chrome.tabs.create({url: "chrome://settings/syncSetup"});
 }
 
+function displaySyncSettingsLink() {
+  if (typeof browser !== 'undefined' || browser !== null) {
+    // We are on Firefox
+    $('#open_sync_settings').text('Firefox Sync');
+    $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
+  } else {
+    // We are in Chrome
+    $('#open_sync_settings').text('Chrome Sync');
+    $('#open_sync_settings').click(openSyncSettings);
+  }
+}
+
 function showReviewsLink() {
   if (typeof browser !== 'undefined' || browser !== null) {
     // We are on Firefox
@@ -139,7 +151,7 @@ $(document).ready(function() {
 
   // Bind click handlers
   $('#save_button').click(save_options);
-  $('#open_sync_settings').click(openSyncSettings);
+  displaySyncSettingsLink();
 
   // Reminder to save from dirty state
   $('input,select').change(function() {
