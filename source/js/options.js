@@ -104,9 +104,10 @@ function show_message(message) {
   }
 }
 
-function openChromeSyncSettings() {
+function openChromeSyncSettings(e) {
   // A simple link would not work, but chrome.tabs sidesteps restrictions
   chrome.tabs.create({url: "chrome://settings/syncSetup"});
+  e.preventDefault();
 }
 
 function displaySyncSettingsLink() {
@@ -114,6 +115,7 @@ function displaySyncSettingsLink() {
     case 'Mozilla':
       $('#open_sync_settings').text('Firefox Sync');
       $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
+      $('#open_sync_settings').addClass('extlink');
       break;
     case 'Chrome':
     default:
