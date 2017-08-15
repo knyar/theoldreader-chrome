@@ -139,14 +139,11 @@ $(document).ready(function() {
   showReviewsLink();
   load_options();
 
-  var changeLogRequest = new XMLHttpRequest();
-  changeLogRequest.onreadystatechange = function() {
-    if (changeLogRequest.responseText) {
-      $("#changelogText").text(changeLogRequest.responseText);
-    }
-  }
-  changeLogRequest.open('GET', 'ChangeLog', true);
-  changeLogRequest.send();
+  fetch('ChangeLog').then(function(response) {
+    return response.text();
+  }).then(function(text) {
+    $("#changelogText").text(text);
+  });
 
   $("#optionsContainer").show();
 
