@@ -102,7 +102,7 @@ function openSyncSettings() {
 }
 
 function displaySyncSettingsLink() {
-  if (typeof browser !== 'undefined' || browser !== null) {
+  if (typeof browser !== 'undefined') {
     // We are on Firefox
     $('#open_sync_settings').text('Firefox Sync');
     $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
@@ -114,7 +114,7 @@ function displaySyncSettingsLink() {
 }
 
 function showReviewsLink() {
-  if (typeof browser !== 'undefined' || browser !== null) {
+  if (typeof browser !== 'undefined') {
     // We are on Firefox
     $('#reviewsLink').text('Write a review on Addons.Mozilla.org');
     $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/this-add-on-id/reviews');
