@@ -1,0 +1,44 @@
+{
+  "manifest_version": 2,
+  "name": "The Old Reader Notifier",
+  "description": "Notifies you about unread items in your The Old Reader account",
+  "version": "1.3.1",
+  "icons": {
+    "16": "img/icon-16.png",
+    "48": "img/icon-48.png",
+    "128": "img/icon-128.png"
+  },
+  "background": {
+    "scripts": [ "js/functions.js", "js/storage.js", "js/background.js", "js/menu.js" ]
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "img/icon-inactive.png",
+      "38": "img/icon-inactive-scale2.png"
+    },
+    "default_title": "The Old Reader"
+  },
+  "permissions": [
+    "tabs",
+    "notifications",
+    "storage",
+    "contextMenus",
+    "*://theoldreader.com/"
+  ],
+  "web_accessible_resources": [
+    "img/icon-48.png"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://theoldreader.com/*"
+      ],
+      "js": ["js/observer.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
