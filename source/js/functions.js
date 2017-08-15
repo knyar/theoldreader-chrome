@@ -53,7 +53,7 @@ function findOurTab(callback, windowId) {
 function openOurTab(windowId) {
   findOurTab(function(tab) {
     if (tab) {
-      chrome.tabs.update(tab.id, {selected: true});
+      chrome.tabs.update(tab.id, {active: true});
     } else {
       var url = baseUrl();
       var pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
