@@ -135,6 +135,14 @@ function showReviewsLink() {
   }
 }
 
+function toggleChangelog(e) {
+  e.preventDefault();
+  $(".container").not("#changelogContainer").toggleClass('invisible');
+  $("#changelogContainer").toggleClass('invisible');
+  $("#changelogLink").toggleClass('invisible');
+  $("#changelogHideLink").toggleClass('invisible');
+}
+
 $(document).ready(function() {
   showReviewsLink();
   load_options();
@@ -147,21 +155,9 @@ $(document).ready(function() {
 
   $("#optionsContainer").show();
 
-  $("#changelogLink").click(function(e) {
-    e.preventDefault();
-    $(".container").not("#changelogContainer").hide();
-    $("#changelogContainer").show();
-    $("#changelogLink").hide();
-    $("#changelogHideLink").show();
-  });  
+  $("#changelogLink").click(toggleChangelog);
 
-  $("#changelogHideLink").click(function(e) {
-    e.preventDefault();
-    $(".container").not("#optionsContainer").hide();
-    $("#optionsContainer").show();
-    $("#changelogLink").show();
-    $("#changelogHideLink").hide();
-  });
+  $("#changelogHideLink").click(toggleChangelog);
 
   // Bind click handlers
   $('#save_button').click(save_options);

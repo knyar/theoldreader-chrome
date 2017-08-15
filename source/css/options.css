@@ -26,12 +26,11 @@ p {
   color: gray;
 }
 
-.changelogHideLink {
+.invisible {
   display: none;
 }
 
 .container {
-  display: none;
   width: 600px;
 }
 
