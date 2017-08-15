@@ -1,4 +1,10 @@
 {
+  "applications": {
+    "gecko": {
+      "id": "theoldreader@knyar",
+      "strict_min_version": "53.0"
+    }
+  },
   "manifest_version": 2,
   "name": "The Old Reader Notifier",
   "description": "Notifies you about unread items in your The Old Reader account",
