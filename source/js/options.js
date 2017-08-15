@@ -129,20 +129,27 @@ $(document).ready(function() {
   showReviewsLink();
   load_options();
 
-  $.ajax("ChangeLog").done(function(text) {
-    $("#changelogText").text(text);
-  });
+  var changeLogRequest = new XMLHttpRequest();
+  changeLogRequest.onreadystatechange = function() {
+    if (changeLogRequest.responseText) {
+      $("#changelogText").text(changeLogRequest.responseText);
+    }
+  }
+  changeLogRequest.open('GET', 'ChangeLog', true);
+  changeLogRequest.send();
 
   $("#optionsContainer").show();
 
-  $("#changelogLink").click(function() {
+  $("#changelogLink").click(function(e) {
+    e.preventDefault();
     $(".container").not("#changelogContainer").hide();
     $("#changelogContainer").show();
     $("#changelogLink").hide();
     $("#changelogHideLink").show();
   });  
 
-  $("#changelogHideLink").click(function() {
+  $("#changelogHideLink").click(function(e) {
+    e.preventDefault();
     $(".container").not("#optionsContainer").hide();
     $("#optionsContainer").show();
     $("#changelogLink").show();
