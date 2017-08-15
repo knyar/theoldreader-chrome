@@ -1,6 +1,6 @@
 function addContentMenus() {
   chrome.contextMenus.create(
-    {"title": "The Old Reader", id: "root"}
+    {"title": "The Old Reader", id: "root", contexts: ["page"]}
   );
   
   var bookmark = function bookmark(base_url, url, selection) {
