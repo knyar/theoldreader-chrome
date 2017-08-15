@@ -11,9 +11,9 @@
     <p><img src="img/logo.png" alt=""/></p>
     <p>
       <a href="#" id="changelogLink">Show changelog</a>
-      <a href="#" id="changelogHideLink" class="changelogHideLink">Hide changelog</a> |
+      <a href="#" id="changelogHideLink" class="invisible">Hide changelog</a> |
       <a href="https://github.com/knyar/theoldreader-chrome" class="extlink">Source code &amp; bug tracker</a> |
-      <a href="https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews" class="extlink">Rate in Chrome Web Store</a>
+      <a id="reviewsLink" class="extlink"></a>
     </p>
     <div id="optionsContainer" class="container">
       <p>Page to open when icon is clicked:
@@ -51,7 +51,7 @@
         <input type="checkbox" id="use_sync">
         <label for="use_sync">Sync options</label>
         <span class="gray">
-          (<a href="#" id="open_sync_settings">Chrome Sync</a> must be enabled for extensions)
+          (<a href="#" id="open_sync_settings">Sync</a> must be enabled for extensions)
         </span>
       </p>
       <p>
@@ -60,7 +60,7 @@
       </p>
     </div>
 
-    <div id="changelogContainer" class="container">
+    <div id="changelogContainer" class="container invisible">
       <pre id="changelogText" class="changelog"></pre>
     </div>
   </body>
