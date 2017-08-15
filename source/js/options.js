@@ -2,6 +2,14 @@
 var ERROR_BACKGROUND_COLOR = '#ffbbbb';
 var FADE_DELAY = 2000;
 
+function getBrowserName() {
+  if(typeof browser !== 'undefined') {
+    return 'Mozilla';
+  } else {
+    return 'Chrome';
+  }
+}
+
 function save_options() {
   if(!validate_options()) return;
   
@@ -96,32 +104,34 @@ function show_message(message) {
   }
 }
 
-function openSyncSettings() {
+function openChromeSyncSettings() {
   // A simple link would not work, but chrome.tabs sidesteps restrictions
   chrome.tabs.create({url: "chrome://settings/syncSetup"});
 }
 
 function displaySyncSettingsLink() {
-  if (typeof browser !== 'undefined') {
-    // We are on Firefox
-    $('#open_sync_settings').text('Firefox Sync');
-    $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
-  } else {
-    // We are in Chrome
-    $('#open_sync_settings').text('Chrome Sync');
-    $('#open_sync_settings').click(openSyncSettings);
+  switch (getBrowserName()) {
+    case 'Mozilla':
+      $('#open_sync_settings').text('Firefox Sync');
+      $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
+      break;
+    case 'Chrome':
+    default:
+      $('#open_sync_settings').text('Chrome Sync');
+      $('#open_sync_settings').click(openChromeSyncSettings);
   }
 }
 
 function showReviewsLink() {
-  if (typeof browser !== 'undefined') {
-    // We are on Firefox
-    $('#reviewsLink').text('Write a review on Addons.Mozilla.org');
-    $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/this-add-on-id/reviews');
-  } else {
-    // We are in Chrome
-    $('#reviewsLink').text('Rate in Chrome Web Store');
-    $('#reviewsLink').attr('href', 'https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews');
+  switch (getBrowserName()) {
+    case 'Mozilla':
+      $('#reviewsLink').text('Write a review on Mozilla Add-Ons');
+      $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/this-add-on-id/reviews');
+      break;
+    case 'Chrome':
+    default:
+      $('#reviewsLink').text('Rate in Chrome Web Store');
+      $('#reviewsLink').attr('href', 'https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews');
   }
 }
 

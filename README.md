@@ -9,7 +9,7 @@ Optional notifications will alert you about new messages.
 
 Packaged extension can be installed:
 * from the [Chrome Web Store](https://chrome.google.com/webstore/detail/flnadglecinohkbmdpeooblldjpaimpo)
-* from [Addons.Mozilla.org](https://addons.mozilla.org/addon/this-add-on-id/)
+* from the [Mozilla Add-Ons](https://addons.mozilla.org/addon/this-add-on-id/)
 
 ----
 
