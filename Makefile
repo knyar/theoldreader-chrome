@@ -10,7 +10,7 @@ SOURCES = $(shell find $(SRC) -print)
 
 all: chrome firefox
 
-firefox: $(TARGET)/$(PROJECT)-firefox.zip
+firefox: $(TARGET)/$(PROJECT)-firefox.xpi
 
 chrome: $(TARGET)/$(PROJECT)-chrome.zip
 
@@ -24,7 +24,11 @@ $(TARGET)/%/: $(SOURCES)
 
 $(TARGET)/$(PROJECT)-%.zip: $(TARGET)/%/
 	@echo "\n*** Rebuilding $*.zip ***\n"
-	zip -qr $(TARGET)/$(PROJECT)-$*.zip $(TARGET)/$*/*
+	cd $(TARGET)/$* && zip -qr ../$(PROJECT)-$*.zip *
+
+$(TARGET)/$(PROJECT)-%.xpi: $(TARGET)/%/
+	@echo "\n*** Rebuilding $*.xpi ***\n"
+	cd $(TARGET)/$* && zip -qr ../$(PROJECT)-$*.xpi *
 
 clean:
 	rm -rf $(TARGET)
