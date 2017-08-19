@@ -54,7 +54,7 @@ function onNotificationClick(id) {
       chrome.runtime.openOptionsPage();
       break;
   }
-  chrome.notification.clear(id);
+  chrome.notifications.clear(id);
 }
 
 function baseUrl() {
