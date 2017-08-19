@@ -3,28 +3,30 @@ PROJECT=theoldreader
 SRC=source
 TARGET=build
 
-MKDIR=/bin/mkdir
-MV=/bin/mv
-CP_R=/bin/cp -r
-ZIPPROG=/usr/bin/zip
-RM=/bin/rm
-RM_R=$(RM) -r
+SOURCES = $(shell find $(SRC) -print)
 
-zip_all :: zip_chrome zip_firefox
+# Preserve builds
+.SECONDARY: $(TARGET)/chrome/ $(TARGET)/firefox/
 
-zip_chrome:
-	$(MKDIR) -p $(TARGET)/chrome && \
-	$(CP_R) $(SRC)/* $(TARGET)/chrome && cd $(TARGET)/chrome && \
-	$(MV) manifest-chrome.json manifest.json && \
-	$(RM) manifest-firefox.json && \
-	$(ZIPPROG) -r ../$(PROJECT)-chrome.zip ./* && cd ..
+all: chrome firefox
 
-zip_firefox:
-	$(MKDIR) -p $(TARGET)/firefox && \
-	$(CP_R) $(SRC)/* $(TARGET)/firefox && cd $(TARGET)/firefox && \
-	$(MV) manifest-firefox.json manifest.json && \
-	$(RM) manifest-chrome.json && \
-	$(ZIPPROG) -r ../$(PROJECT)-firefox.xpi ./* && cd ..
+firefox: $(TARGET)/$(PROJECT)-firefox.zip
+
+chrome: $(TARGET)/$(PROJECT)-chrome.zip
+
+$(TARGET)/%/: $(SOURCES)
+	@echo "\n*** Rebuilding $* ***\n"
+	mkdir -p $@
+	rm -rf $(TARGET)/$*/*
+	cp -r $(SRC)/* $@
+	mv $(TARGET)/$*/manifest-$*.json $(TARGET)/$*/manifest.json
+	rm -f $(TARGET)/$*/manifest-*.json
+
+$(TARGET)/$(PROJECT)-%.zip: $(TARGET)/%/
+	@echo "\n*** Rebuilding $*.zip ***\n"
+	zip -qr $(TARGET)/$(PROJECT)-$*.zip $(TARGET)/$*/*
 
 clean:
-	$(RM_R) $(TARGET)
+	rm -rf $(TARGET)
+
+.PHONY: all clean firefox chrome
