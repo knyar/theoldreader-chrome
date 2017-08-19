@@ -17,5 +17,7 @@ chrome.runtime.onMessage.addListener(onMessage);
 // alert about new features, if any
 chrome.runtime.onInstalled.addListener(onExtensionUpdate);
 
+chrome.notifications.onClicked.addListener(onNotificationClick);
+
 // initially inject content scripts
 startupInject();
