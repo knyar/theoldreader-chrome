@@ -38,32 +38,36 @@ function addContentMenus() {
     }
   });
 
-  chrome.contextMenus.create({
-    "title": "Bookmark page",
-    "id": "bookmarkPage",
-    "parentId": "root",
-    contexts: ["page"],
-    "onclick": function(info, tab) {
-      var args = "\""+baseUrl()+"bookmarks/bookmark\",\""+info.pageUrl+"\"";
-      chrome.tabs.create({
-        url: "javascript:"+bookmark+";bookmark("+args+")"
-      });
-    }
-  });
+  // In Firefox, opening javascript: URLs is not allowed
+  // Temporarily disabling those bookmaklet-like entries, will need a rewrite
+  if (getBrowserName() == "Chrome") {
+    chrome.contextMenus.create({
+      "title": "Bookmark page",
+      "id": "bookmarkPage",
+      "parentId": "root",
+      contexts: ["page"],
+      "onclick": function(info, tab) {
+        var args = "\""+baseUrl()+"bookmarks/bookmark\",\""+info.pageUrl+"\"";
+        chrome.tabs.create({
+          url: "javascript:"+bookmark+";bookmark("+args+")"
+        });
+      }
+    });
 
-  chrome.contextMenus.create({
-    "title": "Bookmark selection",
-    "id": "bookmarkSelection",
-    contexts: ["selection"],
-    "onclick": function(info, tab) {
-      var selection = info.selectionText.replace(/\"/gm, '\\"');
-      var args = "\""+baseUrl()+"bookmarks/bookmark\",\""+info.pageUrl+"\", \""+selection+"\"";
-      console.log(args);
-      chrome.tabs.create({
-        url: "javascript:"+bookmark+";bookmark("+args+")"
-      });
-    }
-  });
+    chrome.contextMenus.create({
+      "title": "Bookmark selection",
+      "id": "bookmarkSelection",
+      contexts: ["selection"],
+      "onclick": function(info, tab) {
+        var selection = info.selectionText.replace(/\"/gm, '\\"');
+        var args = "\""+baseUrl()+"bookmarks/bookmark\",\""+info.pageUrl+"\", \""+selection+"\"";
+        console.log(args);
+        chrome.tabs.create({
+          url: "javascript:"+bookmark+";bookmark("+args+")"
+        });
+      }
+    });
+  }
 }
 
 var contextMenusEnabled = false;

@@ -8,6 +8,14 @@ var notificationTimeout;
 var retryCount = 0;
 var lastError = "";
 
+function getBrowserName() {
+  if(typeof browser !== 'undefined') {
+    return 'Mozilla';
+  } else {
+    return 'Chrome';
+  }
+}
+
 function showNotification(title, body) {
   if (localStorage.show_notifications != 'yes') {
     return;
