@@ -73,8 +73,10 @@ function toggleContentMenus(state) {
     chrome.contextMenus.removeAll();
     contextMenusEnabled = false;
   } else {
-    addContentMenus();
-    contextMenusEnabled = true;
+    chrome.contextMenus.removeAll(function() {
+      addContentMenus();
+      contextMenusEnabled = true;
+    });
   }
 }
 
