@@ -128,7 +128,7 @@ function showReviewsLink() {
   switch (getBrowserName()) {
     case 'Mozilla':
       $('#reviewsLink').text('Write a review on Mozilla Add-Ons');
-      $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/this-add-on-id/reviews');
+      $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/the-old-reader-notifier-webext/reviews');
       break;
     case 'Chrome':
     default:
