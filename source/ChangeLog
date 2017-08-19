@@ -1,4 +1,4 @@
-version 1.4
+version 1.4.1
  * Initial Firefox port
    (contributed by Michal Stanke and Alexander Kashev)
    Caveats for FF:
