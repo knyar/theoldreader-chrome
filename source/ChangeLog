@@ -1,3 +1,10 @@
+version 1.4
+ * Initial Firefox port
+   (contributed by Michal Stanke and Alexander Kashev)
+   Caveats for FF:
+   * Bookmarking functions currently disabled
+   * No way to make notifications permanent
+
 version 1.3.1
 
  * Icon size tweak for extension's Action button
