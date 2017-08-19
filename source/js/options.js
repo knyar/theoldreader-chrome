@@ -78,7 +78,7 @@ function load_options() {
 function onMessageOptions(request, sender, callback) {
   if (request.update) {
     load_options();
-    show_message({text : "Options updated from Chrome Sync.", fade_in : true, fade_out : true});
+    show_message({text : `Options updated from ${getBrowserName()} Sync.`, fade_in : true, fade_out : true});
   }
 }
 
