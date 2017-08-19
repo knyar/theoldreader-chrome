@@ -21,3 +21,4 @@ List of code contributors, in order of first commit:
 * Alexander Kashev [@kav2k](https://github.com/kav2k)
 * Vasilij Melnychuk [@SqREL](https://github.com/SqREL)
 * [@ConcurrentHashMap](https://github.com/ConcurrentHashMap)
+* Michal Stanke [@MikkCZ](https://github.com/MikkCZ)
