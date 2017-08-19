@@ -2,6 +2,14 @@
 var ERROR_BACKGROUND_COLOR = '#ffbbbb';
 var FADE_DELAY = 2000;
 
+function getBrowserName() {
+  if(typeof browser !== 'undefined') {
+    return 'Mozilla';
+  } else {
+    return 'Chrome';
+  }
+}
+
 function save_options() {
   if(!validate_options()) return;
   
@@ -96,37 +104,66 @@ function show_message(message) {
   }
 }
 
-function openSyncSettings() {
+function openChromeSyncSettings(e) {
   // A simple link would not work, but chrome.tabs sidesteps restrictions
   chrome.tabs.create({url: "chrome://settings/syncSetup"});
+  e.preventDefault();
+}
+
+function displaySyncSettingsLink() {
+  switch (getBrowserName()) {
+    case 'Mozilla':
+      $('#open_sync_settings').text('Firefox Sync');
+      $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
+      $('#open_sync_settings').addClass('extlink');
+      break;
+    case 'Chrome':
+    default:
+      $('#open_sync_settings').text('Chrome Sync');
+      $('#open_sync_settings').click(openChromeSyncSettings);
+  }
+}
+
+function showReviewsLink() {
+  switch (getBrowserName()) {
+    case 'Mozilla':
+      $('#reviewsLink').text('Write a review on Mozilla Add-Ons');
+      $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/this-add-on-id/reviews');
+      break;
+    case 'Chrome':
+    default:
+      $('#reviewsLink').text('Rate in Chrome Web Store');
+      $('#reviewsLink').attr('href', 'https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews');
+  }
+}
+
+function toggleChangelog(e) {
+  e.preventDefault();
+  $(".container").not("#changelogContainer").toggleClass('invisible');
+  $("#changelogContainer").toggleClass('invisible');
+  $("#changelogLink").toggleClass('invisible');
+  $("#changelogHideLink").toggleClass('invisible');
 }
 
 $(document).ready(function() {
+  showReviewsLink();
   load_options();
 
-  $.ajax("ChangeLog").done(function(text) {
+  fetch('ChangeLog').then(function(response) {
+    return response.text();
+  }).then(function(text) {
     $("#changelogText").text(text);
   });
 
   $("#optionsContainer").show();
 
-  $("#changelogLink").click(function() {
-    $(".container").not("#changelogContainer").hide();
-    $("#changelogContainer").show();
-    $("#changelogLink").hide();
-    $("#changelogHideLink").show();
-  });  
+  $("#changelogLink").click(toggleChangelog);
 
-  $("#changelogHideLink").click(function() {
-    $(".container").not("#optionsContainer").hide();
-    $("#optionsContainer").show();
-    $("#changelogLink").show();
-    $("#changelogHideLink").hide();
-  });
+  $("#changelogHideLink").click(toggleChangelog);
 
   // Bind click handlers
   $('#save_button').click(save_options);
-  $('#open_sync_settings').click(openSyncSettings);
+  displaySyncSettingsLink();
 
   // Reminder to save from dirty state
   $('input,select').change(function() {

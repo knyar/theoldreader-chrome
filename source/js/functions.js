@@ -8,29 +8,53 @@ var notificationTimeout;
 var retryCount = 0;
 var lastError = "";
 
-function showNotification(title, body) {
-  if (localStorage.show_notifications != 'yes') {
+function getBrowserName() {
+  if (typeof browser !== 'undefined') {
+    return 'Mozilla';
+  } else {
+    return 'Chrome';
+  }
+}
+
+function showNotification(title, body, id = "theoldreader") {
+  if (id != "theoldreader-newOptions" && localStorage.show_notifications != 'yes') {
     return;
   }
 
-  var notification = new Notification(
-    title,
-    {
-      icon: 'img/icon-48.png',
-      body: body,
-      tag: 'theoldreader-chrome'
-    }
-  );
+  let options = {
+    iconUrl: 'img/icon-48.png',
+    type: 'basic',
+    title: title,
+    message: body
+  };
 
-  notification.onclick = function() { openOurTab(); this.close(); }; // Opens the Old Reader page and self-destructs
+  if (getBrowserName() == "Chrome") {
+    // Sadly, there is no way to keep a notification open in FF, only in Chrome
+    options.requireInteraction = true;
+    options.isClickable = true;
+  }
 
-  window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
-  if (localStorage.notification_timeout > 0) {
+  chrome.notifications.create(id, options);
+
+  if (id == "theoldreader" && localStorage.notification_timeout > 0) {
+    window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
     notificationTimeout = window.setTimeout(
-      function() { notification.cancel(); },
+      function() { chrome.notifications.clear("theoldreader"); },
       localStorage.notification_timeout * 1000
     );
   }
+}
+
+function onNotificationClick(id) {
+  switch (id) {
+    case "theoldreader":
+      openOurTab();
+      break;
+    case "theoldreader-newOptions":
+      chrome.runtime.openOptionsPage();
+      break;
+  }
+  chrome.notification.clear(id);
 }
 
 function baseUrl() {
@@ -53,7 +77,7 @@ function findOurTab(callback, windowId) {
 function openOurTab(windowId) {
   findOurTab(function(tab) {
     if (tab) {
-      chrome.tabs.update(tab.id, {selected: true});
+      chrome.tabs.update(tab.id, {active: true});
     } else {
       var url = baseUrl();
       var pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
@@ -217,16 +241,12 @@ function setCountFromObserver(count) {
 }
 
 function onExtensionUpdate(details) {
-  if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) { // Negation required to capture undefined
-    var notification = new Notification(
-        "New options available",
-        { body: "Click to configure new options",
-          icon: 'img/icon-48.png' }
+  if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) {
+    showNotification(
+      "New options available",
+      "Click to configure new options",
+      "theoldreader-newOptions"
     );
-    notification.onclick = function() {
-      chrome.tabs.create({url: chrome.runtime.getURL("options.html")});
-      this.close();
-    };
   }
   localStorage.options_version = OPTIONS_VERSION;
   saveToStorage();
