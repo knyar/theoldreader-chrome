@@ -1,0 +1,12 @@
+{
+  "extensionName": {
+    "message": "The Old Reader Notifier",
+    "description": "Name of the extension. Personally I suggest to keep it in English for easier search on AMO."
+  },
+
+  "extensionDescription": {
+    "message": "Notifies you about unread items in your The Old Reader account",
+    "description": "Description of the extension."
+  }
+}
+
