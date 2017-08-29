@@ -99,15 +99,15 @@ function reportError(details) {
 
   if (details.loggedOut) {
     chrome.browserAction.setBadgeText({text: '!'});
-    chrome.browserAction.setTitle({title: 'Logged out, click to log in'});
+    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button.title.loggedOut')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification('Logged out', "Click here to log in");
+      showNotification(chrome.i18n.getMessage('notification.loggedOut.title'), chrome.i18n.getMessage('notification.loggedOut.body'));
     }
   } else {
     chrome.browserAction.setBadgeText({text: ''});
-    chrome.browserAction.setTitle({title: 'Error fetching feed counts'});
+    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button.title.fetchError')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification('Error', "Failed to fetch feed counts: "+details.errorText);
+      showNotification(chrome.i18n.getMessage('notification.fetchError.title'), chrome.i18n.getMessage('notification.fetchError.body')+details.errorText);
     }
   }
 
@@ -141,7 +141,7 @@ function updateIcon(count) {
 
   if (countInt > last_unread_count) {
     var text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
-    showNotification('New posts', text);
+    showNotification(chrome.i18n.getMessage('notification.newPosts.title'), text);
   }
   last_unread_count = countInt;
 }
@@ -243,8 +243,8 @@ function setCountFromObserver(count) {
 function onExtensionUpdate(details) {
   if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) {
     showNotification(
-      "New options available",
-      "Click to configure new options",
+      chrome.i18n.getMessage('notification.newOptions.title'),
+      chrome.i18n.getMessage('notification.newOptions.body'),
       "theoldreader-newOptions"
     );
   }

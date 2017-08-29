@@ -9,6 +9,44 @@
     "description": "Extension description"
   },
 
+  "button.title.loggedOut": {
+    "message": "Logged out, click to log in",
+    "description": "Button toolbar when not logged in"
+  },
+
+  "button.title.fetchError": {
+    "message": "Error fetching feed counts",
+    "description": "Button toolbar when not logged in"
+  },
+
+  "notification.loggedOut.title": {
+    "message": "Logged out"
+  },
+
+  "notification.loggedOut.body": {
+    "message": "Click here to log in"
+  },
+
+  "notification.fetchError.title": {
+    "message": "Error"
+  },
+
+  "notification.fetchError.body": {
+    "message": "Failed to fetch feed counts: "
+  },
+
+  "notification.newPosts.title": {
+    "message": "New posts"
+  },
+
+  "notification.newOptions.title": {
+    "message": "New options available"
+  },
+
+  "notification.newOptions.body": {
+    "message": "Click to configure new options"
+  },
+
   "showChangelogLink": {
     "message": "Show changelog",
     "description": "Text for the link to open changelog"
