@@ -19,6 +19,18 @@
     "description": "Button toolbar when not logged in"
   },
 
+  "contextMenu.subscribeToPage": {
+    "message": "Subscribe to page"
+  },
+
+  "contextMenu.bookmarkPage": {
+    "message": "Bookmark page"
+  },
+
+  "contextMenu.bookmarkSelection": {
+    "message": "Bookmark selection"
+  },
+
   "notification.loggedOut.title": {
     "message": "Logged out"
   },
