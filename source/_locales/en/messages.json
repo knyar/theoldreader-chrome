@@ -1,12 +1,122 @@
 {
   "extensionName": {
     "message": "The Old Reader Notifier",
-    "description": "Name of the extension. Personally I suggest to keep it in English for easier search on AMO."
+    "description": "Extension name"
   },
 
   "extensionDescription": {
     "message": "Notifies you about unread items in your The Old Reader account",
-    "description": "Description of the extension."
+    "description": "Extension description"
+  },
+
+  "showChangelogLink": {
+    "message": "Show changelog",
+    "description": "Text for the link to open changelog"
+  },
+
+  "hideChangelogLink": {
+    "message": "Hide changelog",
+    "description": "Text for the link to hide changelog"
+  },
+
+  "sourceCodeAndBugTrackerLink": {
+    "message": "Source code & bug tracker",
+    "description": "Text for the link to open GitHub"
+  },
+
+  "pageToOpenWhenIconIsClicked.label": {
+    "message": "Page to open when icon is clicked:",
+    "description": "Option label"
+  },
+
+  "pageToOpenWhenIconIsClicked.home": {
+    "message": "Home",
+    "description": "One option for pageToOpenWhenIconIsClicked.label"
+  },
+
+  "pageToOpenWhenIconIsClicked.allItems": {
+    "message": "All items",
+    "description": "One option for pageToOpenWhenIconIsClicked.label"
+  },
+
+  "openTabAsPinned.label": {
+    "message": "Open tab as pinned",
+    "description": "Option label"
+  },
+
+  "showPopupNotifications.label": {
+    "message": "Show popup notifications",
+    "description": "Option label"
+  },
+
+  "autoCloseNotificationAfter.label.before": {
+    "message": "Auto-close notification after",
+    "description": "Option label (before the input)"
+  },
+
+  "autoCloseNotificationAfter.label.after": {
+    "message": "seconds (0 to keep open as long as possible)",
+    "description": "Option label (after the input)"
+  },
+
+  "updateFromServerEvery.label.before": {
+    "message": "Show popup notifications",
+    "description": "Option label (before the input)"
+  },
+
+  "updateFromServerEvery.label.after": {
+    "message": "minutes if tab is closed (minimum 5)",
+    "description": "Option label (after the input)"
+  },
+
+  "showRightClickContextMenu.label": {
+    "message": "Show right-click context menu",
+    "description": "Option label"
+  },
+
+  "forceHTTP.label": {
+    "message": "Force HTTP",
+    "description": "Option label"
+  },
+
+  "forceHTTP.link.before": {
+    "message": "(secure HTTPS must be disabled ",
+    "description": "Option note (before link)"
+  },
+
+  "forceHTTP.link.text": {
+    "message": "The Old Reader settings",
+    "description": "Option note (link text)"
+  },
+
+  "forceHTTP.link.after": {
+    "message": ")",
+    "description": "Option note (after link)"
+  },
+
+  "syncOptions.label": {
+    "message": "Sync options",
+    "description": "Option label"
+  },
+
+  "syncOptions.link.before": {
+    "message": "(",
+    "description": "Option note (before link)"
+  },
+
+  "syncOptions.link.text": {
+    "message": "Sync",
+    "description": "Option note (link text)"
+  },
+
+  "syncOptions.link.after": {
+    "message": "must be enabled for extensions)",
+    "description": "Option note (after link)"
+  },
+
+  "saveButton": {
+    "message": "Save",
+    "description": "Button text to save the options"
   }
 }
 

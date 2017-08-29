@@ -10,53 +10,51 @@
   <body>
     <p><img src="img/logo.png" alt=""/></p>
     <p>
-      <a href="#" id="changelogLink">Show changelog</a>
-      <a href="#" id="changelogHideLink" class="invisible">Hide changelog</a> |
-      <a href="https://github.com/knyar/theoldreader-chrome" target="_blank" class="extlink">Source code &amp; bug tracker</a> |
+      <a href="#" id="changelogLink" data-l10n-id="showChangelogLink"></a>
+      <a href="#" id="changelogHideLink" class="invisible" data-l10n-id="hideChangelogLink"></a> |
+      <a href="https://github.com/knyar/theoldreader-chrome" target="_blank" class="extlink" data-l10n-id="sourceCodeAndBugTrackerLink"></a> |
       <a id="reviewsLink" target="_blank" class="extlink"></a>
     </p>
     <div id="optionsContainer" class="container">
-      <p>Page to open when icon is clicked:
+      <p><label for="click_page" data-l10n-id="pageToOpenWhenIconIsClicked.label"></label>
         <select id="click_page">
-          <option value="home">Home</option>
-          <option value="all_items">All items</option>
+          <option value="home" data-l10n-id="pageToOpenWhenIconIsClicked.home"></option>
+          <option value="all_items" data-l10n-id="pageToOpenWhenIconIsClicked.allItems"></option>
         </select>
       </p>
       <p>
         <input type="checkbox" id="prefer_pinned_tab">
-        <label for="prefer_pinned_tab">Open tab as pinned</label>
+        <label for="prefer_pinned_tab" data-l10n-id="openTabAsPinned.label"></label>
       </p>
       <p>
         <input type="checkbox" id="show_notifications">
-        <label for="show_notifications">Show popup notifications</label>
+        <label for="show_notifications" data-l10n-id="showPopupNotifications.label"></label>
       </p>
-      <p class="subitem">Auto-close notification after <input type="number" min="0" max="999" id="notification_timeout"> seconds (0 to keep open as long as possible)</p>
+      <p class="subitem"><label for="notification_timeout" data-l10n-id="autoCloseNotificationAfter.label.before"></label> <input type="number" min="0" max="999" id="notification_timeout"> <label for="notification_timeout" data-l10n-id="autoCloseNotificationAfter.label.after"></label></p>
       <p>
         <input type="checkbox" id="context_menu">
-        <label for="context_menu">Show right-click context menu</label>
+        <label for="context_menu" data-l10n-id="showRightClickContextMenu.label"></label>
       </p>
       <p>
-        Update from server every <input type="number" min="5" max="999" id="refresh_interval">
-          minutes if tab is closed (minimum 5)
+        <label for="refresh_interval" data-l10n-id="updateFromServerEvery.label.before"></label> <input type="number" min="5" max="999" id="refresh_interval"> <label for="refresh_interval" data-l10n-id="updateFromServerEvery.label.after"></label>
       </p>
       <p>
         <input type="checkbox" id="force_http">
-        <label for="force_http">Force HTTP</label>
+        <label for="force_http" data-l10n-id="forceHTTP.label"></label>
         <span class="gray">
-          (secure HTTPS must be disabled 
-            in <a href="https://theoldreader.com/users/edit#user_use_ssl" target="_blank" class="extlink">The Old Reader settings</a>)
+          <span data-l10n-id="forceHTTP.link.before"></span><a href="https://theoldreader.com/users/edit#user_use_ssl" target="_blank" class="extlink" data-l10n-id="forceHTTP.link.text"></a><span data-l10n-id="forceHTTP.link.after"></span>
         </span>
       </p>
       <p>
         <input type="checkbox" id="use_sync">
-        <label for="use_sync">Sync options</label>
+        <label for="use_sync" data-l10n-id="syncOptions.label"></label>
         <span class="gray">
-          (<a href="#" id="open_sync_settings" target="_blank">Sync</a> must be enabled for extensions)
+          <span data-l10n-id="syncOptions.link.before"></span><a href="#" id="open_sync_settings" target="_blank" data-l10n-id="syncOptions.link.text"></a><span data-l10n-id="syncOptions.link.after"></span>
         </span>
       </p>
       <p>
-        <button id="save_button">Save</button>
-        <span class="message" id="message">(This will contain the actual message)</span>
+        <button id="save_button" data-l10n-id="saveButton"></button>
+        <span class="message" id="message"></span>
       </p>
     </div>
 
