@@ -22,7 +22,7 @@ function save_options() {
   localStorage.use_sync = $('#use_sync').prop('checked') ? 'yes' : 'no';
   localStorage.context_menu = $('#context_menu').prop('checked') ? 'yes' : 'no';
   
-  show_message({text : "Options saved!", fade_in : true, fade_out : true});
+  show_message({text : chrome.i18n.getMessage('optionsSaved.success'), fade_in : true, fade_out : true});
   
   if (localStorage.use_sync != "no") {
     chrome.runtime.sendMessage({'sync' : true}, syncCallback);
@@ -34,9 +34,9 @@ function save_options() {
 
 function syncCallback(result) {
   if (result === true) {
-    show_message({text : "Options saved and will be synced!", fade_in : true, fade_out : true});
+    show_message({text : chrome.i18n.getMessage('optionsSaved.successAndSync'), fade_in : true, fade_out : true});
   } else if (result === false) {
-    show_message({text : "Options saved, but sync failed. Will retry in a minute.", fade_in : true, red : true});
+    show_message({text : chrome.i18n.getMessage('optionsSaved.successButSyncRetry'), fade_in : true, red : true});
   } else if (chrome.runtime.lastError) {
     console.error("Could not communicate with the extension!", chrome.runtime.lastError.message);
   }
@@ -54,7 +54,7 @@ function validate_options() {
   }
   
   if (errors.length) {
-    show_message({text : "Please correct these values!", red : true, fade_in : true, fade_out : true});
+    show_message({text : chrome.i18n.getMessage('optionsValidation.correctInvalid'), red : true, fade_in : true, fade_out : true});
     errors.animate({ backgroundColor : ERROR_BACKGROUND_COLOR}, 'fast').delay(FADE_DELAY).animate({ backgroundColor : 'none'}, 'fast');
     return false;
   } else {
@@ -78,7 +78,16 @@ function load_options() {
 function onMessageOptions(request, sender, callback) {
   if (request.update) {
     load_options();
-    show_message({text : `Options updated from ${getBrowserName()} Sync.`, fade_in : true, fade_out : true});
+    var syncServiceName;
+    switch (getBrowserName()) {
+      case 'Mozilla':
+        syncServiceName = chrome.i18n.getMessage('syncService.firefox.name');
+        break;
+      case 'Chrome':
+      default:
+        syncServiceName = chrome.i18n.getMessage('syncService.chrome.name');
+    }
+    show_message({text : chrome.i18n.getMessage('optionsUpdateFromSync', syncServiceName), fade_in : true, fade_out : true});
   }
 }
 
@@ -113,13 +122,13 @@ function openChromeSyncSettings(e) {
 function displaySyncSettingsLink() {
   switch (getBrowserName()) {
     case 'Mozilla':
-      $('#open_sync_settings').text('Firefox Sync');
+      $('#open_sync_settings').text(chrome.i18n.getMessage('syncService.firefox.name'));
       $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
       $('#open_sync_settings').addClass('extlink');
       break;
     case 'Chrome':
     default:
-      $('#open_sync_settings').text('Chrome Sync');
+      $('#open_sync_settings').text(chrome.i18n.getMessage('syncService.chrome.name'));
       $('#open_sync_settings').click(openChromeSyncSettings);
   }
 }
@@ -127,12 +136,12 @@ function displaySyncSettingsLink() {
 function showReviewsLink() {
   switch (getBrowserName()) {
     case 'Mozilla':
-      $('#reviewsLink').text('Write a review on Mozilla Add-Ons');
+      $('#reviewsLink').text(chrome.i18n.getMessage('rateLink.firefox'));
       $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/the-old-reader-notifier-webext/reviews');
       break;
     case 'Chrome':
     default:
-      $('#reviewsLink').text('Rate in Chrome Web Store');
+      $('#reviewsLink').text(chrome.i18n.getMessage('rateLink.chrome'));
       $('#reviewsLink').attr('href', 'https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews');
   }
 }
@@ -167,7 +176,7 @@ $(document).ready(function() {
 
   // Reminder to save from dirty state
   $('input,select').change(function() {
-    show_message({text : "< Click button to save your changes", red : true});
+    show_message({text : chrome.i18n.getMessage('saveButton.clickMessage'), red : true});
   });
 
   // Show/animate subitem
