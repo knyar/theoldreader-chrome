@@ -99,15 +99,15 @@ function reportError(details) {
 
   if (details.loggedOut) {
     chrome.browserAction.setBadgeText({text: '!'});
-    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button.title.loggedOut')});
+    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button_title_loggedOut')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification(chrome.i18n.getMessage('notification.loggedOut.title'), chrome.i18n.getMessage('notification.loggedOut.body'));
+      showNotification(chrome.i18n.getMessage('notification_loggedOut_title'), chrome.i18n.getMessage('notification_loggedOut_body'));
     }
   } else {
     chrome.browserAction.setBadgeText({text: ''});
-    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button.title.fetchError')});
+    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button_title_fetchError')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification(chrome.i18n.getMessage('notification.fetchError.title'), chrome.i18n.getMessage('notification.fetchError.body')+details.errorText);
+      showNotification(chrome.i18n.getMessage('notification_fetchError_title'), chrome.i18n.getMessage('notification_fetchError_body')+details.errorText);
     }
   }
 
@@ -141,7 +141,7 @@ function updateIcon(count) {
 
   if (countInt > last_unread_count) {
     var text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
-    showNotification(chrome.i18n.getMessage('notification.newPosts.title'), text);
+    showNotification(chrome.i18n.getMessage('notification_newPosts_title'), text);
   }
   last_unread_count = countInt;
 }
@@ -243,8 +243,8 @@ function setCountFromObserver(count) {
 function onExtensionUpdate(details) {
   if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) {
     showNotification(
-      chrome.i18n.getMessage('notification.newOptions.title'),
-      chrome.i18n.getMessage('notification.newOptions.body'),
+      chrome.i18n.getMessage('notification_newOptions_title'),
+      chrome.i18n.getMessage('notification_newOptions_body'),
       "theoldreader-newOptions"
     );
   }
