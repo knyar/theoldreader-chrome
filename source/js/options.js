@@ -1,9 +1,9 @@
 // vim: set ts=2 sw=2 et
-var ERROR_BACKGROUND_COLOR = '#ffbbbb';
-var FADE_DELAY = 2000;
+const ERROR_BACKGROUND_COLOR = '#ffbbbb';
+const FADE_DELAY = 2000;
 
 function getBrowserName() {
-  if(typeof browser !== 'undefined') {
+  if (typeof browser !== 'undefined') {
     return 'Mozilla';
   } else {
     return 'Chrome';
@@ -11,8 +11,8 @@ function getBrowserName() {
 }
 
 function save_options() {
-  if(!validate_options()) return;
-  
+  if (!validate_options()) return;
+
   localStorage.click_page = $('#click_page').val();
   localStorage.show_notifications = $('#show_notifications').prop('checked') ? 'yes' : 'no';
   localStorage.notification_timeout = parseInt($('#notification_timeout').val());
@@ -21,22 +21,22 @@ function save_options() {
   localStorage.refresh_interval = parseInt($('#refresh_interval').val());
   localStorage.use_sync = $('#use_sync').prop('checked') ? 'yes' : 'no';
   localStorage.context_menu = $('#context_menu').prop('checked') ? 'yes' : 'no';
-  
-  show_message({text : chrome.i18n.getMessage('optionsSaved_success'), fade_in : true, fade_out : true});
-  
+
+  show_message({text: chrome.i18n.getMessage('optionsSaved_success'), fade_in: true, fade_out: true});
+
   if (localStorage.use_sync != "no") {
-    chrome.runtime.sendMessage({'sync' : true}, syncCallback);
+    chrome.runtime.sendMessage({sync: true}, syncCallback);
   }
 
   // According to the current state, enable or disable the context menus
-  chrome.runtime.sendMessage({'toggleContextMenus' : true});
+  chrome.runtime.sendMessage({toggleContextMenus: true});
 }
 
 function syncCallback(result) {
   if (result === true) {
-    show_message({text : chrome.i18n.getMessage('optionsSaved_successAndSync'), fade_in : true, fade_out : true});
+    show_message({text: chrome.i18n.getMessage('optionsSaved_successAndSync'), fade_in: true, fade_out: true});
   } else if (result === false) {
-    show_message({text : chrome.i18n.getMessage('optionsSaved_successButSyncRetry'), fade_in : true, red : true});
+    show_message({text: chrome.i18n.getMessage('optionsSaved_successButSyncRetry'), fade_in: true, red: true});
   } else if (chrome.runtime.lastError) {
     console.error("Could not communicate with the extension!", chrome.runtime.lastError.message);
   }
@@ -44,7 +44,7 @@ function syncCallback(result) {
 
 function validate_options() {
   var errors = $();
-  
+
   // First check required to filter non-numbers
   if ($('#notification_timeout').val() === "" || parseInt($('#notification_timeout').val()) < 0) {
     errors = errors.add($('#notification_timeout').closest('p'));
@@ -52,10 +52,10 @@ function validate_options() {
   if ($('#refresh_interval').val() === "" || parseInt($('#refresh_interval').val()) < 5) {
     errors = errors.add($('#refresh_interval').closest('p'));
   }
-  
+
   if (errors.length) {
-    show_message({text : chrome.i18n.getMessage('optionsValidation_correctInvalid'), red : true, fade_in : true, fade_out : true});
-    errors.animate({ backgroundColor : ERROR_BACKGROUND_COLOR}, 'fast').delay(FADE_DELAY).animate({ backgroundColor : 'none'}, 'fast');
+    show_message({text: chrome.i18n.getMessage('optionsValidation_correctInvalid'), red: true, fade_in: true, fade_out: true});
+    errors.animate({ backgroundColor: ERROR_BACKGROUND_COLOR}, 'fast').delay(FADE_DELAY).animate({ backgroundColor: 'none'}, 'fast');
     return false;
   } else {
     return true;
@@ -75,7 +75,7 @@ function load_options() {
   $('#context_menu').prop('checked', (localStorage.context_menu != 'no'));
 }
 
-function onMessageOptions(request, sender, callback) {
+function onMessageOptions(request) {
   if (request.update) {
     load_options();
     var syncServiceName;
@@ -87,7 +87,7 @@ function onMessageOptions(request, sender, callback) {
       default:
         syncServiceName = chrome.i18n.getMessage('syncService_chrome_name');
     }
-    show_message({text : chrome.i18n.getMessage('optionsUpdateFromSync', syncServiceName), fade_in : true, fade_out : true});
+    show_message({text: chrome.i18n.getMessage('optionsUpdateFromSync', syncServiceName), fade_in: true, fade_out: true});
   }
 }
 
@@ -101,13 +101,13 @@ function show_message(message) {
   $('#message').text(message.text);
   $('#message').toggleClass("red", message.red);
   $('#message').toggleClass("green", !message.red);
-  
+
   if (message.fade_in) {
     $('#message').fadeIn('fast');
   } else {
     $('#message').show();
   }
-  
+
   if (message.fade_out) {
     $('#message').delay(FADE_DELAY).fadeOut('fast');
   }
@@ -181,7 +181,7 @@ $(document).ready(function() {
 
   // Reminder to save from dirty state
   $('input,select').change(function() {
-    show_message({text : chrome.i18n.getMessage('saveButton_clickMessage'), red : true});
+    show_message({text: chrome.i18n.getMessage('saveButton_clickMessage'), red: true});
   });
 
   // Show/animate subitem

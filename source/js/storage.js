@@ -1,15 +1,18 @@
+/* global toggleContentMenus */
+/* exported loadFromStorage */
 function loadFromStorage() {
   if (localStorage.use_sync == "no") { return; }
 
   chrome.storage.sync.get(null, function(items) {
     for (var key in items) {
-      localStorage[key] = items[key]; 
+      localStorage[key] = items[key];
     }
   });
 }
 
 var syncRetryTimeout;
 
+/* exported saveToStorage */
 function saveToStorage(callback) {
   if (localStorage.use_sync == "no") { return; }
 
@@ -18,9 +21,9 @@ function saveToStorage(callback) {
     if (callback) { callback(false); }
     return;
   }
-  
+
   var data = {};
-  for (var key in localStorage) { 
+  for (var key in localStorage) {
     data[key] = localStorage[key];
   }
 
@@ -33,23 +36,24 @@ function retryOnError(retryFunction, callback) {
     if (chrome.runtime.lastError) {
       console.warn("Will retry in a minute due to ", chrome.runtime.lastError.message);
       if (callback) { callback(false); }
-      
+
       syncRetryTimeout = window.setTimeout(function() {
         syncRetryTimeout = null;
         retryFunction();
-      }, 60*1000);
-      
+      }, 60 * 1000);
+
     } else {
       if (callback) { callback(true); }
     }
   };
 }
 
+/* exported onStorageChange */
 function onStorageChange(changes, area) {
   if (area != "sync") { return; }
-  
+
   if (localStorage.use_sync == "no") { return; }
-  
+
   for (var key in changes) {
     if (typeof changes[key].newValue === "undefined") { // Key deleted
       //delete localStorage[key];
@@ -57,11 +61,11 @@ function onStorageChange(changes, area) {
       localStorage[key] = changes[key].newValue;
 
       // Quick & Dirty listener for context menu option changes for toggling state
-      if(key == 'context_menu') {
+      if (key == 'context_menu') {
         toggleContentMenus(localStorage[key]);
       }
     }
   }
 
-  chrome.runtime.sendMessage({'update': true});
+  chrome.runtime.sendMessage({update: true});
 }

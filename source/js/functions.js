@@ -1,4 +1,4 @@
-// vim: set ts=2 sw=2 et
+/* globals saveToStorage, toggleContentMenus */
 var BADGE_BACKGROUND_COLOR = '#d73f31';
 var OPTIONS_VERSION = 3; // Increment when there are new options
 
@@ -45,6 +45,7 @@ function showNotification(title, body, id = "theoldreader") {
   }
 }
 
+/* exported onNotificationClick */
 function onNotificationClick(id) {
   switch (id) {
     case "theoldreader":
@@ -58,8 +59,7 @@ function onNotificationClick(id) {
 }
 
 function baseUrl() {
-  return (localStorage.force_http == 'yes' ?
-    'http://theoldreader.com/' : 'https://theoldreader.com/');
+  return (localStorage.force_http == 'yes' ? 'http://theoldreader.com/' : 'https://theoldreader.com/');
 }
 
 function findOurTab(callback, windowId) {
@@ -68,7 +68,7 @@ function findOurTab(callback, windowId) {
       url: "*://theoldreader.com/*",
       windowId: windowId
     },
-    function (tabs) {
+    function(tabs) {
       callback(tabs[0]);
     }
   );
@@ -92,8 +92,8 @@ function reportError(details) {
 
   chrome.browserAction.setIcon({
     path: {
-      '19': 'img/icon-inactive.png',
-      '38': 'img/icon-inactive-scale2.png'
+      19: 'img/icon-inactive.png',
+      38: 'img/icon-inactive-scale2.png'
     }
   });
 
@@ -107,7 +107,7 @@ function reportError(details) {
     chrome.browserAction.setBadgeText({text: ''});
     chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button_title_fetchError')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification(chrome.i18n.getMessage('notification_fetchError_title'), chrome.i18n.getMessage('notification_fetchError_body')+details.errorText);
+      showNotification(chrome.i18n.getMessage('notification_fetchError_title'), chrome.i18n.getMessage('notification_fetchError_body') + details.errorText);
     }
   }
 
@@ -117,8 +117,8 @@ function reportError(details) {
 }
 
 function updateIcon(count) {
-  countInt = parseInt(count);
-  title_suffix = ': ' + countInt + ' unread';
+  let countInt = parseInt(count);
+  let title_suffix = ': ' + countInt + ' unread';
   if (countInt === 0) {
     count = "";
     title_suffix = '';
@@ -129,8 +129,8 @@ function updateIcon(count) {
   }
   chrome.browserAction.setIcon({
     path: {
-      '19': 'img/icon-active.png',
-      '38': 'img/icon-active-scale2.png'
+      19: 'img/icon-active.png',
+      38: 'img/icon-active-scale2.png'
     }
   });
   chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
@@ -172,16 +172,16 @@ function getCountersFromHTTP() {
     refreshFailed({errorText: 'HTTP request timed out'});
   }, 20000);
 
-  httpRequest.onerror = function(err) {
-    refreshFailed({errorText: 'HTTP request error'}); // No usable error data in err
+  httpRequest.onerror = function() {
+    refreshFailed({errorText: 'HTTP request error'});
   };
 
   httpRequest.onreadystatechange = function() {
     if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
       if (httpRequest.status >= 400) {
         refreshFailed({
-          errorText : 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
-          loggedOut : (httpRequest.status == 403 || httpRequest.status == 401)
+          errorText: 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
+          loggedOut: (httpRequest.status == 403 || httpRequest.status == 401)
         });
       } else if (httpRequest.responseText) {
         window.clearTimeout(requestTimeout);
@@ -209,13 +209,14 @@ function getCountersFromHTTP() {
 function scheduleRefresh() {
   var interval = (localStorage.refresh_interval || 15) * 60 * 1000;
   window.clearTimeout(refreshTimeout);
-  if(retryCount){ // There was an error
-    interval = Math.min( interval, 5 * 1000 * Math.pow(2, retryCount-1));
+  if (retryCount) { // There was an error
+    interval = Math.min(interval, 5 * 1000 * Math.pow(2, retryCount - 1));
     // 0:05 -> 0:10 -> 0:20 -> 0:40 -> 1:20 -> 2:40 -> 5:20 -> ...
   }
   refreshTimeout = window.setTimeout(getCountersFromHTTP, interval);
 }
 
+/* exported onMessage */
 function onMessage(request, sender, callback) {
   if (typeof request.count !== 'undefined') {
     setCountFromObserver(request.count);
@@ -240,6 +241,7 @@ function setCountFromObserver(count) {
   scheduleRefresh();
 }
 
+/* exported onExtensionUpdate */
 function onExtensionUpdate(details) {
   if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) {
     showNotification(
@@ -252,13 +254,14 @@ function onExtensionUpdate(details) {
   saveToStorage();
 }
 
+/* exported startupInject */
 function startupInject() {
   // At this point, all old content scripts, if any, cannot communicate with the extension anymore
   // Old instances of content scripts have a "kill-switch" to terminate their event listeners
   // Here we inject new instances in existing tabs
   chrome.tabs.query(
     {url: "*://theoldreader.com/*"},
-    function (tabs) {
+    function(tabs) {
       for (var i in tabs) {
         chrome.tabs.executeScript(tabs[i].id, {file: "js/observer.js"});
       }

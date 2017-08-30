@@ -1,7 +1,7 @@
 // vim: set ts=2 sw=2 et
 // Credit for the solution goes to http://stackoverflow.com/a/11694229
 
-if(typeof(window.injected) == "undefined") { // Inject guard for #40
+if (typeof window.injected === "undefined") { // Inject guard for #40
   window.injected = true;
 
   var target = document.querySelector('head > title');
@@ -9,7 +9,7 @@ if(typeof(window.injected) == "undefined") { // Inject guard for #40
   var observer = new window.MutationObserver(
     function(mutations) {
       mutations.forEach(
-        function(mutation){
+        function(mutation) {
           notify(mutation.target.textContent, true);
         }
       );
@@ -17,10 +17,10 @@ if(typeof(window.injected) == "undefined") { // Inject guard for #40
   );
 
   observer.observe(
-    target, 
-    { 
-      subtree: true, 
-      characterData: true, 
+    target,
+    {
+      subtree: true,
+      characterData: true,
       childList: true
     }
   );
@@ -29,15 +29,15 @@ if(typeof(window.injected) == "undefined") { // Inject guard for #40
 
   // Declare extension capabilities to the page
   var capabilities = {
-    openInBackground : true
+    openInBackground: true
   };
 
   exposeCapabilities(capabilities);
 
   // Add an event listener for openPostInBackground
   window.addEventListener(
-    "tor:openPostInBackground", 
-    openInBackgroundHandler, 
+    "tor:openPostInBackground",
+    openInBackgroundHandler,
     false
   );
 
@@ -57,7 +57,7 @@ function exposeCapabilities(capabilities) {
 
   var script = document.createElement('script');
   script.textContent = code;
-  (document.head||document.documentElement).appendChild(script);
+  (document.head || document.documentElement).appendChild(script);
   script.parentNode.removeChild(script);
 }
 
@@ -75,8 +75,8 @@ function notify(title, changed) {
 
   if (count >= 0) {
     try {
-      chrome.runtime.sendMessage({'count' : count});
-    } catch(e) { // Happens when parent extension is no longer available or was reloaded
+      chrome.runtime.sendMessage({count: count});
+    } catch (e) { // Happens when parent extension is no longer available or was reloaded
       console.warn("Could not communicate with parent extension, deregistering observer");
       observer.disconnect();
     }

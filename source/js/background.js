@@ -1,4 +1,4 @@
-// vim: set ts=2 sw=2 et
+/* global onStorageChange, loadFromStorage, getCountersFromHTTP, openOurTab, onMessage, onExtensionUpdate, onNotificationClick, startupInject  */
 // synchronize settings
 chrome.storage.onChanged.addListener(onStorageChange);
 loadFromStorage();
