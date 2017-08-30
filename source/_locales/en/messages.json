@@ -170,7 +170,7 @@
   },
 
   "syncOptions_link_after": {
-    "message": "must be enabled for extensions)",
+    "message": " must be enabled for extensions)",
     "description": "Option note (after link)"
   },
 

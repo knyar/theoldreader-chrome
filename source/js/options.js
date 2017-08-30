@@ -155,6 +155,11 @@ function toggleChangelog(e) {
 }
 
 $(document).ready(function() {
+  // i18n
+  for (let element of document.querySelectorAll('[data-l10n-id]')) {
+    element.textContent = chrome.i18n.getMessage(element.dataset.l10nId);
+  }
+
   showReviewsLink();
   load_options();
 
@@ -190,9 +195,4 @@ $(document).ready(function() {
   });
 
   chrome.runtime.onMessage.addListener(onMessageOptions);
-
-  // i18n
-  for (element of document.querySelectorAll('[data-l10n-id]')) {
-    element.textContent = chrome.i18n.getMessage(element.dataset.l10nId);
-  }
 });
