@@ -156,8 +156,8 @@ function toggleChangelog(e) {
 
 $(document).ready(function() {
   // i18n
-  for (let element of document.querySelectorAll('[data-l10n-id]')) {
-    element.textContent = chrome.i18n.getMessage(element.dataset.l10nId);
+  for (let element of document.querySelectorAll('[data-i18n-id]')) {
+    element.textContent = chrome.i18n.getMessage(element.dataset.i18nId);
   }
 
   showReviewsLink();
