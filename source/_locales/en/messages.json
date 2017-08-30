@@ -1,0 +1,228 @@
+{
+  "extensionName": {
+    "message": "The Old Reader Notifier",
+    "description": "Extension name"
+  },
+
+  "extensionDescription": {
+    "message": "Notifies you about unread items in your The Old Reader account",
+    "description": "Extension description"
+  },
+
+  "button_title_loggedOut": {
+    "message": "Logged out, click to log in",
+    "description": "Button toolbar when not logged in"
+  },
+
+  "button_title_fetchError": {
+    "message": "Error fetching feed counts",
+    "description": "Button toolbar when not logged in"
+  },
+
+  "contextMenu_subscribeToPage": {
+    "message": "Subscribe to page"
+  },
+
+  "contextMenu_bookmarkPage": {
+    "message": "Bookmark page"
+  },
+
+  "contextMenu_bookmarkSelection": {
+    "message": "Bookmark selection"
+  },
+
+  "notification_loggedOut_title": {
+    "message": "Logged out"
+  },
+
+  "notification_loggedOut_body": {
+    "message": "Click here to log in"
+  },
+
+  "notification_fetchError_title": {
+    "message": "Error"
+  },
+
+  "notification_fetchError_body": {
+    "message": "Failed to fetch feed counts: "
+  },
+
+  "notification_newPosts_title": {
+    "message": "New posts"
+  },
+
+  "notification_newOptions_title": {
+    "message": "New options available"
+  },
+
+  "notification_newOptions_body": {
+    "message": "Click to configure new options"
+  },
+
+  "showChangelogLink": {
+    "message": "Show changelog",
+    "description": "Text for the link to open changelog"
+  },
+
+  "hideChangelogLink": {
+    "message": "Hide changelog",
+    "description": "Text for the link to hide changelog"
+  },
+
+  "sourceCodeAndBugTrackerLink": {
+    "message": "Source code & bug tracker",
+    "description": "Text for the link to open GitHub"
+  },
+
+  "rateLink_firefox": {
+    "message": "Write a review on Mozilla Add-Ons",
+    "description": "Text for the link to addons.mozilla.org"
+  },
+
+  "rateLink_chrome": {
+    "message": "Rate in Chrome Web Store",
+    "description": "Text for the link to Chrome Web Store"
+  },
+
+  "pageToOpenWhenIconIsClicked_label": {
+    "message": "Page to open when icon is clicked:",
+    "description": "Option label"
+  },
+
+  "pageToOpenWhenIconIsClicked_home": {
+    "message": "Home",
+    "description": "One option for pageToOpenWhenIconIsClicked_label"
+  },
+
+  "pageToOpenWhenIconIsClicked_allItems": {
+    "message": "All items",
+    "description": "One option for pageToOpenWhenIconIsClicked_label"
+  },
+
+  "openTabAsPinned_label": {
+    "message": "Open tab as pinned",
+    "description": "Option label"
+  },
+
+  "showPopupNotifications_label": {
+    "message": "Show popup notifications",
+    "description": "Option label"
+  },
+
+  "autoCloseNotificationAfter_label_before": {
+    "message": "Auto-close notification after",
+    "description": "Option label (before the input)"
+  },
+
+  "autoCloseNotificationAfter_label_after": {
+    "message": "seconds (0 to keep open as long as possible)",
+    "description": "Option label (after the input)"
+  },
+
+  "updateFromServerEvery_label_before": {
+    "message": "Show popup notifications",
+    "description": "Option label (before the input)"
+  },
+
+  "updateFromServerEvery_label_after": {
+    "message": "minutes if tab is closed (minimum 5)",
+    "description": "Option label (after the input)"
+  },
+
+  "showRightClickContextMenu_label": {
+    "message": "Show right-click context menu",
+    "description": "Option label"
+  },
+
+  "forceHTTP_label": {
+    "message": "Force HTTP",
+    "description": "Option label"
+  },
+
+  "forceHTTP_link_before": {
+    "message": "(secure HTTPS must be disabled ",
+    "description": "Option note (before link)"
+  },
+
+  "forceHTTP_link_text": {
+    "message": "The Old Reader settings",
+    "description": "Option note (link text)"
+  },
+
+  "forceHTTP_link_after": {
+    "message": ")",
+    "description": "Option note (after link)"
+  },
+
+  "syncOptions_label": {
+    "message": "Sync options",
+    "description": "Option label"
+  },
+
+  "syncOptions_link_before": {
+    "message": "(",
+    "description": "Option note (before link)"
+  },
+
+  "syncOptions_link_text": {
+    "message": "Sync",
+    "description": "Option note (link text)"
+  },
+
+  "syncOptions_link_after": {
+    "message": " must be enabled for extensions)",
+    "description": "Option note (after link)"
+  },
+
+  "syncService_chrome_name": {
+    "message": "Chrome Sync",
+    "description": "Name of the sync service in Chrome"
+  },
+
+  "syncService_firefox_name": {
+    "message": "Firefox Sync",
+    "description": "Name of the sync service in Firefox"
+  },
+
+  "saveButton": {
+    "message": "Save",
+    "description": "Button text to save the options"
+  },
+
+  "saveButton_clickMessage": {
+    "message": "< Click button to save your changes",
+    "description": "Text displayed when any option is changed"
+  },
+
+  "optionsSaved_success": {
+    "message": "Options saved!",
+    "description": "Text displayed when options have been saved successfully"
+  },
+
+  "optionsSaved_successAndSync": {
+    "message": "Options saved and will be synced!",
+    "description": "Text displayed when options have been saved successfully and sync will follow"
+  },
+
+  "optionsSaved_successButSyncRetry": {
+    "message": "Options saved, but sync failed. Will retry in a minute.",
+    "description": "Text displayed when options have been saved successfully, but sync failed and will be retried"
+  },
+
+  "optionsValidation_correctInvalid": {
+    "message": "Please correct these values!",
+    "description": "Text displayed when there are invalid options"
+  },
+
+  "optionsUpdateFromSync": {
+    "message": "Options updated from $serviceName$.",
+    "description": "Text displayed when options are update from the browser sync service.",
+    "placeholders": {
+      "serviceName" : {
+        "content" : "$1",
+        "example" : "Chrome Sync"
+      }
+    }
+  }
+}
+
