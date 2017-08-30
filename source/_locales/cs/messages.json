@@ -5,162 +5,162 @@
   },
 
   "extensionDescription": {
-    "message": "Notifies you about unread items in your The Old Reader account",
+    "message": "Tento doplněk vás upozorní na nepřečtené položky z vašeho účtu The Old Reader",
     "description": "Extension description"
   },
 
   "button_title_loggedOut": {
-    "message": "Logged out, click to log in",
+    "message": "Jste odhlášeni, pro přihlášení klepněte zde",
     "description": "Button toolbar when not logged in"
   },
 
   "button_title_fetchError": {
-    "message": "Error fetching feed counts",
+    "message": "Při získávání počtu feedů došlo k chybě",
     "description": "Button toolbar when not logged in"
   },
 
   "contextMenu_subscribeToPage": {
-    "message": "Subscribe to page"
+    "message": "Přihlásit se ke stránce"
   },
 
   "contextMenu_bookmarkPage": {
-    "message": "Bookmark page"
+    "message": "Přidat stránku do záložek"
   },
 
   "contextMenu_bookmarkSelection": {
-    "message": "Bookmark selection"
+    "message": "Přidat výběr do záložek"
   },
 
   "notification_loggedOut_title": {
-    "message": "Logged out"
+    "message": "Jste odhlášeni"
   },
 
   "notification_loggedOut_body": {
-    "message": "Click here to log in"
+    "message": "Pro přihlášení klikněte zde"
   },
 
   "notification_fetchError_title": {
-    "message": "Error"
+    "message": "Chyba"
   },
 
   "notification_fetchError_body": {
-    "message": "Failed to fetch feed counts: "
+    "message": "Při získávání počtu feedů došlo k chybě: "
   },
 
   "notification_newPosts_title": {
-    "message": "New posts"
+    "message": "Nové položky"
   },
 
   "notification_newOptions_title": {
-    "message": "New options available"
+    "message": "Jsou dostupné nové možnosti"
   },
 
   "notification_newOptions_body": {
-    "message": "Click to configure new options"
+    "message": "Klikněte pro nastavení nových možností"
   },
 
   "showChangelogLink": {
-    "message": "Show changelog",
+    "message": "Zobrazit seznam změn",
     "description": "Text for the link to open changelog"
   },
 
   "hideChangelogLink": {
-    "message": "Hide changelog",
+    "message": "Skrýt seznam změn",
     "description": "Text for the link to hide changelog"
   },
 
   "sourceCodeAndBugTrackerLink": {
-    "message": "Source code & bug tracker",
+    "message": "Zdrojový kód a hlášení chyb",
     "description": "Text for the link to open GitHub"
   },
 
   "rateLink_firefox": {
-    "message": "Write a review on Mozilla Add-Ons",
+    "message": "Napište recenzi na serveru Doplňky Mozilly",
     "description": "Text for the link to addons.mozilla.org"
   },
 
   "rateLink_chrome": {
-    "message": "Rate in Chrome Web Store",
+    "message": "Ohodnoťte v Internetovém obchodě Chrome",
     "description": "Text for the link to Chrome Web Store"
   },
 
   "pageToOpenWhenIconIsClicked_label": {
-    "message": "Page to open when icon is clicked:",
+    "message": "Při klepnutí na ikonu otevřít stránku:",
     "description": "Option label"
   },
 
   "pageToOpenWhenIconIsClicked_home": {
-    "message": "Home",
+    "message": "Úvodní stránka",
     "description": "One option for pageToOpenWhenIconIsClicked_label"
   },
 
   "pageToOpenWhenIconIsClicked_allItems": {
-    "message": "All items",
+    "message": "Všechny položky",
     "description": "One option for pageToOpenWhenIconIsClicked_label"
   },
 
   "openTabAsPinned_label": {
-    "message": "Open tab as pinned",
+    "message": "Otevírat panel jako připnutý",
     "description": "Option label"
   },
 
   "showPopupNotifications_label": {
-    "message": "Show popup notifications",
+    "message": "Zobrazovat vyskakovací oznámení",
     "description": "Option label"
   },
 
   "autoCloseNotificationAfter_label_before": {
-    "message": "Auto-close notification after",
+    "message": "Oznámení automaticky zavřít po",
     "description": "Option label (before the input)"
   },
 
   "autoCloseNotificationAfter_label_after": {
-    "message": "seconds (0 to keep open as long as possible)",
+    "message": "vteřinách (0 znamená ponechat otevřené co nejdéle)",
     "description": "Option label (after the input)"
   },
 
   "updateFromServerEvery_label_before": {
-    "message": "Update from server every",
+    "message": "Aktualizovat data ze serveru každých",
     "description": "Option label (before the input)"
   },
 
   "updateFromServerEvery_label_after": {
-    "message": "minutes if tab is closed (minimum 5)",
+    "message": "minut, pokud je panel zavřený (minimum 5)",
     "description": "Option label (after the input)"
   },
 
   "showRightClickContextMenu_label": {
-    "message": "Show right-click context menu",
+    "message": "Zobrazovat kontextovou nabídku při klepnutí pravým tlačítkem",
     "description": "Option label"
   },
 
   "forceHTTP_label": {
-    "message": "Force HTTP",
+    "message": "Vynutit HTTP",
     "description": "Option label"
   },
 
   "forceHTTP_link_before": {
-    "message": "(secure HTTPS must be disabled ",
+    "message": "(HTTPS musí být v ",
     "description": "Option note (before link)"
   },
 
   "forceHTTP_link_text": {
-    "message": "The Old Reader settings",
+    "message": "nastavení The Old Readeru",
     "description": "Option note (link text)"
   },
 
   "forceHTTP_link_after": {
-    "message": ")",
+    "message": " vypnuto)",
     "description": "Option note (after link)"
   },
 
   "syncOptions_label": {
-    "message": "Sync options",
+    "message": "Možnosti synchronizace",
     "description": "Option label"
   },
 
   "syncOptions_link_before": {
-    "message": "(",
+    "message": "(služba ",
     "description": "Option note (before link)"
   },
 
@@ -170,7 +170,7 @@
   },
 
   "syncOptions_link_after": {
-    "message": " must be enabled for extensions)",
+    "message": " musí být zapnutá i pro doplňky)",
     "description": "Option note (after link)"
   },
 
@@ -185,37 +185,37 @@
   },
 
   "saveButton": {
-    "message": "Save",
+    "message": "Uložit",
     "description": "Button text to save the options"
   },
 
   "saveButton_clickMessage": {
-    "message": "< Click button to save your changes",
+    "message": "< Pro uložení vašich změn klikněte zde",
     "description": "Text displayed when any option is changed"
   },
 
   "optionsSaved_success": {
-    "message": "Options saved!",
+    "message": "Uloženo!",
     "description": "Text displayed when options have been saved successfully"
   },
 
   "optionsSaved_successAndSync": {
-    "message": "Options saved and will be synced!",
+    "message": "Uloženo a bude synchronizováno!",
     "description": "Text displayed when options have been saved successfully and sync will follow"
   },
 
   "optionsSaved_successButSyncRetry": {
-    "message": "Options saved, but sync failed. Will retry in a minute.",
+    "message": "Uloženo, ale synchronizace selhala. Opětovný pokus proběhne za minutu.",
     "description": "Text displayed when options have been saved successfully, but sync failed and will be retried"
   },
 
   "optionsValidation_correctInvalid": {
-    "message": "Please correct these values!",
+    "message": "Opravte prosím tyto volby!",
     "description": "Text displayed when there are invalid options"
   },
 
   "optionsUpdateFromSync": {
-    "message": "Options updated from $serviceName$.",
+    "message": "Možnosti byly aktualizovány ze služby $serviceName$.",
     "description": "Text displayed when options are update from the browser sync service.",
     "placeholders": {
       "serviceName" : {
