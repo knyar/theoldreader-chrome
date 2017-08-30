@@ -120,7 +120,7 @@
   },
 
   "updateFromServerEvery_label_before": {
-    "message": "Show popup notifications",
+    "message": "Update from server every",
     "description": "Option label (before the input)"
   },
 
