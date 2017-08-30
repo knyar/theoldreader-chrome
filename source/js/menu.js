@@ -27,7 +27,7 @@ function addContentMenus() {
   }.toString().replace(/(\n|\t)/gm,'');
 
   chrome.contextMenus.create({
-    "title": "Subscribe to page",
+    "title": chrome.i18n.getMessage('contextMenu_subscribeToPage'),
     "id": "subscribe",
     "parentId": "root",
     contexts: ["page"],
@@ -42,7 +42,7 @@ function addContentMenus() {
   // Temporarily disabling those bookmaklet-like entries, will need a rewrite
   if (getBrowserName() == "Chrome") {
     chrome.contextMenus.create({
-      "title": "Bookmark page",
+      "title": chrome.i18n.getMessage('contextMenu_bookmarkPage'),
       "id": "bookmarkPage",
       "parentId": "root",
       contexts: ["page"],
@@ -55,7 +55,7 @@ function addContentMenus() {
     });
 
     chrome.contextMenus.create({
-      "title": "Bookmark selection",
+      "title": chrome.i18n.getMessage('contextMenu_bookmarkSelection'),
       "id": "bookmarkSelection",
       contexts: ["selection"],
       "onclick": function(info, tab) {
