@@ -4,28 +4,34 @@ function addContentMenus() {
     {title: "The Old Reader", id: "root", contexts: ["page"]}
   );
 
-  var bookmark = function bookmark(base_url, url, selection) {
-    var f = document.createElement('form');
-    f.setAttribute('method','post');
-    f.setAttribute('action',base_url);
+  var bookmark = function(url, selection) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.timeout = 20000;
+    httpRequest.ontimeout = function () {
+      console.warn('HTTP request timed out');
+    };
+    httpRequest.onerror = function() {
+      console.warn('HTTP request error');
+    };
 
-    var f1 = document.createElement('input');
-    f1.setAttribute('type','hidden');
-    f1.setAttribute('name','saved_post[url]');
-    f1.setAttribute('value',url);
-    f.appendChild(f1);
+    httpRequest.onreadystatechange = function() {
+      if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
+        if (httpRequest.status >= 400) {
+          console.warn('HTTP request failed');
+        } else {
+          chrome.tabs.create({url: httpRequest.responseURL});
+        }
+      }
+    };
 
+    var params = `saved_post[url]=${encodeURIComponent(url)}`;
     if (selection) {
-      var f2 = document.createElement('input');
-      f2.setAttribute('type','hidden');
-      f2.setAttribute('name','saved_post[content]');
-      f2.setAttribute('value',selection);
-      f.appendChild(f2);
+      params = `${params}&saved_post[content]=${encodeURIComponent(selection)}`
     }
-
-    document.getElementsByTagName('body')[0].appendChild(f);
-    f.submit();
-  }.toString().replace(/(\n|\t)/gm,'');
+    httpRequest.open('POST', `${baseUrl()}bookmarks/bookmark`, true);
+    httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    httpRequest.send(params);
+  }
 
   chrome.contextMenus.create({
     title: chrome.i18n.getMessage('contextMenu_subscribeToPage'),
@@ -39,36 +45,24 @@ function addContentMenus() {
     }
   });
 
-  // In Firefox, opening javascript: URLs is not allowed
-  // Temporarily disabling those bookmaklet-like entries, will need a rewrite
-  if (getBrowserName() == "Chrome") {
-    chrome.contextMenus.create({
-      title: chrome.i18n.getMessage('contextMenu_bookmarkPage'),
-      id: "bookmarkPage",
-      parentId: "root",
-      contexts: ["page"],
-      onclick: function(info) {
-        var args = "\"" + baseUrl() + "bookmarks/bookmark\",\"" + info.pageUrl + "\"";
-        chrome.tabs.create({
-          url: "javascript:" + bookmark + ";bookmark(" + args + ")"
-        });
-      }
-    });
+  chrome.contextMenus.create({
+    title: chrome.i18n.getMessage('contextMenu_bookmarkPage'),
+    id: "bookmarkPage",
+    parentId: "root",
+    contexts: ["page"],
+    onclick: function(info) {
+      bookmark(info.pageUrl);
+    }
+  });
 
-    chrome.contextMenus.create({
-      title: chrome.i18n.getMessage('contextMenu_bookmarkSelection'),
-      id: "bookmarkSelection",
-      contexts: ["selection"],
-      onclick: function(info) {
-        var selection = info.selectionText.replace(/"/gm, '\\"');
-        var args = "\"" + baseUrl() + "bookmarks/bookmark\",\"" + info.pageUrl + "\", \"" + selection + "\"";
-        console.log(args);
-        chrome.tabs.create({
-          url: "javascript:" + bookmark + ";bookmark(" + args + ")"
-        });
-      }
-    });
-  }
+  chrome.contextMenus.create({
+    title: chrome.i18n.getMessage('contextMenu_bookmarkSelection'),
+    id: "bookmarkSelection",
+    contexts: ["selection"],
+    onclick: function(info) {
+      bookmark(info.pageUrl, info.selectionText);
+    }
+  });
 }
 
 function toggleContentMenus(state) {
