@@ -234,6 +234,9 @@ function onMessage(request, sender, callback) {
       active: false
     });
   }
+  if (request.type == 'close-this-tab' && typeof sender.tab !== 'undefined') {
+    chrome.tabs.remove(sender.tab.id);
+  }
 }
 
 function setCountFromObserver(count) {

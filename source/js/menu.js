@@ -19,7 +19,12 @@ function addContentMenus() {
         if (httpRequest.status >= 400) {
           console.warn('HTTP request failed');
         } else {
-          chrome.tabs.create({url: httpRequest.responseURL});
+          chrome.tabs.create({url: httpRequest.responseURL}, function(tab) {
+            chrome.tabs.executeScript(
+              tab.id,
+              {file: chrome.runtime.getURL('js/bookmark-cancel-script.js'), runAt: 'document_idle'}
+            );
+          });
         }
       }
     };
