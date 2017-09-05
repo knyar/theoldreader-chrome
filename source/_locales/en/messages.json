@@ -19,6 +19,10 @@
     "description": "Button toolbar when not logged in"
   },
 
+  "button_contextMenu_updateFromServerNow": {
+    "message": "Update from server now"
+  },
+
   "contextMenu_subscribeToPage": {
     "message": "Subscribe to page"
   },

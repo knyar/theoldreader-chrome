@@ -1,5 +1,12 @@
 /* global baseUrl, getBrowserName */
 function addContentMenus() {
+  // add button context menu
+  chrome.contextMenus.create({
+    title: chrome.i18n.getMessage('button_contextMenu_updateFromServerNow'),
+    contexts: ['browser_action'],
+    onclick: getCountersFromHTTP,
+  });
+
   chrome.contextMenus.create(
     {title: "The Old Reader", id: "root", contexts: ["page"]}
   );
