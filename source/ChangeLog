@@ -1,3 +1,13 @@
+version 1.5
+ * New implementation for bookmarking - now works in Firefox
+   (contributed by Michal Stanke)
+ * Multi-language support
+   (contributed by Michal Stanke)
+   * CZ translation, contributed by Michal Stanke
+   * Further translations welcome at https://github.com/knyar/theoldreader-chrome/
+ * New context menu for browser button - force immediate update from server
+   (contributed by Michal Stanke)
+
 version 1.4.3
  * Initial Firefox port
    (contributed by Michal Stanke and Alexander Kashev)
