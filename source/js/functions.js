@@ -1,12 +1,12 @@
 /* globals saveToStorage, toggleContentMenus */
-var BADGE_BACKGROUND_COLOR = '#d73f31';
-var OPTIONS_VERSION = 3; // Increment when there are new options
+const BADGE_BACKGROUND_COLOR = '#d73f31';
+const OPTIONS_VERSION = 3; // Increment when there are new options
 
-var refreshTimeout;
-var last_unread_count = 0;
-var notificationTimeout;
-var retryCount = 0;
-var lastError = "";
+let refreshTimeout;
+let last_unread_count = 0;
+let notificationTimeout;
+let retryCount = 0;
+let lastError = "";
 
 function getBrowserName() {
   if (typeof browser !== 'undefined') {
@@ -79,8 +79,8 @@ function openOurTab(windowId) {
     if (tab) {
       chrome.tabs.update(tab.id, {active: true});
     } else {
-      var url = baseUrl();
-      var pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
+      let url = baseUrl();
+      const pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
       if (localStorage.click_page == 'all_items') { url += 'posts/all'; }
       chrome.tabs.create({url: url, pinned: pinned, windowId: windowId});
     }
@@ -140,7 +140,7 @@ function updateIcon(count) {
   lastError = ""; // Clear last remembered error
 
   if (countInt > last_unread_count) {
-    var text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
+    const text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
     showNotification(chrome.i18n.getMessage('notification_newPosts_title'), text);
   }
   last_unread_count = countInt;
@@ -166,8 +166,8 @@ function getCountersFromHTTP() {
     scheduleRefresh();
   }
 
-  var httpRequest = new XMLHttpRequest();
-  var requestTimeout = window.setTimeout(function() {
+  let httpRequest = new XMLHttpRequest();
+  let requestTimeout = window.setTimeout(function() {
     httpRequest.abort();
     refreshFailed({errorText: 'HTTP request timed out'});
   }, 20000);
@@ -185,9 +185,8 @@ function getCountersFromHTTP() {
         });
       } else if (httpRequest.responseText) {
         window.clearTimeout(requestTimeout);
-        var feedData;
         try {
-          feedData = JSON.parse(httpRequest.responseText);
+          let feedData = JSON.parse(httpRequest.responseText);
           refreshSucceeded(feedData);
         } catch (exception) {
           refreshFailed({errorText: 'Exception while parsing json: ' + exception.toString()});
@@ -207,7 +206,7 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
-  var interval = (localStorage.refresh_interval || 15) * 60 * 1000;
+  let interval = (localStorage.refresh_interval || 15) * 60 * 1000;
   window.clearTimeout(refreshTimeout);
   if (retryCount) { // There was an error
     interval = Math.min(interval, 5 * 1000 * Math.pow(2, retryCount - 1));
@@ -265,8 +264,8 @@ function startupInject() {
   chrome.tabs.query(
     {url: "*://theoldreader.com/*"},
     function(tabs) {
-      for (var i in tabs) {
-        chrome.tabs.executeScript(tabs[i].id, {file: "js/observer.js"});
+      for (let tab of tabs) {
+        chrome.tabs.executeScript(tab.id, {file: "js/observer.js"});
       }
     }
   );

@@ -43,7 +43,7 @@ function syncCallback(result) {
 }
 
 function validate_options() {
-  var errors = $();
+  let errors = $();
 
   // First check required to filter non-numbers
   if ($('#notification_timeout').val() === "" || parseInt($('#notification_timeout').val()) < 0) {
@@ -78,7 +78,7 @@ function load_options() {
 function onMessageOptions(request) {
   if (request.update) {
     load_options();
-    var syncServiceName;
+    let syncServiceName;
     switch (getBrowserName()) {
       case 'Mozilla':
         syncServiceName = chrome.i18n.getMessage('syncService_firefox_name');

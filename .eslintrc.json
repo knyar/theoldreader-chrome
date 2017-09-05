@@ -37,6 +37,7 @@
         "no-with": "warn",
         "dot-notation": "warn",
         // "quotes": ["warn", "double", {"avoidEscape": true}], // Enforce later
-        "semi": ["warn", "always"]
+        "semi": ["warn", "always"],
+        "no-var": "warn"
     }
 }

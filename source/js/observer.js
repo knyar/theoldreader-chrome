@@ -1,12 +1,14 @@
 // vim: set ts=2 sw=2 et
 // Credit for the solution goes to http://stackoverflow.com/a/11694229
 
+let observer;
+
 if (typeof window.injected === "undefined") { // Inject guard for #40
   window.injected = true;
 
-  var target = document.querySelector('head > title');
+  const target = document.querySelector('head > title');
 
-  var observer = new window.MutationObserver(
+  observer = new window.MutationObserver(
     function(mutations) {
       mutations.forEach(
         function(mutation) {
@@ -28,7 +30,7 @@ if (typeof window.injected === "undefined") { // Inject guard for #40
   notify(target.textContent, false);
 
   // Declare extension capabilities to the page
-  var capabilities = {
+  const capabilities = {
     openInBackground: true
   };
 
@@ -49,23 +51,23 @@ function openInBackgroundHandler(evt) {
 
 function exposeCapabilities(capabilities) {
   // Extend capabilities without overriding, in case there is another extension
-  var code = "window.ExtensionCapabilities = window.ExtensionCapabilities || {};";
-  for (var key in capabilities) {
+  let code = "window.ExtensionCapabilities = window.ExtensionCapabilities || {};";
+  for (let key in capabilities) {
     code += "window.ExtensionCapabilities[" + JSON.stringify(key) +
             "] = " + JSON.stringify(capabilities[key]) + ";";
   }
 
-  var script = document.createElement('script');
+  let script = document.createElement('script');
   script.textContent = code;
   (document.head || document.documentElement).appendChild(script);
   script.parentNode.removeChild(script);
 }
 
 function notify(title, changed) {
-  var count = -1;
+  let count = -1;
 
-  var match = /^\((\d+)\)/.exec(title);
-  var match_zero = /^The Old Reader$/.exec(title); // Does not fire on navigation
+  const match = /^\((\d+)\)/.exec(title);
+  const match_zero = /^The Old Reader$/.exec(title); // Does not fire on navigation
 
   if (match && match[1]) {
     count = match[1];

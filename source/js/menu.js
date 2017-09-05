@@ -1,13 +1,20 @@
-/* global baseUrl, getBrowserName */
+/* global baseUrl, getCountersFromHTTP */
 function addContentMenus() {
+  // add button context menu
+  chrome.contextMenus.create({
+    title: chrome.i18n.getMessage('button_contextMenu_updateFromServerNow'),
+    contexts: ['browser_action'],
+    onclick: getCountersFromHTTP,
+  });
+
   chrome.contextMenus.create(
     {title: "The Old Reader", id: "root", contexts: ["page"]}
   );
 
-  var bookmark = function(url, selection) {
-    var httpRequest = new XMLHttpRequest();
+  const bookmark = function(url, selection) {
+    let httpRequest = new XMLHttpRequest();
     httpRequest.timeout = 20000;
-    httpRequest.ontimeout = function () {
+    httpRequest.ontimeout = function() {
       console.warn('HTTP request timed out');
     };
     httpRequest.onerror = function() {
@@ -29,14 +36,14 @@ function addContentMenus() {
       }
     };
 
-    var params = `saved_post[url]=${encodeURIComponent(url)}`;
+    let params = `saved_post[url]=${encodeURIComponent(url)}`;
     if (selection) {
-      params = `${params}&saved_post[content]=${encodeURIComponent(selection)}`
+      params = `${params}&saved_post[content]=${encodeURIComponent(selection)}`;
     }
     httpRequest.open('POST', `${baseUrl()}bookmarks/bookmark`, true);
     httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     httpRequest.send(params);
-  }
+  };
 
   chrome.contextMenus.create({
     title: chrome.i18n.getMessage('contextMenu_subscribeToPage'),

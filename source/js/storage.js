@@ -4,13 +4,13 @@ function loadFromStorage() {
   if (localStorage.use_sync == "no") { return; }
 
   chrome.storage.sync.get(null, function(items) {
-    for (var key in items) {
+    for (let key in items) {
       localStorage[key] = items[key];
     }
   });
 }
 
-var syncRetryTimeout;
+let syncRetryTimeout;
 
 /* exported saveToStorage */
 function saveToStorage(callback) {
@@ -22,8 +22,8 @@ function saveToStorage(callback) {
     return;
   }
 
-  var data = {};
-  for (var key in localStorage) {
+  let data = {};
+  for (let key in localStorage) {
     data[key] = localStorage[key];
   }
 
@@ -54,7 +54,7 @@ function onStorageChange(changes, area) {
 
   if (localStorage.use_sync == "no") { return; }
 
-  for (var key in changes) {
+  for (let key in changes) {
     if (typeof changes[key].newValue === "undefined") { // Key deleted
       //delete localStorage[key];
     } else {
