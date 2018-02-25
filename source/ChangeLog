@@ -1,3 +1,7 @@
+version 1.5.1
+ * Fixed storage sync for Firefox
+   (contributed by )
+
 version 1.5
  * New implementation for bookmarking - now works in Firefox
    (contributed by Michal Stanke)

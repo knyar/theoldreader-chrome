@@ -23,7 +23,7 @@ function saveToStorage(callback) {
   }
 
   let data = {};
-  for (let key in localStorage) {
+  for (let key in Object.keys(localStorage)) {
     data[key] = localStorage[key];
   }
 
