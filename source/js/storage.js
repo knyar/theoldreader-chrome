@@ -23,9 +23,9 @@ function saveToStorage(callback) {
   }
 
   let data = {};
-  for (let key in Object.keys(localStorage)) {
+  Object.keys(localStorage).forEach((key) => {
     data[key] = localStorage[key];
-  }
+  });
 
   chrome.storage.sync.set(data, retryOnError(saveToStorage, callback));
 }
