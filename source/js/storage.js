@@ -10,13 +10,13 @@ function loadFromStorage() {
   });
 }
 
-let syncRetryTimeout;
+let syncRetry;
 
 /* exported saveToStorage */
 function saveToStorage(callback) {
   if (localStorage.use_sync == "no") { return; }
 
-  if (syncRetryTimeout) {
+  if (syncRetry) {
     console.log("Already waiting for a sync attempt, throttling request");
     if (callback) { callback(false); }
     return;
@@ -37,15 +37,28 @@ function retryOnError(retryFunction, callback) {
       console.warn("Will retry in a minute due to ", chrome.runtime.lastError.message);
       if (callback) { callback(false); }
 
-      syncRetryTimeout = window.setTimeout(function() {
-        syncRetryTimeout = null;
+	  /*
+	  // old code
+      syncRetry = window.setTimeout(function() {
+        syncRetry = null;
         retryFunction();
       }, 60 * 1000);
+	  */
+	  // transition to chrome.alarms instead of window.setTimeout
+	  syncRetry = true;
+      chrome.alarms.onAlarm.addListener(retryOnErrorAlarmFn.bind(null, retryFunction));
+      chrome.alarms.create('retryAlarm', {delayInMinutes:1});
 
     } else {
       if (callback) { callback(true); }
     }
   };
+}
+// required if (see above) transition to chrome.alarms instead of window.setTimeout
+function retryOnErrorAlarmFn(retryFunction, Alarm) {
+	if (Alarm.name != 'retryAlarm') { return; }
+    syncRetry = null;
+    retryFunction();
 }
 
 /* exported onStorageChange */

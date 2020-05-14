@@ -2,7 +2,6 @@
 const BADGE_BACKGROUND_COLOR = '#d73f31';
 const OPTIONS_VERSION = 3; // Increment when there are new options
 
-let refreshTimeout;
 let last_unread_count = 0;
 let notificationTimeout;
 let retryCount = 0;
@@ -146,7 +145,10 @@ function updateIcon(count) {
   last_unread_count = countInt;
 }
 
-function getCountersFromHTTP() {
+function getCountersFromHTTP(Alarm) {
+  // if invoked by Alarm: check if it's 'refreshAlarm'
+  if (Alarm && Alarm.name != 'refreshAlarm') { return; }
+  
   // If request times out or if we get unexpected output, report error and reschedule
   function refreshFailed(details) {
     window.clearTimeout(requestTimeout);
@@ -206,6 +208,8 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
+/*
+  // old code
   let interval = (localStorage.refresh_interval || 15) * 60 * 1000;
   window.clearTimeout(refreshTimeout);
   if (retryCount) { // There was an error
@@ -213,6 +217,24 @@ function scheduleRefresh() {
     // 0:05 -> 0:10 -> 0:20 -> 0:40 -> 1:20 -> 2:40 -> 5:20 -> ...
   }
   refreshTimeout = window.setTimeout(getCountersFromHTTP, interval);
+*/
+  let interval = +(localStorage.refresh_interval || 15);
+  /*
+  // there's no need to clear alarm before setting new with the same name
+  chrome.alarms.clear('refreshAlarm'); //chrome.alarms.clear(string name, function callback);
+  */
+  if (retryCount) { // There was an error
+    interval = Math.min( interval, Math.max(1, retryCount-2));
+    // 1:00 -> 1:00 -> 1:00 -> 2:00 -> 3:00 -> 4:00 -> 5:00 -> ...
+	// chrome alarms cannot go off more frequently than every 1 minute
+	/* we can think of making errors retries with window.setTimeout */
+  }
+  chrome.alarms.onAlarm.addListener(getCountersFromHTTP); //chrome.alarms.onAlarm.addListener(function callback)
+  chrome.alarms.create('refreshAlarm', {delayInMinutes:interval}); //chrome.alarms.create(string name, object alarmInfo)
+  /*
+  // delayInMinutes runs fn once, after delay; periodInMinutes runs periodically
+  chrome.alarms.create('refreshAlarm', {periodInMinutes:interval}); //chrome.alarms.create(string name, object alarmInfo)
+  */
 }
 
 /* exported onMessage */
