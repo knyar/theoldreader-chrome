@@ -1,0 +1,232 @@
+{
+  "extensionName": {
+    "message": "The Old Reader Notifier",
+    "description": "Extension name"
+  },
+
+  "extensionDescription": {
+    "message": "Tento doplněk vás upozorní na nepřečtené položky z vašeho účtu The Old Reader",
+    "description": "Extension description"
+  },
+
+  "button_title_loggedOut": {
+    "message": "Jste odhlášeni, pro přihlášení klepněte zde",
+    "description": "Button toolbar when not logged in"
+  },
+
+  "button_title_fetchError": {
+    "message": "Při získávání počtu feedů došlo k chybě",
+    "description": "Button toolbar when not logged in"
+  },
+
+  "button_contextMenu_updateFromServerNow": {
+    "message": "Aktualizovat data ze serveru"
+  },
+
+  "contextMenu_subscribeToPage": {
+    "message": "Přihlásit se ke stránce"
+  },
+
+  "contextMenu_bookmarkPage": {
+    "message": "Přidat stránku do záložek"
+  },
+
+  "contextMenu_bookmarkSelection": {
+    "message": "Přidat výběr do záložek"
+  },
+
+  "notification_loggedOut_title": {
+    "message": "Jste odhlášeni"
+  },
+
+  "notification_loggedOut_body": {
+    "message": "Pro přihlášení klikněte zde"
+  },
+
+  "notification_fetchError_title": {
+    "message": "Chyba"
+  },
+
+  "notification_fetchError_body": {
+    "message": "Při získávání počtu feedů došlo k chybě: "
+  },
+
+  "notification_newPosts_title": {
+    "message": "Nové položky"
+  },
+
+  "notification_newOptions_title": {
+    "message": "Jsou dostupné nové možnosti"
+  },
+
+  "notification_newOptions_body": {
+    "message": "Klikněte pro nastavení nových možností"
+  },
+
+  "showChangelogLink": {
+    "message": "Zobrazit seznam změn",
+    "description": "Text for the link to open changelog"
+  },
+
+  "hideChangelogLink": {
+    "message": "Skrýt seznam změn",
+    "description": "Text for the link to hide changelog"
+  },
+
+  "sourceCodeAndBugTrackerLink": {
+    "message": "Zdrojový kód a hlášení chyb",
+    "description": "Text for the link to open GitHub"
+  },
+
+  "rateLink_firefox": {
+    "message": "Napište recenzi na serveru Doplňky Mozilly",
+    "description": "Text for the link to addons.mozilla.org"
+  },
+
+  "rateLink_chrome": {
+    "message": "Ohodnoťte v Internetovém obchodě Chrome",
+    "description": "Text for the link to Chrome Web Store"
+  },
+
+  "pageToOpenWhenIconIsClicked_label": {
+    "message": "Při klepnutí na ikonu otevřít stránku:",
+    "description": "Option label"
+  },
+
+  "pageToOpenWhenIconIsClicked_home": {
+    "message": "Úvodní stránka",
+    "description": "One option for pageToOpenWhenIconIsClicked_label"
+  },
+
+  "pageToOpenWhenIconIsClicked_allItems": {
+    "message": "Všechny položky",
+    "description": "One option for pageToOpenWhenIconIsClicked_label"
+  },
+
+  "openTabAsPinned_label": {
+    "message": "Otevírat panel jako připnutý",
+    "description": "Option label"
+  },
+
+  "showPopupNotifications_label": {
+    "message": "Zobrazovat vyskakovací oznámení",
+    "description": "Option label"
+  },
+
+  "autoCloseNotificationAfter_label_before": {
+    "message": "Oznámení automaticky zavřít po",
+    "description": "Option label (before the input)"
+  },
+
+  "autoCloseNotificationAfter_label_after": {
+    "message": "vteřinách (0 znamená ponechat otevřené co nejdéle)",
+    "description": "Option label (after the input)"
+  },
+
+  "updateFromServerEvery_label_before": {
+    "message": "Aktualizovat data ze serveru každých",
+    "description": "Option label (before the input)"
+  },
+
+  "updateFromServerEvery_label_after": {
+    "message": "minut, pokud je panel zavřený (minimum 5)",
+    "description": "Option label (after the input)"
+  },
+
+  "showRightClickContextMenu_label": {
+    "message": "Zobrazovat kontextovou nabídku při klepnutí pravým tlačítkem",
+    "description": "Option label"
+  },
+
+  "forceHTTP_label": {
+    "message": "Vynutit HTTP",
+    "description": "Option label"
+  },
+
+  "forceHTTP_link_before": {
+    "message": "(HTTPS musí být v ",
+    "description": "Option note (before link)"
+  },
+
+  "forceHTTP_link_text": {
+    "message": "nastavení The Old Readeru",
+    "description": "Option note (link text)"
+  },
+
+  "forceHTTP_link_after": {
+    "message": " vypnuto)",
+    "description": "Option note (after link)"
+  },
+
+  "syncOptions_label": {
+    "message": "Možnosti synchronizace",
+    "description": "Option label"
+  },
+
+  "syncOptions_link_before": {
+    "message": "(služba ",
+    "description": "Option note (before link)"
+  },
+
+  "syncOptions_link_text": {
+    "message": "Sync",
+    "description": "Option note (link text)"
+  },
+
+  "syncOptions_link_after": {
+    "message": " musí být zapnutá i pro doplňky)",
+    "description": "Option note (after link)"
+  },
+
+  "syncService_chrome_name": {
+    "message": "Chrome Sync",
+    "description": "Name of the sync service in Chrome"
+  },
+
+  "syncService_firefox_name": {
+    "message": "Firefox Sync",
+    "description": "Name of the sync service in Firefox"
+  },
+
+  "saveButton": {
+    "message": "Uložit",
+    "description": "Button text to save the options"
+  },
+
+  "saveButton_clickMessage": {
+    "message": "< Pro uložení vašich změn klikněte zde",
+    "description": "Text displayed when any option is changed"
+  },
+
+  "optionsSaved_success": {
+    "message": "Uloženo!",
+    "description": "Text displayed when options have been saved successfully"
+  },
+
+  "optionsSaved_successAndSync": {
+    "message": "Uloženo a bude synchronizováno!",
+    "description": "Text displayed when options have been saved successfully and sync will follow"
+  },
+
+  "optionsSaved_successButSyncRetry": {
+    "message": "Uloženo, ale synchronizace selhala. Opětovný pokus proběhne za minutu.",
+    "description": "Text displayed when options have been saved successfully, but sync failed and will be retried"
+  },
+
+  "optionsValidation_correctInvalid": {
+    "message": "Opravte prosím tyto volby!",
+    "description": "Text displayed when there are invalid options"
+  },
+
+  "optionsUpdateFromSync": {
+    "message": "Možnosti byly aktualizovány ze služby $serviceName$.",
+    "description": "Text displayed when options are update from the browser sync service.",
+    "placeholders": {
+      "serviceName" : {
+        "content" : "$1",
+        "example" : "Chrome Sync"
+      }
+    }
+  }
+}
+

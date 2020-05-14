@@ -1,0 +1,161 @@
+version 1.5.2
+ * Fixed storage sync for Firefox
+   (contributed by Alexander Kashev)
+
+version 1.5
+ * New implementation for bookmarking - now works in Firefox
+   (contributed by Michal Stanke)
+ * Multi-language support
+   (contributed by Michal Stanke)
+   * CZ translation, contributed by Michal Stanke
+   * Further translations welcome at https://github.com/knyar/theoldreader-chrome/
+ * New context menu for browser button - force immediate update from server
+   (contributed by Michal Stanke)
+
+version 1.4.3
+ * Initial Firefox port
+   (contributed by Michal Stanke and Alexander Kashev)
+   Caveats for FF:
+   * Bookmarking functions currently disabled
+   * No way to make notifications permanent
+
+version 1.3.1
+
+ * Icon size tweak for extension's Action button
+   (contributed by Alexander Kashev)
+
+version 1.3
+
+ * New design for The Old Reader logo
+   (contributed by Alexander Kashev & TOR team)
+ * Small tweaks to Options page
+   (contributed by Alexander Kashev)
+
+version 1.2.3
+
+ * Add sanity check against double content script injection
+   (contributed by Alexander Kashev)
+
+version 1.2.2
+
+ * Embedded viewer for changelog in options
+   (contributed by Alexander Kashev)
+
+version 1.2
+
+ * Update options page to Options V2 UI
+   (contributed by Alexander Kashev)
+
+version 1.1.1
+
+ * Provide support for "Open in background" keyboard shortcut from TOR code
+   (contributed by Alexander Kashev & Jim Fiorato)
+
+version 1.0
+
+ All by Alexander Kashev:
+
+ * Enforce HTTPS by default; add option to disable
+     with a link to TOR settings (that otherwise override extension setting)
+ * Options page formatting: line up and re-arrange checkboxes
+ * Working link to Chrome Sync settings
+ * Small refactoring in options.js
+ * Graduate from 0.x versions
+
+version 0.19
+
+ * Switched to polling The Old Reader public API
+   (contributed by Dmitry Krasnoukhov)
+ * Added high-DPI button icons
+   (contributed by Alexander Kashev)
+
+version 0.18
+
+ * Added an option to disable context menu items
+   (contributed by ConcurrentHashMap)
+ * Options page shows updates from Chrome Sync in real time
+   (contributed by Alexander Kashev)
+
+version 0.17
+
+ * Added context menu allowing to bookmark content or add a subscription
+   (contributed by Dmitry Krasnoukhov)
+
+version 0.16
+
+ * Migrated away from deprecated webkitNotifications (contributed by Alexander Kashev)
+ * Small fixes to options page (contributed by Alexander Kashev)
+
+version 0.15
+
+ * Options sync crash workaround (contributed by Alexander Kashev)
+ * Updated some deprecated API calls (contributed by Alexander Kashev)
+
+version 0.14
+
+ * In case of multiple windows, a new tab will be opened on click
+   if there is no TOR tab in the current window (contributed by Alexander Kashev)
+
+version 0.13
+
+ * Added an option to open tab as pinned (contributed by Vasilij Melnychuk)
+ * Implemented options sync through Chrome Sync (contributed by Alexander Kashev)
+ * Notifier will retry contacting servers faster after a fresh error (contributed by Alexander Kashev)
+ * Logged out state now shows a "!" badge, requesting user attention (contributed by Alexander Kashev)
+
+version 0.12
+
+ * Information is correctly updated from already open tabs
+   when extension is installed or updated (contributed by Alexander Kashev)
+ * Added links to preferences page (contributed by Alexander Kashev)
+
+version 0.11
+
+ * Optimized image size (contributed by nelchael)
+ * Extension renamed to "The Old Reader Notifier"
+
+version 0.10
+
+Lots of new features contributed by Alexander Kashev:
+
+ * New tab-based counter refresh mechanism
+ * HTTPS support
+ * Configurable refresh interval
+ * Notification timeout
+ * Improved preferences page
+ * Notifications about new option settings after upgrade
+
+version 0.9
+
+ * Fix notification settings
+
+version 0.8
+
+ * Added new item notifications (contributed by nelchael)
+ * User can now choose whether Home page or All Items should be opened
+   upon clicking the icon (contributed by nelchael)
+
+version 0.7
+
+ * Adjusted regular expression to prevent matching error page title
+   (contributed by Alexander Kashev).
+
+version 0.6
+
+ * Fixed tab-based counter detection
+ * Fixed handling of empty feed data
+
+version 0.5
+
+ * Refactored timers to fetch data from HTTP more effectively.
+ * Added 'subscribe' web intent handling.
+
+version 0.4
+
+ * Fixed some bugs in timeout handling.
+
+version 0.3
+
+ * Failed HTTP counter update now forces next update to be over HTTP
+   as well. This should make the icon active again much faster after
+   any service or network failures.

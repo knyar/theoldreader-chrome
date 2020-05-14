@@ -1,0 +1,43 @@
+{
+    "env": {
+        "browser": true,
+        "webextensions": true,
+        "jquery": true,
+        "es6": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        // Allow console
+        "no-console": "off",
+
+        // Style, indent/whitespace
+        "indent": ["warn", 2, {"SwitchCase": 1}],
+        "no-trailing-spaces": "warn",
+        "eol-last": "warn",
+        "no-multiple-empty-lines": "warn",
+
+        // Style, spacing
+        "space-unary-ops": ["warn", {"words": true, "nonwords": false}],
+        "space-infix-ops": "warn",
+        "keyword-spacing": "warn",
+        "space-before-blocks": ["warn", "always"],
+        "operator-linebreak": "warn",
+        "space-before-function-paren": ["warn", "never"],
+        "space-in-parens": ["warn", "never"],
+        "array-bracket-spacing": ["warn", "never"],
+        "no-spaced-func": "warn",
+        "key-spacing": ["warn", {"beforeColon": false, "afterColon": true}],
+        "quote-props": ["warn", "as-needed"],
+
+        // Style, braces
+        "brace-style": ["warn", "1tbs", {"allowSingleLine": true}],
+        "curly": ["warn", "multi-line"],
+
+        // Style, misc
+        "no-with": "warn",
+        "dot-notation": "warn",
+        // "quotes": ["warn", "double", {"avoidEscape": true}], // Enforce later
+        "semi": ["warn", "always"],
+        "no-var": "warn"
+    }
+}

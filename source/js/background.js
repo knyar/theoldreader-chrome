@@ -1,4 +1,4 @@
-// vim: set ts=2 sw=2 et
+/* global onStorageChange, loadFromStorage, getCountersFromHTTP, openOurTab, onMessage, onExtensionUpdate, onNotificationClick, startupInject  */
 // synchronize settings
 chrome.storage.onChanged.addListener(onStorageChange);
 loadFromStorage();
@@ -16,6 +16,8 @@ chrome.runtime.onMessage.addListener(onMessage);
 
 // alert about new features, if any
 chrome.runtime.onInstalled.addListener(onExtensionUpdate);
+
+chrome.notifications.onClicked.addListener(onNotificationClick);
 
 // initially inject content scripts
 startupInject();
