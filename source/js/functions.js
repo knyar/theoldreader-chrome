@@ -1,5 +1,4 @@
 /* globals saveToStorage, toggleContentMenus */
-const BADGE_BACKGROUND_COLOR = '#d73f31';
 const OPTIONS_VERSION = 3; // Increment when there are new options
 
 let refreshTimeout;
@@ -133,7 +132,6 @@ function updateIcon(count) {
       38: 'img/icon-active-scale2.png'
     }
   });
-  chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
   chrome.browserAction.setBadgeText({text: count});
   chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
 
