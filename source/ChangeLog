@@ -1,3 +1,7 @@
+version 1.5.3
+ * Fixed black-on-red extension button badge text on Firefox
+   (contributed by Vincent Jacobs)
+
 version 1.5.2
  * Fixed storage sync for Firefox
    (contributed by Alexander Kashev)
