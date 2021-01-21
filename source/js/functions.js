@@ -1,4 +1,6 @@
 /* globals saveToStorage, toggleContentMenus */
+const BADGE_BACKGROUND_COLOR = '#d51b15';
+const BADGE_TEXT_COLOR = '#ffffff'
 const OPTIONS_VERSION = 3; // Increment when there are new options
 
 let refreshTimeout;
@@ -132,6 +134,10 @@ function updateIcon(count) {
       38: 'img/icon-active-scale2.png'
     }
   });
+  chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR}); 
+  if (typeof(chrome.browserAction.setBadgeTextColor) === "function") {
+    chrome.browserAction.setBadgeTextColor({color: BADGE_TEXT_COLOR});
+  }
   chrome.browserAction.setBadgeText({text: count});
   chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
 
