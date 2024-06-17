@@ -2,10 +2,11 @@
 function addContentMenus() {
   // add button context menu
   chrome.contextMenus.create({
+	id: "browserActionContextMenu",
     title: chrome.i18n.getMessage('button_contextMenu_updateFromServerNow'),
     contexts: ['browser_action'],
-    onclick: getCountersFromHTTP,
   });
+  contextMenuListener.assignFunctionToMenu('browserActionContextMenu', getCountersFromHTTP);
 
   chrome.contextMenus.create(
     {title: "The Old Reader", id: "root", contexts: ["page"]}
@@ -50,11 +51,11 @@ function addContentMenus() {
     id: "subscribe",
     parentId: "root",
     contexts: ["page"],
-    onclick: function(info, tab) {
+  });
+  contextMenuListener.assignFunctionToMenu('subscribe', function(info, tab) {
       chrome.tabs.create({
         url: baseUrl() + "feeds/subscribe?url=" + encodeURIComponent(tab.url)
       });
-    }
   });
 
   chrome.contextMenus.create({
@@ -62,20 +63,34 @@ function addContentMenus() {
     id: "bookmarkPage",
     parentId: "root",
     contexts: ["page"],
-    onclick: function(info) {
+  });
+  contextMenuListener.assignFunctionToMenu('bookmarkPage', function(info) {
       bookmark(info.pageUrl);
-    }
   });
 
   chrome.contextMenus.create({
     title: chrome.i18n.getMessage('contextMenu_bookmarkSelection'),
     id: "bookmarkSelection",
     contexts: ["selection"],
-    onclick: function(info) {
+  });
+  contextMenuListener.assignFunctionToMenu('bookmarkSelection', function(info) {
       bookmark(info.pageUrl, info.selectionText);
-    }
   });
 }
+
+let contextMenuListener = {
+  assignFunctionToMenu: function (id, fn){ // assigns fn to id of a contextMenu and stores inside this object
+    if (id === undefined || fn === undefined) { return; }
+    this[id] = fn;
+  },
+  call: function (info, tab){ // calls stored fn depending on menuItemId which fired the onclick event
+    if (this[info.menuItemId]) {
+      this[info.menuItemId](info, tab);
+	}
+  }
+}
+
+chrome.contextMenus.onClicked.addListener(contextMenuListener.call);
 
 function toggleContentMenus(state) {
   if (state == 'no') {

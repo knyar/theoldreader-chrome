@@ -9,7 +9,8 @@
     "128": "img/icon-128.png"
   },
   "background": {
-    "scripts": [ "js/functions.js", "js/storage.js", "js/background.js", "js/menu.js" ]
+    "scripts": [ "js/functions.js", "js/storage.js", "js/background.js", "js/menu.js" ],
+    "persistent": false
   },
   "browser_action": {
     "default_icon": {
@@ -19,10 +20,11 @@
     "default_title": "The Old Reader"
   },
   "permissions": [
-    "tabs",
-    "notifications",
-    "storage",
+    "alarms",
     "contextMenus",
+    "notifications",
+    "tabs",
+    "storage",
     "*://theoldreader.com/"
   ],
   "web_accessible_resources": [
