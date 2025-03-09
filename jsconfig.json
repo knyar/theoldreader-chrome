@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2023"
+  },
+  "typeAcquisition": {
+    "enable": true,
+    "include": ["firefox-webext-browser", "chrome", "jquery"]
+  }
+}
