@@ -3,7 +3,8 @@ const ERROR_BACKGROUND_COLOR = '#ffbbbb';
 const FADE_DELAY = 2000;
 
 function getBrowserName() {
-  if (typeof browser !== 'undefined') {
+  // Credit to https://github.com/mozilla/webextension-polyfill/issues/55#issuecomment-329676034 since polyfill makes old "check if browser is defined impossible"
+  if (browser.runtime.id === 'theoldreader@knyar') {
     return 'Mozilla';
   } else {
     return 'Chrome';
@@ -22,24 +23,26 @@ function save_options() {
   localStorage.use_sync = $('#use_sync').prop('checked') ? 'yes' : 'no';
   localStorage.context_menu = $('#context_menu').prop('checked') ? 'yes' : 'no';
 
-  show_message({text: chrome.i18n.getMessage('optionsSaved_success'), fade_in: true, fade_out: true});
+  show_message({text: browser.i18n.getMessage('optionsSaved_success'), fade_in: true, fade_out: true});
 
   if (localStorage.use_sync != "no") {
-    chrome.runtime.sendMessage({sync: true}, syncCallback);
+    browser.runtime.sendMessage({sync: true}).then(syncCallback).catch(syncError);
   }
 
   // According to the current state, enable or disable the context menus
-  chrome.runtime.sendMessage({toggleContextMenus: true});
+  browser.runtime.sendMessage({toggleContextMenus: true});
 }
 
 function syncCallback(result) {
   if (result === true) {
-    show_message({text: chrome.i18n.getMessage('optionsSaved_successAndSync'), fade_in: true, fade_out: true});
-  } else if (result === false) {
-    show_message({text: chrome.i18n.getMessage('optionsSaved_successButSyncRetry'), fade_in: true, red: true});
-  } else if (chrome.runtime.lastError) {
-    console.error("Could not communicate with the extension!", chrome.runtime.lastError.message);
+    show_message({text: browser.i18n.getMessage('optionsSaved_successAndSync'), fade_in: true, fade_out: true});
+  } else {
+    show_message({text: browser.i18n.getMessage('optionsSaved_successButSyncRetry'), fade_in: true, red: true});
   }
+}
+
+function syncError(error) {
+  console.error("Could not communicate with the extension!", error);
 }
 
 function validate_options() {
@@ -54,7 +57,7 @@ function validate_options() {
   }
 
   if (errors.length) {
-    show_message({text: chrome.i18n.getMessage('optionsValidation_correctInvalid'), red: true, fade_in: true, fade_out: true});
+    show_message({text: browser.i18n.getMessage('optionsValidation_correctInvalid'), red: true, fade_in: true, fade_out: true});
     errors.animate({ backgroundColor: ERROR_BACKGROUND_COLOR}, 'fast').delay(FADE_DELAY).animate({ backgroundColor: 'none'}, 'fast');
     return false;
   } else {
@@ -81,20 +84,20 @@ function onMessageOptions(request) {
     let syncServiceName;
     switch (getBrowserName()) {
       case 'Mozilla':
-        syncServiceName = chrome.i18n.getMessage('syncService_firefox_name');
+        syncServiceName = browser.i18n.getMessage('syncService_firefox_name');
         break;
       case 'Chrome':
       default:
-        syncServiceName = chrome.i18n.getMessage('syncService_chrome_name');
+        syncServiceName = browser.i18n.getMessage('syncService_chrome_name');
     }
-    show_message({text: chrome.i18n.getMessage('optionsUpdateFromSync', syncServiceName), fade_in: true, fade_out: true});
+    show_message({text: browser.i18n.getMessage('optionsUpdateFromSync', syncServiceName), fade_in: true, fade_out: true});
   }
 }
 
 // message is an object:
 //   text ( string )
 //   red ( optional boolean )
-//   fade_in ( optional boolean ) 
+//   fade_in ( optional boolean )
 //   fade_out ( optional boolean )
 function show_message(message) {
   $('#message').finish().hide();
@@ -114,21 +117,21 @@ function show_message(message) {
 }
 
 function openChromeSyncSettings(e) {
-  // A simple link would not work, but chrome.tabs sidesteps restrictions
-  chrome.tabs.create({url: "chrome://settings/syncSetup"});
+  // A simple link would not work, but browser.tabs sidesteps restrictions
+  browser.tabs.create({url: "chrome://settings/syncSetup"});
   e.preventDefault();
 }
 
 function displaySyncSettingsLink() {
   switch (getBrowserName()) {
     case 'Mozilla':
-      $('#open_sync_settings').text(chrome.i18n.getMessage('syncService_firefox_name'));
-      $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-types-information-sync-firefox');
+      $('#open_sync_settings').text(browser.i18n.getMessage('syncService_firefox_name'));
+      $('#open_sync_settings').attr('href', 'https://support.mozilla.org/kb/how-do-i-choose-what-information-sync-firefox');
       $('#open_sync_settings').addClass('extlink');
       break;
     case 'Chrome':
     default:
-      $('#open_sync_settings').text(chrome.i18n.getMessage('syncService_chrome_name'));
+      $('#open_sync_settings').text(browser.i18n.getMessage('syncService_chrome_name'));
       $('#open_sync_settings').click(openChromeSyncSettings);
   }
 }
@@ -136,12 +139,12 @@ function displaySyncSettingsLink() {
 function showReviewsLink() {
   switch (getBrowserName()) {
     case 'Mozilla':
-      $('#reviewsLink').text(chrome.i18n.getMessage('rateLink_firefox'));
+      $('#reviewsLink').text(browser.i18n.getMessage('rateLink_firefox'));
       $('#reviewsLink').attr('href', 'https://addons.mozilla.org/addon/the-old-reader-notifier-webext/reviews');
       break;
     case 'Chrome':
     default:
-      $('#reviewsLink').text(chrome.i18n.getMessage('rateLink_chrome'));
+      $('#reviewsLink').text(browser.i18n.getMessage('rateLink_chrome'));
       $('#reviewsLink').attr('href', 'https://chrome.google.com/webstore/detail/the-old-reader-notifier/flnadglecinohkbmdpeooblldjpaimpo/reviews');
   }
 }
@@ -157,7 +160,7 @@ function toggleChangelog(e) {
 $(document).ready(function() {
   // i18n
   for (let element of document.querySelectorAll('[data-i18n-id]')) {
-    element.textContent = chrome.i18n.getMessage(element.dataset.i18nId);
+    element.textContent = browser.i18n.getMessage(element.dataset.i18nId);
   }
 
   showReviewsLink();
@@ -181,7 +184,7 @@ $(document).ready(function() {
 
   // Reminder to save from dirty state
   $('input,select').change(function() {
-    show_message({text: chrome.i18n.getMessage('saveButton_clickMessage'), red: true});
+    show_message({text: browser.i18n.getMessage('saveButton_clickMessage'), red: true});
   });
 
   // Show/animate subitem
@@ -194,5 +197,5 @@ $(document).ready(function() {
     }
   });
 
-  chrome.runtime.onMessage.addListener(onMessageOptions);
+  browser.runtime.onMessage.addListener(onMessageOptions);
 });

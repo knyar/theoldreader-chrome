@@ -1,11 +1,11 @@
 {
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "theoldreader@knyar",
-      "strict_min_version": "53.0"
+      "strict_min_version": "121.0"
     }
   },
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "version": "1.5.3",
@@ -15,9 +15,10 @@
     "128": "img/icon-128.png"
   },
   "background": {
-    "scripts": [ "js/functions.js", "js/storage.js", "js/background.js", "js/menu.js" ]
+    "scripts": [ "js/background.js" ],
+    "type": "module"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "19": "img/icon-inactive.png",
       "38": "img/icon-inactive-scale2.png"
@@ -29,14 +30,14 @@
     "notifications",
     "storage",
     "contextMenus",
+    "alarms",
+    "scripting"
+  ],
+  "host_permissions": [
     "*://theoldreader.com/"
   ],
-  "web_accessible_resources": [
-    "img/icon-48.png"
-  ],
   "options_ui": {
-    "page": "options.html",
-    "chrome_style": false
+    "page": "options.html"
   },
   "default_locale": "en",
   "content_scripts": [

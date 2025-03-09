@@ -1,23 +1,25 @@
-/* globals saveToStorage, toggleContentMenus */
+import "./lib/browser-polyfill.js";
+import { saveToStorage } from "./storage.js";
+import { toggleContentMenus } from "./menu.js";
+
 const BADGE_BACKGROUND_COLOR = '#d51b15';
-const BADGE_TEXT_COLOR = '#ffffff'
+const BADGE_TEXT_COLOR = '#ffffff';
 const OPTIONS_VERSION = 3; // Increment when there are new options
 
-let refreshTimeout;
 let last_unread_count = 0;
-let notificationTimeout;
 let retryCount = 0;
 let lastError = "";
 
 function getBrowserName() {
-  if (typeof browser !== 'undefined') {
+  // Credit to https://github.com/mozilla/webextension-polyfill/issues/55#issuecomment-329676034 since polyfill makes old "check if browser is defined impossible"
+  if (browser.runtime.id === 'theoldreader@knyar') {
     return 'Mozilla';
   } else {
     return 'Chrome';
   }
 }
 
-function showNotification(title, body, id = "theoldreader") {
+async function showNotification(title, body, id = "theoldreader") {
   if (id != "theoldreader-newOptions" && localStorage.show_notifications != 'yes') {
     return;
   }
@@ -35,63 +37,82 @@ function showNotification(title, body, id = "theoldreader") {
     options.isClickable = true;
   }
 
-  chrome.notifications.create(id, options);
+  browser.notifications.create(id, options);
 
   if (id == "theoldreader" && localStorage.notification_timeout > 0) {
-    window.clearTimeout(notificationTimeout); // If updating a notification, reset timeout
-    notificationTimeout = window.setTimeout(
-      function() { chrome.notifications.clear("theoldreader"); },
-      localStorage.notification_timeout * 1000
+    let timeout = localStorage.notification_timeout;
+
+    // Chrome does not allow alarms shorter than 30 seconds
+    if (getBrowserName() === "Chrome" && timeout < 30) {
+      timeout = 30;
+    }
+
+    await browser.alarms.clear("notification-clear");
+    browser.alarms.create(
+      "notification-clear",
+      {
+        delayInMinutes: timeout / 60
+      }
     );
   }
 }
 
-/* exported onNotificationClick */
-function onNotificationClick(id) {
+// Listener for browser.alarms.onAlarm
+export function onAlarm(alarm) {
+  switch (alarm.name) {
+    case "notification-clear":
+      browser.notifications.clear("theoldreader");
+      break;
+    case "server-refresh":
+      getCountersFromHTTP();
+      break;
+  }
+}
+
+export async function onNotificationClick(id) {
   switch (id) {
     case "theoldreader":
       openOurTab();
       break;
     case "theoldreader-newOptions":
-      chrome.runtime.openOptionsPage();
+      await browser.runtime.openOptionsPage();
       break;
   }
-  chrome.notifications.clear(id);
+  await browser.notifications.clear(id);
 }
 
-function baseUrl() {
+export function baseUrl() {
   return (localStorage.force_http == 'yes' ? 'http://theoldreader.com/' : 'https://theoldreader.com/');
 }
 
-function findOurTab(callback, windowId) {
-  chrome.tabs.query(
+async function findOurTab(windowId) {
+  const tabs = await chrome.tabs.query(
     {
       url: "*://theoldreader.com/*",
       windowId: windowId
-    },
-    function(tabs) {
-      callback(tabs[0]);
     }
   );
+
+  return tabs[0];
 }
 
-function openOurTab(windowId) {
-  findOurTab(function(tab) {
-    if (tab) {
-      chrome.tabs.update(tab.id, {active: true});
-    } else {
-      let url = baseUrl();
-      const pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
-      if (localStorage.click_page == 'all_items') { url += 'posts/all'; }
-      chrome.tabs.create({url: url, pinned: pinned, windowId: windowId});
-    }
-  }, windowId);
+export async function openOurTab(windowId) {
+  const maybeTab = await findOurTab(windowId);
+
+  if (maybeTab) {
+    browser.tabs.update(maybeTab.id, {active: true});
+  } else {
+    let url = baseUrl();
+    const pinned = (localStorage.prefer_pinned_tab == 'yes' ? true : false);
+    if (localStorage.click_page == 'all_items') { url += 'posts/all'; }
+    browser.tabs.create({url: url, pinned: pinned, windowId: windowId});
+  }
 }
 
 function reportError(details) {
   console.warn(details.errorText);
 
-  chrome.browserAction.setIcon({
+  browser.action.setIcon({
     path: {
       19: 'img/icon-inactive.png',
       38: 'img/icon-inactive-scale2.png'
@@ -99,16 +120,16 @@ function reportError(details) {
   });
 
   if (details.loggedOut) {
-    chrome.browserAction.setBadgeText({text: '!'});
-    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button_title_loggedOut')});
+    browser.action.setBadgeText({text: '!'});
+    browser.action.setTitle({title: browser.i18n.getMessage('button_title_loggedOut')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification(chrome.i18n.getMessage('notification_loggedOut_title'), chrome.i18n.getMessage('notification_loggedOut_body'));
+      showNotification(browser.i18n.getMessage('notification_loggedOut_title'), browser.i18n.getMessage('notification_loggedOut_body'));
     }
   } else {
-    chrome.browserAction.setBadgeText({text: ''});
-    chrome.browserAction.setTitle({title: chrome.i18n.getMessage('button_title_fetchError')});
+    browser.action.setBadgeText({text: ''});
+    browser.action.setTitle({title: browser.i18n.getMessage('button_title_fetchError')});
     if (lastError != details.errorText) { // Suppress repeat notifications about the same error
-      showNotification(chrome.i18n.getMessage('notification_fetchError_title'), chrome.i18n.getMessage('notification_fetchError_body') + details.errorText);
+      showNotification(browser.i18n.getMessage('notification_fetchError_title'), browser.i18n.getMessage('notification_fetchError_body') + details.errorText);
     }
   }
 
@@ -128,29 +149,29 @@ function updateIcon(count) {
   } else {
     count = countInt.toString();
   }
-  chrome.browserAction.setIcon({
+  browser.action.setIcon({
     path: {
       19: 'img/icon-active.png',
       38: 'img/icon-active-scale2.png'
     }
   });
-  chrome.browserAction.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR}); 
-  if (typeof(chrome.browserAction.setBadgeTextColor) === "function") {
-    chrome.browserAction.setBadgeTextColor({color: BADGE_TEXT_COLOR});
-  }
-  chrome.browserAction.setBadgeText({text: count});
-  chrome.browserAction.setTitle({title: 'The Old Reader' + title_suffix});
+
+  browser.action.setBadgeBackgroundColor({color: BADGE_BACKGROUND_COLOR});
+  // Not supported in Firefox
+  browser.action.setBadgeTextColor?.({color: BADGE_TEXT_COLOR});
+  browser.action.setBadgeText({text: count});
+  browser.action.setTitle({title: 'The Old Reader' + title_suffix});
 
   lastError = ""; // Clear last remembered error
 
   if (countInt > last_unread_count) {
     const text = 'You have ' + countInt + ' unread post' + (countInt > 1 ? 's' : '') + '.';
-    showNotification(chrome.i18n.getMessage('notification_newPosts_title'), text);
+    showNotification(browser.i18n.getMessage('notification_newPosts_title'), text);
   }
   last_unread_count = countInt;
 }
 
-function getCountersFromHTTP() {
+export function getCountersFromHTTP() {
   // If request times out or if we get unexpected output, report error and reschedule
   function refreshFailed(details) {
     window.clearTimeout(requestTimeout);
@@ -210,17 +231,28 @@ function getCountersFromHTTP() {
 }
 
 function scheduleRefresh() {
-  let interval = (localStorage.refresh_interval || 15) * 60 * 1000;
-  window.clearTimeout(refreshTimeout);
+  let intervalMinutes = Number(localStorage.refresh_interval) || 15;
+
   if (retryCount) { // There was an error
-    interval = Math.min(interval, 5 * 1000 * Math.pow(2, retryCount - 1));
-    // 0:05 -> 0:10 -> 0:20 -> 0:40 -> 1:20 -> 2:40 -> 5:20 -> ...
+    intervalMinutes = Math.min(intervalMinutes, 0.5 * Math.pow(2, retryCount - 1));
+    // 0.5m -> 1m -> 2m -> 4m -> 8m -> 16m -> ...
   }
-  refreshTimeout = window.setTimeout(getCountersFromHTTP, interval);
+
+  console.debug(`Scheduled refresh for ${intervalMinutes} minutes`);
+
+  browser.alarms.clear("server-refresh");
+
+  browser.alarms.create(
+    "server-refresh",
+    {
+      delayInMinutes: intervalMinutes
+    }
+  );
 }
 
-/* exported onMessage */
-function onMessage(request, sender, callback) {
+export function onMessage(request, sender, callback) {
+  console.debug(request);
+
   if (typeof request.count !== 'undefined') {
     setCountFromObserver(request.count);
   }
@@ -232,13 +264,10 @@ function onMessage(request, sender, callback) {
     toggleContentMenus(localStorage.context_menu);
   }
   if (request.openInBackground) {
-    chrome.tabs.create({
+    browser.tabs.create({
       url: request.url,
       active: false
     });
-  }
-  if (request.type == 'close-this-tab' && typeof sender.tab !== 'undefined') {
-    chrome.tabs.remove(sender.tab.id);
   }
 }
 
@@ -247,12 +276,11 @@ function setCountFromObserver(count) {
   scheduleRefresh();
 }
 
-/* exported onExtensionUpdate */
-function onExtensionUpdate(details) {
+export function onExtensionUpdate(details) {
   if (details.reason == "update" && localStorage.options_version < OPTIONS_VERSION) {
     showNotification(
-      chrome.i18n.getMessage('notification_newOptions_title'),
-      chrome.i18n.getMessage('notification_newOptions_body'),
+      browser.i18n.getMessage('notification_newOptions_title'),
+      browser.i18n.getMessage('notification_newOptions_body'),
       "theoldreader-newOptions"
     );
   }
@@ -260,17 +288,11 @@ function onExtensionUpdate(details) {
   saveToStorage();
 }
 
-/* exported startupInject */
-function startupInject() {
+export async function startupInject() {
   // At this point, all old content scripts, if any, cannot communicate with the extension anymore
   // Old instances of content scripts have a "kill-switch" to terminate their event listeners
   // Here we inject new instances in existing tabs
-  chrome.tabs.query(
-    {url: "*://theoldreader.com/*"},
-    function(tabs) {
-      for (let tab of tabs) {
-        chrome.tabs.executeScript(tab.id, {file: "js/observer.js"});
-      }
-    }
-  );
+  for await (const tab of browser.tabs.query({url: "*://theoldreader.com/*"})) {
+    await browser.scripting.executeScript({files: ["js/observer.js"], target: { tabId: tab.id }});
+  }
 }

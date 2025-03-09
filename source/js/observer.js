@@ -3,6 +3,10 @@
 
 let observer;
 
+if (typeof browser === "undefined") {
+  window.browser = chrome;
+}
+
 if (typeof window.injected === "undefined") { // Inject guard for #40
   window.injected = true;
 
@@ -46,7 +50,7 @@ if (typeof window.injected === "undefined") { // Inject guard for #40
 }
 
 function openInBackgroundHandler(evt) {
-  chrome.runtime.sendMessage({openInBackground: true, url: evt.detail});
+  browser.runtime.sendMessage({openInBackground: true, url: evt.detail});
 }
 
 function exposeCapabilities(capabilities) {
@@ -63,7 +67,7 @@ function exposeCapabilities(capabilities) {
   script.parentNode.removeChild(script);
 }
 
-function notify(title, changed) {
+async function notify(title, changed) {
   let count = -1;
 
   const match = /^\((\d+)\)/.exec(title);
@@ -77,7 +81,7 @@ function notify(title, changed) {
 
   if (count >= 0) {
     try {
-      chrome.runtime.sendMessage({count: count});
+      await browser.runtime.sendMessage({count: count});
     } catch (e) { // Happens when parent extension is no longer available or was reloaded
       console.warn("Could not communicate with parent extension, deregistering observer");
       observer.disconnect();

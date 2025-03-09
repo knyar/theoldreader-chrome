@@ -1,91 +1,93 @@
-/* global baseUrl, getCountersFromHTTP */
-function addContentMenus() {
+import "./lib/browser-polyfill.js";
+import { baseUrl, getCountersFromHTTP } from "./functions.js";
+
+export function addContentMenus() {
   // add button context menu
-  chrome.contextMenus.create({
-    title: chrome.i18n.getMessage('button_contextMenu_updateFromServerNow'),
-    contexts: ['browser_action'],
-    onclick: getCountersFromHTTP,
+  browser.contextMenus.create({
+    title: browser.i18n.getMessage('button_contextMenu_updateFromServerNow'),
+    contexts: ['action'],
+    id: "update-counts-now"
   });
 
-  chrome.contextMenus.create(
+  browser.contextMenus.create(
     {title: "The Old Reader", id: "root", contexts: ["page"]}
   );
 
-  const bookmark = function(url, selection) {
-    let httpRequest = new XMLHttpRequest();
-    httpRequest.timeout = 20000;
-    httpRequest.ontimeout = function() {
-      console.warn('HTTP request timed out');
-    };
-    httpRequest.onerror = function() {
-      console.warn('HTTP request error');
-    };
-
-    httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
-        if (httpRequest.status >= 400) {
-          console.warn('HTTP request failed');
-        } else {
-          chrome.tabs.create({url: httpRequest.responseURL}, function(tab) {
-            chrome.tabs.executeScript(
-              tab.id,
-              {file: chrome.runtime.getURL('js/bookmark-cancel-script.js'), runAt: 'document_idle'}
-            );
-          });
-        }
-      }
-    };
-
-    let params = `saved_post[url]=${encodeURIComponent(url)}`;
-    if (selection) {
-      params = `${params}&saved_post[content]=${encodeURIComponent(selection)}`;
-    }
-    httpRequest.open('POST', `${baseUrl()}bookmarks/bookmark`, true);
-    httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    httpRequest.send(params);
-  };
-
-  chrome.contextMenus.create({
-    title: chrome.i18n.getMessage('contextMenu_subscribeToPage'),
+  browser.contextMenus.create({
+    title: browser.i18n.getMessage('contextMenu_subscribeToPage'),
     id: "subscribe",
     parentId: "root",
-    contexts: ["page"],
-    onclick: function(info, tab) {
-      chrome.tabs.create({
-        url: baseUrl() + "feeds/subscribe?url=" + encodeURIComponent(tab.url)
-      });
-    }
+    contexts: ["page"]
   });
 
-  chrome.contextMenus.create({
-    title: chrome.i18n.getMessage('contextMenu_bookmarkPage'),
+  browser.contextMenus.create({
+    title: browser.i18n.getMessage('contextMenu_bookmarkPage'),
     id: "bookmarkPage",
     parentId: "root",
-    contexts: ["page"],
-    onclick: function(info) {
-      bookmark(info.pageUrl);
-    }
+    contexts: ["page"]
   });
 
-  chrome.contextMenus.create({
-    title: chrome.i18n.getMessage('contextMenu_bookmarkSelection'),
+  browser.contextMenus.create({
+    title: browser.i18n.getMessage('contextMenu_bookmarkSelection'),
     id: "bookmarkSelection",
-    contexts: ["selection"],
-    onclick: function(info) {
-      bookmark(info.pageUrl, info.selectionText);
-    }
+    contexts: ["selection"]
   });
 }
 
-function toggleContentMenus(state) {
+function bookmark(url, selection) {
+  let httpRequest = new XMLHttpRequest();
+  httpRequest.timeout = 20000;
+  httpRequest.ontimeout = function() {
+    console.warn('HTTP request timed out');
+  };
+  httpRequest.onerror = function() {
+    console.warn('HTTP request error');
+  };
+
+  httpRequest.onreadystatechange = function() {
+    if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
+      if (httpRequest.status >= 400) {
+        console.warn('HTTP request failed');
+      } else {
+        browser.tabs.create({url: httpRequest.responseURL});
+      }
+    }
+  };
+
+  let params = `saved_post[url]=${encodeURIComponent(url)}`;
+  if (selection) {
+    params = `${params}&saved_post[content]=${encodeURIComponent(selection)}`;
+  }
+  httpRequest.open('POST', `${baseUrl()}bookmarks/bookmark`, true);
+  httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  httpRequest.send(params);
+}
+
+export function onContextMenuClick(info, tab) {
+  switch (info.menuItemId) {
+    case "update-counts-now":
+      getCountersFromHTTP();
+      break;
+    case "subscribe":
+      browser.tabs.create({
+        url: baseUrl() + "feeds/subscribe?url=" + encodeURIComponent(tab.url)
+      });
+      break;
+    case "bookmarkPage":
+      bookmark(info.pageUrl);
+      break;
+    case "bookmarkSelection":
+      bookmark(info.pageUrl, info.selectionText);
+      break;
+  }
+}
+
+export async function toggleContentMenus(state) {
   if (state == 'no') {
-    chrome.contextMenus.removeAll();
+    browser.contextMenus.removeAll();
   } else {
-    chrome.contextMenus.removeAll(function() {
+    browser.contextMenus.removeAll(function() {
       addContentMenus();
     });
   }
 }
-
-// Initialize on extension load up
-toggleContentMenus(localStorage.context_menu);
