@@ -1,0 +1,185 @@
+{
+  "extensionName": {
+    "message": "The Old Reader Notifier",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "通知您 The Old Reader 帐户中的未读条目",
+    "description": "Extension description"
+  },
+  "button_title_loggedOut": {
+    "message": "已登出，单击以登录",
+    "description": "Button toolbar when not logged in"
+  },
+  "button_title_fetchError": {
+    "message": "获取推送计数出错",
+    "description": "Button toolbar when not logged in"
+  },
+  "button_contextMenu_updateFromServerNow": {
+    "message": "立即从服务器更新"
+  },
+  "contextMenu_subscribeToPage": {
+    "message": "订阅页面"
+  },
+  "contextMenu_bookmarkPage": {
+    "message": "收藏页面"
+  },
+  "contextMenu_bookmarkSelection": {
+    "message": "收藏选择"
+  },
+  "notification_loggedOut_title": {
+    "message": "已登出"
+  },
+  "notification_loggedOut_body": {
+    "message": "点击此处登录"
+  },
+  "notification_fetchError_title": {
+    "message": "错误"
+  },
+  "notification_fetchError_body": {
+    "message": "无法获取推送计数: "
+  },
+  "notification_newPosts_title": {
+    "message": "新帖子"
+  },
+  "notification_newOptions_title": {
+    "message": "新选项可用"
+  },
+  "notification_newOptions_body": {
+    "message": "单击以配置新选项"
+  },
+  "showChangelogLink": {
+    "message": "显示更改日志",
+    "description": "Text for the link to open changelog"
+  },
+  "hideChangelogLink": {
+    "message": "隐藏更改日志",
+    "description": "Text for the link to hide changelog"
+  },
+  "sourceCodeAndBugTrackerLink": {
+    "message": "源代码和 bug 跟踪",
+    "description": "Text for the link to open GitHub"
+  },
+  "rateLink_firefox": {
+    "message": "Mozilla Add-Ons 写下评论",
+    "description": "Text for the link to addons.mozilla.org"
+  },
+  "rateLink_chrome": {
+    "message": "Chrome 网上应用店中评分",
+    "description": "Text for the link to Chrome Web Store"
+  },
+  "pageToOpenWhenIconIsClicked_label": {
+    "message": "单击图标时打开的页面:",
+    "description": "Option label"
+  },
+  "pageToOpenWhenIconIsClicked_home": {
+    "message": "主页",
+    "description": "One option for pageToOpenWhenIconIsClicked_label"
+  },
+  "pageToOpenWhenIconIsClicked_allItems": {
+    "message": "所有条目",
+    "description": "One option for pageToOpenWhenIconIsClicked_label"
+  },
+  "openTabAsPinned_label": {
+    "message": "打开的标签固定",
+    "description": "Option label"
+  },
+  "showPopupNotifications_label": {
+    "message": "显示弹出通知",
+    "description": "Option label"
+  },
+  "autoCloseNotificationAfter_label_before": {
+    "message": "自动关闭通知，等待",
+    "description": "Option label (before the input)"
+  },
+  "autoCloseNotificationAfter_label_after": {
+    "message": "秒（0 尽可能长时间保持打开状态）",
+    "description": "Option label (after the input)"
+  },
+  "updateFromServerEvery_label_before": {
+    "message": "从服务器更新，间隔",
+    "description": "Option label (before the input)"
+  },
+  "updateFromServerEvery_label_after": {
+    "message": "分钟，在标签关闭后（最少5）",
+    "description": "Option label (after the input)"
+  },
+  "showRightClickContextMenu_label": {
+    "message": "显示右键单击上下文菜单",
+    "description": "Option label"
+  },
+  "forceHTTP_label": {
+    "message": "强制 HTTP",
+    "description": "Option label"
+  },
+  "forceHTTP_link_before": {
+    "message": "（必须禁用安全 HTTPS ",
+    "description": "Option note (before link)"
+  },
+  "forceHTTP_link_text": {
+    "message": "The Old Reader 设置",
+    "description": "Option note (link text)"
+  },
+  "forceHTTP_link_after": {
+    "message": ")",
+    "description": "Option note (after link)"
+  },
+  "syncOptions_label": {
+    "message": "同步选项",
+    "description": "Option label"
+  },
+  "syncOptions_link_before": {
+    "message": "(",
+    "description": "Option note (before link)"
+  },
+  "syncOptions_link_text": {
+    "message": "同步",
+    "description": "Option note (link text)"
+  },
+  "syncOptions_link_after": {
+    "message": " 必须启用扩展）",
+    "description": "Option note (after link)"
+  },
+  "syncService_chrome_name": {
+    "message": "Chrome Sync",
+    "description": "Name of the sync service in Chrome"
+  },
+  "syncService_firefox_name": {
+    "message": "Firefox Sync",
+    "description": "Name of the sync service in Firefox"
+  },
+  "saveButton": {
+    "message": "保存",
+    "description": "Button text to save the options"
+  },
+  "saveButton_clickMessage": {
+    "message": "< 单击按钮以保存更改",
+    "description": "Text displayed when any option is changed"
+  },
+  "optionsSaved_success": {
+    "message": "选项已保存！",
+    "description": "Text displayed when options have been saved successfully"
+  },
+  "optionsSaved_successAndSync": {
+    "message": "选项已保存并将同步！",
+    "description": "Text displayed when options have been saved successfully and sync will follow"
+  },
+  "optionsSaved_successButSyncRetry": {
+    "message": "选项已保存，但同步失败。将在一分钟后重试。",
+    "description": "Text displayed when options have been saved successfully, but sync failed and will be retried"
+  },
+  "optionsValidation_correctInvalid": {
+    "message": "请更正这些值！",
+    "description": "Text displayed when there are invalid options"
+  },
+  "optionsUpdateFromSync": {
+    "message": "选项从 $serviceName$ 更新。",
+    "description": "Text displayed when options are update from the browser sync service.",
+    "placeholders": {
+      "serviceName": {
+        "content": "$1",
+        "example": "Chrome Sync"
+      }
+    }
+  }
+}
