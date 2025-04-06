@@ -171,63 +171,39 @@ function updateIcon(count) {
   last_unread_count = countInt;
 }
 
-export function getCountersFromHTTP() {
-  // If request times out or if we get unexpected output, report error and reschedule
-  function refreshFailed(details) {
-    window.clearTimeout(requestTimeout);
-    retryCount++;
-    reportError(details);
-    scheduleRefresh();
-  }
-
-  // If request succeeds, update counters and reschedule
-  function refreshSucceeded(feedData) {
-    if (feedData && !isNaN(feedData.max)) {
-      updateIcon(feedData.max);
-    } else {
-      reportError({errorText: 'Unexpected data from server'});
-    }
-    retryCount = 0;
-    scheduleRefresh();
-  }
-
-  let httpRequest = new XMLHttpRequest();
-  let requestTimeout = window.setTimeout(function() {
-    httpRequest.abort();
-    refreshFailed({errorText: 'HTTP request timed out'});
-  }, 20000);
-
-  httpRequest.onerror = function() {
-    refreshFailed({errorText: 'HTTP request error'});
-  };
-
-  httpRequest.onreadystatechange = function() {
-    if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
-      if (httpRequest.status >= 400) {
-        refreshFailed({
-          errorText: 'Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')',
-          loggedOut: (httpRequest.status == 403 || httpRequest.status == 401)
-        });
-      } else if (httpRequest.responseText) {
-        window.clearTimeout(requestTimeout);
-        try {
-          let feedData = JSON.parse(httpRequest.responseText);
-          refreshSucceeded(feedData);
-        } catch (exception) {
-          refreshFailed({errorText: 'Exception while parsing json: ' + exception.toString()});
-        }
-      } else {
-        refreshFailed({errorText: 'Empty response'});
-      }
-    }
-  };
-
+export async function getCountersFromHTTP() {
   try {
-    httpRequest.open('GET', baseUrl() + 'reader/api/0/unread-count?output=json', true);
-    httpRequest.send(null);
-  } catch (exception) {
-    refreshFailed({errorText: 'Exception while fetching data: ' + exception.toString()});
+    const response = await fetch(`${baseUrl()}reader/api/0/unread-count?output=json`);
+
+    if (response.ok) {
+      let feedData = await response.json();
+
+      if (!isNaN(feedData?.max)) {
+        retryCount = 0;
+        updateIcon(feedData.max);
+      } else {
+        retryCount++;
+        reportError({
+          errorText: 'Unexpected data from server',
+          loggedOut: false
+        });
+      }
+    } else {
+      retryCount++;
+      reportError({
+        errorText: `HTTP error ${response.status}`,
+        loggedOut: response.status in [401, 403]
+      });
+    }
+  } catch (error) {
+    retryCount++;
+    reportError({
+      errorText: error.message,
+      loggedOut: false
+    });
   }
+
+  scheduleRefresh();
 }
 
 function scheduleRefresh() {

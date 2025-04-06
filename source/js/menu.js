@@ -34,33 +34,30 @@ export function addContentMenus() {
   });
 }
 
-function bookmark(url, selection) {
-  let httpRequest = new XMLHttpRequest();
-  httpRequest.timeout = 20000;
-  httpRequest.ontimeout = function() {
-    console.warn('HTTP request timed out');
-  };
-  httpRequest.onerror = function() {
-    console.warn('HTTP request error');
-  };
-
-  httpRequest.onreadystatechange = function() {
-    if (httpRequest.readyState == 4 && httpRequest.status !== 0) { // (4,0) means onerror will be fired next
-      if (httpRequest.status >= 400) {
-        console.warn('HTTP request failed');
-      } else {
-        browser.tabs.create({url: httpRequest.responseURL});
-      }
+async function bookmark(url, selection) {
+  try {
+    const params = new URLSearchParams({"saved_post[url]": url});
+    if (selection) {
+      params.append("saved_post[content]", selection);
     }
-  };
 
-  let params = `saved_post[url]=${encodeURIComponent(url)}`;
-  if (selection) {
-    params = `${params}&saved_post[content]=${encodeURIComponent(selection)}`;
+    const response = await fetch(
+      `${baseUrl()}bookmarks/bookmark`, {
+        body: params,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        }
+      }
+    );
+
+    if (response.ok) {
+      browser.tabs.create({url: response.url});
+    } else {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+  } catch (error) {
+    console.warn(error.message);
   }
-  httpRequest.open('POST', `${baseUrl()}bookmarks/bookmark`, true);
-  httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  httpRequest.send(params);
 }
 
 export function onContextMenuClick(info, tab) {
