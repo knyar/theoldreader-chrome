@@ -1,3 +1,13 @@
+version 1.6.0
+ * Ported to Manifest V3, so the extension runs again on current Chrome
+   (Chrome removed support for Manifest V2 extensions in 2025)
+ * Settings moved from localStorage to extension storage; existing settings
+   are migrated from sync storage, or when the options page is first opened
+ * Fixed unread count not being fetched on browser startup
+ * Fixed "bookmark page" and "bookmark selection" context menu items
+ * Fixed detection of being logged out of The Old Reader
+ * Fixed context menus not being created in Chrome
+
 version 1.5.3
  * Fixed black-on-red extension button badge text on Firefox
    (contributed by Vincent Jacobs)

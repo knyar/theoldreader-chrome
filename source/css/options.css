@@ -5,9 +5,29 @@ p {
 }
 
 .message {
-  display: none;
   padding-left: 2em;
   font-weight: bold;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.message.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.message.no-transition {
+  transition: none;
+}
+
+/* Invalid option highlight, fades in and out */
+.container p {
+  transition: background-color 0.2s;
+}
+
+.container p.error {
+  background-color: #ffbbbb;
 }
 
 .green {

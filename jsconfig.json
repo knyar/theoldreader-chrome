@@ -4,6 +4,6 @@
   },
   "typeAcquisition": {
     "enable": true,
-    "include": ["firefox-webext-browser", "chrome", "jquery"]
+    "include": ["firefox-webext-browser", "chrome"]
   }
 }

@@ -1,7 +1,9 @@
 import "./lib/browser-polyfill.js";
 import { baseUrl, getCountersFromHTTP } from "./functions.js";
 
-export function addContentMenus() {
+const REQUEST_TIMEOUT_MS = 20000;
+
+function addContentMenus() {
   // add button context menu
   browser.contextMenus.create({
     title: browser.i18n.getMessage('button_contextMenu_updateFromServerNow'),
@@ -42,16 +44,19 @@ async function bookmark(url, selection) {
     }
 
     const response = await fetch(
-      `${baseUrl()}bookmarks/bookmark`, {
+      `${await baseUrl()}bookmarks/bookmark`, {
+        method: "POST",
         body: params,
+        credentials: "include",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-        }
+        },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       }
     );
 
     if (response.ok) {
-      browser.tabs.create({url: response.url});
+      await browser.tabs.create({url: response.url});
     } else {
       throw new Error(`HTTP error ${response.status}`);
     }
@@ -60,31 +65,37 @@ async function bookmark(url, selection) {
   }
 }
 
-export function onContextMenuClick(info, tab) {
+export async function onContextMenuClick(info, tab) {
   switch (info.menuItemId) {
     case "update-counts-now":
-      getCountersFromHTTP();
+      await getCountersFromHTTP();
       break;
     case "subscribe":
-      browser.tabs.create({
-        url: baseUrl() + "feeds/subscribe?url=" + encodeURIComponent(tab.url)
+      await browser.tabs.create({
+        url: (await baseUrl()) + "feeds/subscribe?url=" + encodeURIComponent(tab.url)
       });
       break;
     case "bookmarkPage":
-      bookmark(info.pageUrl);
+      await bookmark(info.pageUrl);
       break;
     case "bookmarkSelection":
-      bookmark(info.pageUrl, info.selectionText);
+      await bookmark(info.pageUrl, info.selectionText);
       break;
   }
 }
 
-export async function toggleContentMenus(state) {
-  if (state == 'no') {
-    browser.contextMenus.removeAll();
-  } else {
-    browser.contextMenus.removeAll(function() {
+// Rebuilds are chained so that concurrent calls (e.g. onStartup and
+// onInstalled firing together) cannot create duplicate menu ids.
+let menuQueue = Promise.resolve();
+
+export function toggleContentMenus(state) {
+  menuQueue = menuQueue.then(async() => {
+    await browser.contextMenus.removeAll();
+    if (state != 'no') {
       addContentMenus();
-    });
-  }
+    }
+  }).catch((error) => {
+    console.warn("Could not update context menus: ", error);
+  });
+  return menuQueue;
 }

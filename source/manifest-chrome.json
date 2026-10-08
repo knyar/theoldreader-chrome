@@ -1,17 +1,19 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "1.5.3",
+  "version": "1.6.0",
+  "minimum_chrome_version": "120",
   "icons": {
     "16": "img/icon-16.png",
     "48": "img/icon-48.png",
     "128": "img/icon-128.png"
   },
   "background": {
-    "scripts": [ "js/functions.js", "js/storage.js", "js/background.js", "js/menu.js" ]
+    "service_worker": "js/background.js",
+    "type": "module"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "19": "img/icon-inactive.png",
       "38": "img/icon-inactive-scale2.png"
@@ -23,14 +25,15 @@
     "notifications",
     "storage",
     "contextMenus",
-    "*://theoldreader.com/"
+    "alarms",
+    "scripting"
   ],
-  "web_accessible_resources": [
-    "img/icon-48.png"
+  "host_permissions": [
+    "*://theoldreader.com/*"
   ],
   "options_ui": {
     "page": "options.html",
-    "chrome_style": false
+    "open_in_tab": false
   },
   "default_locale": "en",
   "content_scripts": [
@@ -38,7 +41,9 @@
       "matches": [
         "*://theoldreader.com/*"
       ],
-      "js": ["js/observer.js"],
+      "js": [
+        "js/observer.js"
+      ],
       "run_at": "document_idle"
     }
   ]
